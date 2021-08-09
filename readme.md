@@ -16,12 +16,16 @@
 2. Checkbox 
 3. Filter-Select 
 4. Multi-Select 
-5. 
+5. Form -
 
 ### 製作 Web Component 可用的相關套件
 
 - [Stencil JS](https://blog.techbridge.cc/2020/03/30/stencil-claps-web-component/) - 專門製作 Web Component 的 JS 工具
+- [7 Tools for Building Web Components](https://blog.bitsrc.io/7-tools-for-developing-web-components-in-2019-1d5b7360654d)
 
+### 相關影片
+
+- [Web Components Crash Course](https://www.youtube.com/watch?v=PCWaFLy3VUo&t=940s)
 
 ### 許許多多的 JS
 
@@ -29,3 +33,44 @@
 - [DVaJs](https://dvajs.com/guide/#%E7%89%B9%E6%80%A7) - React 專用的數據處理工具
 - [BetterScroll](https://better-scroll.github.io/docs/zh-CN/guide/base-scroll-options.html#scrollx) - BetterScroll 是一款重点解决移动端（已支持 PC）各种滚动场景需求的插件
 
+### 其他
+
+- [OBS](https://obsproject.com/) - 線上直播工具 
+
+- [async-validator](https://github.com/yiminghe/async-validator) - element-UI 使用的驗證 JS
+
+
+```javascript
+// in element-UI form-item.vue 
+      function validate(trigger, callback = _=>_) {
+        this.validateDisabled = false;
+        const rules = this.getFilteredRule(trigger);
+        if ((!rules || rules.length === 0) && this.required === undefined) {
+          callback();
+          return true;
+        }
+
+        this.validateState = 'validating';
+
+        const descriptor = {};
+        if (rules && rules.length > 0) {
+          rules.forEach(rule => {
+            delete rule.trigger;
+          });
+        }
+        descriptor[this.prop] = rules;
+
+        const validator = new AsyncValidator(descriptor);
+        const model = {};
+
+        model[this.prop] = this.fieldValue;
+
+        validator.validate(model, { firstFields: true }, (errors, invalidFields) => {
+          this.validateState = !errors ? 'success' : 'error';
+          this.validateMessage = errors ? errors[0].message : '';
+
+          callback(this.validateMessage, invalidFields);
+          this.elForm && this.elForm.$emit('validate', this.prop, !errors, this.validateMessage || null);
+        });
+      }
+```
