@@ -12,12 +12,19 @@
 
 可以利用 Web Component 製作某些 Component 
 
+0. Typography - 文字定義
 1. Label 
 2. Checkbox 
 3. Filter-Select 
 4. Multi-Select 
-5. Button - ripple / cat 
-5. Form - 
+5. Button - ripple / loading-cat 
+6. Form - validator & error
+7. Table - fixed / scrollable / expanded (  )
+8. loader - circle / linear ( 等待畫面 )
+9. progress - bar / circle ( 進度條 )
+10. Dialog - 彈跳視窗
+11. breadcrumb - 麵包屑 
+12. Pagination - 頁碼 / 每頁 n 筆 / 共 n 頁 / 第一頁 . 最後一頁 / 上一頁 . 下一頁
 
 ### 製作 Web Component 可用的相關套件
 
