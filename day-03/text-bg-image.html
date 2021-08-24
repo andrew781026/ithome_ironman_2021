@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    body{
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #0df1f1;
+    }
+
+    .text-bg {
+      -webkit-background-clip: text;
+      background-image: url('./kitty-3.jpg');
+      background-position: center right;
+      color: transparent;
+      font-size: 100px;
+      font-weight: 900;
+    }
+
+    .bg-cat {
+      pointer-events: none;
+      background-image: url('./kitty-3.jpg');
+      position: fixed;
+      height: 0;
+      width: 0;
+      background-size: cover;
+      border-radius: 50%;
+      transition: width 0.5s , height 0.5s;
+    }
+
+
+    .text-bg:hover ~ .bg-cat {
+      height: 50vmax;
+      width: 50vmax;
+    }
+
+  </style>
+</head>
+<body>
+<div class="text-bg">
+  這是一隻貓咪 ~ 喵.喵.喵...
+</div>
+<div class="bg-cat"></div>
+</body>
+</html>
