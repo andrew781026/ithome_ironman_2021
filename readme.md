@@ -47,6 +47,8 @@
 
 - [async-validator](https://github.com/yiminghe/async-validator) - element-UI 使用的驗證 JS
 
+- [video.js - 線上撥放影片的 JS](https://videojs.com/getting-started)
+- [hls.js - 線上撥放影片的 JS](https://videojs.com/getting-started)
 
 ```javascript
 // in element-UI form-item.vue 
