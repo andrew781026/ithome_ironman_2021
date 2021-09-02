@@ -41,6 +41,7 @@
 - [DVaJs](https://dvajs.com/guide/#%E7%89%B9%E6%80%A7) - React 專用的數據處理工具
 - [BetterScroll](https://better-scroll.github.io/docs/zh-CN/guide/base-scroll-options.html#scrollx) - BetterScroll 是一款重点解决移动端（已支持 PC）各种滚动场景需求的插件
 
+
 ### 其他
 
 - [OBS](https://obsproject.com/) - 線上直播工具 
@@ -52,35 +53,35 @@
 
 ```javascript
 // in element-UI form-item.vue 
-      function validate(trigger, callback = _=>_) {
-        this.validateDisabled = false;
-        const rules = this.getFilteredRule(trigger);
-        if ((!rules || rules.length === 0) && this.required === undefined) {
-          callback();
-          return true;
-        }
+function validate(trigger, callback = _=>_) {
+  this.validateDisabled = false;
+  const rules = this.getFilteredRule(trigger);
+  if ((!rules || rules.length === 0) && this.required === undefined) {
+    callback();
+    return true;
+  }
 
-        this.validateState = 'validating';
+  this.validateState = 'validating';
 
-        const descriptor = {};
-        if (rules && rules.length > 0) {
-          rules.forEach(rule => {
-            delete rule.trigger;
-          });
-        }
-        descriptor[this.prop] = rules;
+  const descriptor = {};
+  if (rules && rules.length > 0) {
+    rules.forEach(rule => {
+      delete rule.trigger;
+    });
+  }
+  descriptor[this.prop] = rules;
 
-        const validator = new AsyncValidator(descriptor);
-        const model = {};
+  const validator = new AsyncValidator(descriptor);
+  const model = {};
 
-        model[this.prop] = this.fieldValue;
+  model[this.prop] = this.fieldValue;
 
-        validator.validate(model, { firstFields: true }, (errors, invalidFields) => {
-          this.validateState = !errors ? 'success' : 'error';
-          this.validateMessage = errors ? errors[0].message : '';
+  validator.validate(model, { firstFields: true }, (errors, invalidFields) => {
+    this.validateState = !errors ? 'success' : 'error';
+    this.validateMessage = errors ? errors[0].message : '';
 
-          callback(this.validateMessage, invalidFields);
-          this.elForm && this.elForm.$emit('validate', this.prop, !errors, this.validateMessage || null);
-        });
-      }
+    callback(this.validateMessage, invalidFields);
+    this.elForm && this.elForm.$emit('validate', this.prop, !errors, this.validateMessage || null);
+  });
+}
 ```
