@@ -14,7 +14,7 @@
 
 但是 , 我無法直接將 `material-ui` 中我認為不錯的元件拿到 `Vue` 中做使用 , 反之亦然
 
-這讓我有點鬱悶 , 當我看到 [React Draggable](http://react-grid-layout.github.io/react-draggable/example/) 跟 [vue-typer](https://www.npmjs.com/package/vue-typer#getting-started) 都覺得不錯 , 
+這讓我有點鬱悶 , 當我看到 [react hook form](https://react-hook-form.com/) 跟 [vue-typer](https://www.npmjs.com/package/vue-typer#getting-started) 都覺得不錯 , 
 
 想同時使用時 , 只能仰天長嘯 
 

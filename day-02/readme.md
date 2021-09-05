@@ -6,6 +6,8 @@
 ### 一些特別的 WebComponent
 
 - [Wired Elements](https://wiredjs.com/) - 手繪感十足的原件
+- [React & Web Component](https://zh-hant.reactjs.org/docs/web-components.html)
+- [Vue & Web Component](https://v3.cn.vuejs.org/guide/web-components.html#tips-for-a-vue-custom-elements-library)
 
 ### WebComponent 的金三角
 
