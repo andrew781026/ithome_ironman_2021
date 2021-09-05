@@ -1,19 +1,37 @@
-# [day01] - 歡迎來到 Web Component 的世界
+# [Day01] - 旅途開始前的茶室閒聊
 
-貓咪 ?
+去年寶哥在 Modern WEB 中介紹過 Angular 有時會發生版本不相容的 issue , 利用 Web Component 可以
 
-去年寶哥在 Mordren WEB 中介紹過 Angular 版本之間不相容 , 可以用 Angular Web Component 去處理這個 issue
+讓舊版的 Angular 元件直接拿到新版的 Angular 做使用 , 那時在我心中就埋下了一個名詞 `Web Component`
 
-Vue . React 也可以做出 Web Component 來處理 ,
+-----
 
+最近 , 我在整理自己以前寫的 [口罩地圖](https://github.com/andrew781026/findMask) , 
 
+我突然意識到那時學 React 時使用的 UI 框架 [material-ui](https://material-ui.com/)
 
-### 微前端
+跟我後來學 Vue 常用的 UI 框架 [element-UI](https://element.eleme.io/#/zh-CN) 都各有其長處
 
-我們可以不用 iframe 來切片我們的網頁 ? 使用 Web Component 來處理 😁
+但是 , 我無法直接將 `material-ui` 中我認為不錯的元件拿到 `Vue` 中做使用 , 反之亦然
+
+這讓我有點鬱悶 , 當我看到 [React Draggable](http://react-grid-layout.github.io/react-draggable/example/) 跟 [vue-typer](https://www.npmjs.com/package/vue-typer#getting-started) 都覺得不錯 , 
+
+想同時使用時 , 只能仰天長嘯 
+
+![](https://i.imgur.com/zqmwfNQ.png)
+
+然後默默的忽視其中一個元件 , 避免自己多看多傷心 （＞人＜；）
+
+這時我突然想起 `Web Component` 這個名詞 , 經過 Google 後 , 我發現他可以達到我想要做的事情 , 
+
+在同一個頁面中 , 使用 `React 元件` 跟 `Vue 元件` , 
+
+![](https://i.imgur.com/GWNTBHb.png)
+
+之後 30 天請邦友們跟我一起探尋 `Web Component` 讓我們一起拌炒前端三大框架吧 ! 
+![/images/emoticon/emoticon18.gif](https://ithelp.ithome.com.tw/images/emoticon/emoticon18.gif)
 
 ## 參考資料 :
 
 - [一起探討 Micro Frontends 的世界](https://blog.techbridge.cc/2019/01/12/micro-frontends-concept/)
-- [微前端架構解析：定義、好處與缺陷](https://kknews.cc/zh-tw/code/o3bpbo6.html)
-- [微服務很夯，那你有聽過微前端嗎？初探 Micro Frontends 程式架構](https://medium.com/starbugs/%E5%BE%AE%E6%9C%8D%E5%8B%99%E5%BE%88%E5%A4%AF-%E9%82%A3%E4%BD%A0%E6%9C%89%E8%81%BD%E9%81%8E%E5%BE%AE%E5%89%8D%E7%AB%AF%E5%97%8E-%E5%88%9D%E6%8E%A2-micro-frontends-%E6%9E%B6%E6%A7%8B-e0a8469be601)
+- [Meme 梗圖倉庫](https://memes.tw/maker/template/7200)
