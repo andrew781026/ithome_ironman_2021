@@ -1,12 +1,49 @@
 # [Day02] - 旅途開始前的行前解說
 
-昨天提到了 `Web Component` , 今天深入來研究一下 WebComponent 究竟是什麼 ?
+昨天提到了 `Web Component` , 今天先初步了解一下什麼是 WebComponent 跟他能做什麼吧 !
 
 ------
 
-> 需要多加潤色此篇文字 
+## WebComponent 能做什麼 ?
+
+這時我們可以先看一下 , 現成的 WebComponent - [Wired Elements](https://wiredjs.com/) 
+
+在我們的 Web 中需要如何引用 ?
+
+步驟一 > 將 Wired Elements 的 JS 檔在 Html 中引用
+
+```html
+<script type="module" src="https://unpkg.com/wired-elements?module"></script>
+```
+
+步驟二 > 在我們的頁面中使用 `wired-input` . `wired-button` ...等 , 特別的 Html Tag 使用 Wired Elements 定義好的元件
+
+```html
+<wired-input placeholder="Enter name"></wired-input>
+<wired-button>Click Me</wired-button>
+```
+
+## 有趣的 WebComponent 
+
+- [Wired Elements](https://wiredjs.com/) - 手繪感十足的原件
+
+![](https://i.imgur.com/GOM4RIt.png)
+
+如果我們需要將上方看到的原件 , 在我們的 Web 專案中做使用 , 我們只需要引用 JS 檔即可
+
+```html
+<script type="module" src="https://unpkg.com/wired-elements?module"></script>
+```
+
+不需要引用其他
 
 ## WebComponent
+
+他是一個你可以自訂定義 HTML Tag 來做出想要的 HTML 元件
+
+舉例來說 : 
+
+我想要將
 
 ![](https://i.imgur.com/cm5OUGj.png)
 
@@ -49,3 +86,5 @@ customElements.define('my-tag', MyTag);
 ## 參考資料 :
 
 - [Udemy 課程 - Web Components & Stencil.js - Build Custom HTML Elements](https://www.udemy.com/course/web-components-stenciljs-build-custom-html-elements/)
+- [webcomponents 官方網站](https://www.webcomponents.org/)
+- [MDN - webcomponents 介紹](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
