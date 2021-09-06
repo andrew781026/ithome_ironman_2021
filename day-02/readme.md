@@ -19,9 +19,89 @@
 步驟二 > 在我們的頁面中使用 `wired-input` . `wired-button` ...等 , 特別的 Html Tag 使用 Wired Elements 定義好的元件
 
 ```html
-<wired-input placeholder="Enter name"></wired-input>
-<wired-button>Click Me</wired-button>
+<h3>Enter Your Nick Name：</h3>
+<div>
+  <wired-input placeholder="Enter name"></wired-input>
+  <wired-button>確定</wired-button>
+</div>
+<button>進入遊戲</button>
 ```
+
+這時我們可以觀察到 WebComponent 的第一個特性 : Custom Html Tag 
+
+在頁面中 , 我們多加設定 button 的 styling , 
+
+```html
+<style>
+button {
+      background-color: #15aacb;
+      border-radius: 4px;
+      padding: 10px 25px;
+      color: white;
+      margin: 8px;
+    }
+</style>
+```
+![](https://i.imgur.com/RKeooY1.png)
+
+我們可以觀察到 , 這並不會影響到 `wired-button` 這個元件的樣式
+
+元件內外的樣式定義是分開的 , 這就是  WebComponent 的第二個特性 : Shadow Dom
+
+這可以避免一些定義 button 樣式時 , 互相干擾的一些麻煩事 
+
+有時 , 我們需要在我們定義的 Html Tag 中使用到原生的 Html Tag 
+
+我們只需要將其放到我們的元件中即可
+
+```html
+<wired-card elevation="4" fill="darkred" style="color: lightyellow;" class="wired-rendered">
+<h4>Colored Card</h4>
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+  magna aliqua.
+  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</p>
+</wired-card>
+```
+
+這就是  WebComponent 的第三個特性 : Slot
+
+-----
+
+下方整理一下 , 今天討論到的 WebComponent 三特性
+
+| 專有名詞 | 說明 | 
+|---|---|
+| Custom Html Tag  | 產生自定義的 Tag 當作自身的元件使用 ex: `<wired-button/>` |
+| Shadow Dom  | 將元件內外的樣式設定分隔開來 , 互不影響 |
+| Slot  | 將元件內可以加上一些原生的 Html Tag |
+
+![](https://i.imgur.com/cm5OUGj.png)
+
+上述這些 , 不知道學過 `Vue` 的邦友們有沒有種很熟悉的感覺 ?
+
+聽說 Vue 的作者在製作 Vue 時 , 有參考那時的 WebComponent 定義去製作 Vue 的
+
+## 參考資料 :
+
+- [Udemy 課程 - Web Components & Stencil.js - Build Custom HTML Elements](https://www.udemy.com/course/web-components-stenciljs-build-custom-html-elements/)
+- [webcomponents 官方網站](https://www.webcomponents.org/)
+- [MDN - webcomponents 介紹](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
+- [wired-button 的 JS 定義](https://unpkg.com/wired-elements@3.0.0-rc.6/lib/wired-button.js?module)
+
+
+-------------
+
+
+
+
+
+如果想要觀察 `wired-button` 如何定義 , 可到
+
+在網頁中 , 有時會需要定義 button 之類的全局 styling , 當有 2 個 button 定義時 , 常常會有 button 設定互相干擾的情況 , 在 WebComponent 有個特別的東西 Shadow Dom , 讓其避免此類問題
+
+
 
 ## 有趣的 WebComponent 
 
@@ -80,11 +160,5 @@ customElements.define('my-tag', MyTag);
 ### 有趣的 WebComponent
 
 - [Wired Elements](https://wiredjs.com/) - 手繪感十足的原件
+- [Wired Elements](https://wiredjs.com/) - 手繪感十足的原件
 
-
-
-## 參考資料 :
-
-- [Udemy 課程 - Web Components & Stencil.js - Build Custom HTML Elements](https://www.udemy.com/course/web-components-stenciljs-build-custom-html-elements/)
-- [webcomponents 官方網站](https://www.webcomponents.org/)
-- [MDN - webcomponents 介紹](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
