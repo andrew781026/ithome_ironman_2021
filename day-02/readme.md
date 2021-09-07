@@ -6,17 +6,17 @@
 
 ## WebComponent 能做什麼 ?
 
-這時我們可以先看一下 , 現成的 WebComponent - [Wired Elements](https://wiredjs.com/) 
+這時我們可以先觀察一下 , 現成的 WebComponent - [Wired Elements](https://wiredjs.com/) 
 
-在我們的 Web 中需要如何引用 ?
+如何在頁面中使用 Wired Elements 呢 ?
 
-步驟一 > 將 Wired Elements 的 JS 檔在 Html 中引用
+> [ 步驟一 ] 將 Wired Elements 的 JS 檔在 Html 中引用
 
 ```html
 <script type="module" src="https://unpkg.com/wired-elements?module"></script>
 ```
 
-步驟二 > 在我們的頁面中使用 `wired-input` . `wired-button` ...等 , 特別的 Html Tag 使用 Wired Elements 定義好的元件
+> [ 步驟二 ] 在我們的頁面中使用 `wired-input` . `wired-button` ...等 , 特別的 Html Tag 使用 Wired Elements 定義好的元件
 
 ```html
 <h3>Enter Your Nick Name：</h3>
@@ -66,6 +66,12 @@ button {
 ```
 
 這就是  WebComponent 的第三個特性 : Slot
+
+### 成果圖
+
+![](https://i.imgur.com/EFalrcJ.png)
+
+如果想查看實際頁面 , 請到 [import-wired-element.html](https://andrew781026.github.io/ithome_ironman_2021/day-02/import-wired-element.html) 查看
 
 -----
 
