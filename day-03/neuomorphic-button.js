@@ -56,6 +56,7 @@ class NeuomorphicButton extends HTMLElement {
 
     const fontAwesomeStyle = `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">`
 
+    // neumorphism 產生器 : https://neumorphism.io/#e0e0e0
     const styleStr = `
     <style>
        label input[type='checkbox'] {
@@ -68,8 +69,8 @@ class NeuomorphicButton extends HTMLElement {
           height: 60px; */
           position:relative;
           background-color: #ebf5fc;
-          box-shadow: -2px -2px 5px rgba(255, 255, 255, 1),
-          3px 3px 5px rgba(0, 0, 0, 0.1);
+             box-shadow:  8px 8px 16px #bcbcbc,
+             -8px -8px 16px #ffffff;
           display: flex;
           justify-content: center;
           align-items: center;

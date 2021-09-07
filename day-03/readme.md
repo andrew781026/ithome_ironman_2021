@@ -1,4 +1,4 @@
-# [Day03] - 我的第一個 WebComponent 元件
+# [Day03] - 第一個 WebComponent 元件
 
 昨天借用了 `Wired Elements` 來說明什麼是 WebComponent 跟它有什麼特點
 
@@ -9,6 +9,81 @@
 ## 素材準備
 
 PNG ? HTML ? CSS ?
+
+我們利用 font-awesome 製作一個 `擬物型按鈕(neuomorphic button)` 吧 \(￣︶￣*\))
+
+- [擬物型按鈕]() 
+
+ [![](https://i.imgur.com/TiQdroo.png)](https://www.youtube.com/watch?v=EQVXzwTilkY)   
+ [ 圖片來源 : [youtube 影片 - CSS3 Neumorphism](https://www.youtube.com/watch?v=EQVXzwTilkY) ]
+
+
+首先我們先下載 ZIP 檔 , 將我所需要的 html . css 素材拿來使用吧 !
+
+首先 , 當然是建立一個 JS 檔案 , 我們叫做 `neuomorphic-button.js` 吧 !
+
+```javascript
+// neuomorphic-button.js
+```
+
+建立一下我們的 Custom Html Tag 
+
+```javascript
+// neuomorphic-button.js
+class NeuomorphicButton extends HTMLElement {
+
+  // as Component mounted to page 
+  constructor() {
+
+    // Always call super first in constructor
+    super();
+
+    // Element functionality written in here
+  }
+}
+
+window.customElements.define('neuomorphic-button', NeuomorphicButton);
+```
+
+跟昨天一樣 , 用自製的 Tag 於 Html 中引用
+
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <script src="./neuomorphic-button.js"></script>
+</head>
+<body>
+
+<neuomorphic-button></neuomorphic-button>
+</body>
+</html>
+```
+
+我們先塞一些東西到 <neuomorphic-button/> 看看吧 !
+
+```javascript
+// neuomorphic-button.js
+class NeuomorphicButton extends HTMLElement {
+
+  // as Component mounted to page 
+  constructor() {
+
+    // Always call super first in constructor
+    super();
+
+    // Element functionality written in here
+    const img = document.createElement('img')
+    img.src = 'https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-03/cat.png'
+    
+    this.append(img)
+  }
+}
+
+window.customElements.define('neuomorphic-button', NeuomorphicButton);
+```
+
 
 ## 開始製作 
 

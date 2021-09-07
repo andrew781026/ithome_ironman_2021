@@ -22,7 +22,7 @@ class CatCheckbox extends HTMLElement {
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #0df1f1;
+    /*  background-color: #0df1f1; */
     }
 
     .wrap {
