@@ -2,9 +2,15 @@
 
 昨天借用了 `Wired Elements` 來說明什麼是 WebComponent 跟它有什麼特點
 
-今天
+今天我們來製作一個 MyElement 吧 !
 
 ------
+
+## 素材準備
+
+PNG ? HTML ? CSS ?
+
+## 開始製作 
 
 ## WebComponent 能做什麼 ?
 
