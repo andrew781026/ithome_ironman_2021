@@ -60,8 +60,7 @@ class NeuomorphicButton extends HTMLElement {
     const styleStr = `
     <style>
        label input[type='checkbox'] {
-        position: absolute;
-        opacity: 0;
+        display: none;
       }
 
       label .icon-box {
