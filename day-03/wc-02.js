@@ -15,4 +15,4 @@ class WebComponent02 extends HTMLElement {
   }
 }
 
-window.customElements.define('neuomorphic-button', WebComponent02);
+window.customElements.define('wc-02', WebComponent02);
