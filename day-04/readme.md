@@ -85,23 +85,11 @@ window.customElements.define('neuomorphic-button', NeuomorphicButton);
       align-items: center;
       border-radius: 10px;
       cursor: pointer;
+      transition: all 0.3s;
     }
-
-    label .icon-box::before {
-      position: absolute;
-      left: -1px;
-      top: -1px;
-      content: '';
-      width: 101%;
-      height: 101%;
-      background-color: rgba(0, 0, 0, 0.1);
-      opacity: 0;
-      transition: opacity 0.5s;
-      border-radius: 10px;
-    }
-
-    label .icon-box:hover::before {
-      opacity: 1;
+    
+    label .icon-box:hover {
+      transform: translateY(3px);
     }
 
     label .icon-box i {
