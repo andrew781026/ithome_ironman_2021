@@ -1,5 +1,7 @@
 # [Day04] - 新擬物風按鈕(二) - shadow dom 介紹
 
+>> 其實應該說明一下 , 樣式互相干擾的那些事 -> 才能顯示 shadow dom 的優點 <<
+
 昨天我們做了一個不能點的 `neuomorphic-button` 
 
 今天我們把他可以點擊 & 加上 shadow-dom 讓元件內外的 styling 區隔開來吧 !
