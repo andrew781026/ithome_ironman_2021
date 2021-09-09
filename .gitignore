@@ -12,3 +12,4 @@ dist
 gen
 *.log
 logs
+package-lock.json
