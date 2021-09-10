@@ -15,21 +15,6 @@ document.querySelector(`${myTagName} .icon-box i`).className = 'fas fa-lightbulb
 
 然後 , 在 JS 中寫一大堆修改 , Dedug 時又會頭痛得要命 (所以這 icon 最後會變成啥樣啊 !?)
 
-```javascript
-// 看到的程式碼可能長這樣 , 然後你不知道最後 icon 變成啥樣
-1    var myTagName = 'neuomorphic-button';
-2    document.querySelector(`${myTagName} .icon-box i`).className = 'fas fa-lightbulb'
-
-.......一些程式碼
-
-      const changeFn = () =>{
-
-101      var myTagName = 'neuomorphic-button';
-102      document.querySelector(`${myTagName} .icon-box i`).className = 'fas fa-lightbulb'
-
-      }
-```
-
 今天 , 我們先來接收外部傳入的參數 , 將 icon 相關的設定 , 統一放在 `neuomorphic-button` 元件上 \(￣︶￣*\))
 
 ------
@@ -67,8 +52,7 @@ class NeuomorphicButton extends HTMLElement {
 window.customElements.define('neuomorphic-button', NeuomorphicButton);
 ```
 
-![book](https://i.imgur.com/nuC5GEv.png) Step 3. 並接收到的 iconName 寫到 i 的 class 上面
-
+![book](https://i.imgur.com/nuC5GEv.png) Step 3. 將接收到的 iconName 寫到 i 的 class 上面
 
 ```javascript
 // neuomorphic-button.js

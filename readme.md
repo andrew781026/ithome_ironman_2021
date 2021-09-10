@@ -43,7 +43,7 @@
 - [UmiJS](https://umijs.org/zh-CN/docs) - Umi 是蚂蚁金服的底层前端框架 for React 
 - [DVaJs](https://dvajs.com/guide/#%E7%89%B9%E6%80%A7) - React 專用的數據處理工具
 - [BetterScroll](https://better-scroll.github.io/docs/zh-CN/guide/base-scroll-options.html#scrollx) - BetterScroll 是一款重点解决移动端（已支持 PC）各种滚动场景需求的插件
-
+- [omi.js](https://github.com/Tencent/omi/tree/v6/packages/omi-30-seconds#font-face-doesnt-work-in-shadow-dom)
 
 ### 其他
 
