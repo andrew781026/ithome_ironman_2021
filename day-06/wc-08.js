@@ -1,4 +1,4 @@
-class WebComponent06 extends HTMLElement {
+class WebComponent08 extends HTMLElement {
 
   constructor() {
 
@@ -77,7 +77,20 @@ class WebComponent06 extends HTMLElement {
     const shadowRoot = this.attachShadow({mode: 'open'})
     shadowRoot.innerHTML = fontAwesomeStyle + styleStr
     shadowRoot.append(label)
+
+    const self = this
+
+    const checkbox = label.querySelector('input[type="checkbox"]')
+    checkbox.addEventListener('change', function (e) {
+
+      const oncheck = self.getAttribute('oncheck')
+
+      // detail 就是 CustomEvent 內的參數
+      const clickEvent = new CustomEvent('check', {composed: true, detail: {check: this.checked}});
+      self.dispatchEvent(clickEvent)
+      eval(oncheck)
+    });
   }
 }
 
-window.customElements.define('wc-06', WebComponent06);
+window.customElements.define('wc-08', WebComponent08);

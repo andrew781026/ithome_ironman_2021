@@ -32,86 +32,81 @@ HTML 按鈕 <button> 上會有一個 onclick 事件 , 用來設定點擊後 , �
 button.addEventListener('click', clickHandler )
 ```
 
-也就是今天完成時 , 我們可以將上方 2 種 onclick 都在 `neuomorphic-button` 元件上使用
+也就是今天完成時 , 我們可以將上方 2 種事件 都在 `neuomorphic-button` 元件上使用
 
 ## 實作開始
 
-![book](https://i.imgur.com/nuC5GEv.png) Step 1. 將昨天的進度取出 
-
-```html
-<!-- 將我們要顯示的圖標放的 icon 屬性的文字當中 -->
-<neuomorphic-button icon="fas fa-lightbulb" />
-```
-
-![book](https://i.imgur.com/nuC5GEv.png) Step 2. 在元件上的 `icon` 接收下來 , 並將其寫到 i 的 class 上面
-
+![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 將昨天的進度取出 
 
 ```javascript
-// neuomorphic-button.js
 class NeuomorphicButton extends HTMLElement {
 
   constructor() {
 
     super();
 
-    const iconName = this.getAttribute('icon')    
-    
+    const fontAwesomeStyle = `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">`
 
-    ...照舊處理
+    // neumorphism 產生器 : https://neumorphism.io/#e0e0e0
+    const styleStr = `neumorphism 按鈕樣式`;
+
+    const icon = this.getAttribute('icon') || 'fas fa-wifi'
+    const size = this.getAttribute('size') || 70
+    const color = this.getAttribute('color') || '#6a9bd8'
+    const bgColor = this.getAttribute('bg-color') || '#ebf5fc'
+
+    const htmlStr = `
+        <label>
+          <input type="checkbox" name="">
+          <div class="icon-box" style="width: ${size}px;height: ${size}px;background-color:${bgColor}">
+              <i class="${icon}" style="font-size: ${size * 0.6}px;color:${color}"></i>
+          </div>
+        </label>
+    `
+
+    this.attachShadow({mode: 'open'}).innerHTML = fontAwesomeStyle + styleStr + htmlStr
   }
 }
 
 window.customElements.define('neuomorphic-button', NeuomorphicButton);
 ```
 
-![book](https://i.imgur.com/nuC5GEv.png) Step 3. 將接收到的 iconName 寫到 i 的 class 上面
+![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 在 checkbox 加上 `addEventListener` 監聽 checkbox 的變化
 
 ```javascript
-// neuomorphic-button.js
-class NeuomorphicButton extends HTMLElement {
+const checkbox = label.querySelector('input[type="checkbox"]')
+checkbox.addEventListener('change', function (e) {
 
-  constructor() {
-
-        super();
-    
-        const fontAwesomeStyle = `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">`
-    
-        const styleStr = 'neuomorphic-button 的樣式';
-
-        // 取得原件上的 icon 屬性
-+        const iconName = this.getAttribute('icon')       
-
-        const div = document.createElement('div')
-        div.classList.add('icon-box')
-
-        // 將取到的 iconName 設定給 i 
-+        div.innerHTML = `<i class="${iconName}"></i>`
-    
-        const label = document.createElement('label')
-        label.innerHTML = `<input type="checkbox">`
-        label.append(div)
-    
-        const shadowRoot = this.attachShadow({mode: 'open'})
-        shadowRoot.innerHTML = fontAwesomeStyle + styleStr
-        shadowRoot.append(label)
-  }
-}
-
-window.customElements.define('neuomorphic-button', NeuomorphicButton);
+  console.log('checkbox 被點到')
+});
 ```
 
-之後我們就可以到 `font-awesome` 官網查出我們想要的小圖示 , 並修改 `icon` 屬性
+![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 產生一個新的 Event 並將其 dispatch 到元素上
+
+```javascript
+const self = this
+
+const checkbox = label.querySelector('input[type="checkbox"]')
+checkbox.addEventListener('change', function (e) {
+
+  // detail 就是 CustomEvent 內的參數
+  const clickEvent = new CustomEvent('check', {composed: true, detail: {check: this.checked}});
+  self.dispatchEvent(clickEvent)
+});
+```
+
+之後我們註冊 `addEventListener('check'` 到元素上 , 我們就可以看到事件的觸發 
+
+```javascript
+// 註冊範例 
+document.querySelector('wc-08').addEventListener('check', e => console.log('註冊 & 監聽 check 事件 !!!', e.detail.check))
+```
+
+![](https://i.imgur.com/YjeNtTa.png)
 
 
-### 追加其他屬性
+如果想直接體驗成果 , 請到 [web-component-addEventListener.html](https://andrew781026.github.io/ithome_ironman_2021/day-06/show-wc.html) 查看
 
-我們可以利用以上手法 , 將 
-
-- size : 按鈕大小
-- color : 小圖示顏色
-- bgColor : 按鈕底色
-
-這些常見的按鈕控制項 , 給設定出來 , 這些設定就留給 邦友 自行實作了 ! 
 
 ## 參考資料 :
 

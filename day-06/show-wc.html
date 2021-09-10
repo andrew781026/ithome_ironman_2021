@@ -17,11 +17,15 @@
 </head>
 <body>
 
-<wc-06 icon="fas fa-lightbulb"></wc-06>
-<wc-07 icon="fab fa-apple" size="40"></wc-07>
-<wc-07 icon="fas fa-award" size="100"></wc-07>
+<wc-08 icon="fas fa-lightbulb" oncheck="check(e)"></wc-08>
 
-<script src="./wc-06.js"></script>
-<script src="./wc-07.js"></script>
+<script src="./wc-08.js"></script>
+<script>
+  function check(e) {
+    console.log('function !!!', e)
+  }
+
+  document.querySelector('wc-08').addEventListener('check', e => console.log('註冊 & 監聽 check 事件 !!!', e.detail.check))
+</script>
 </body>
 </html>
