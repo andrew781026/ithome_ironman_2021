@@ -18,11 +18,13 @@
 <body>
 
 <wc-08 icon="fas fa-lightbulb" oncheck="check(e)"></wc-08>
+<neuomorphic-button icon="fas fa-wifi" size="70" color="#60d617"></neuomorphic-button>
 
 <script src="./wc-08.js"></script>
+<script src="./neuomorphic-button.js"></script>
 <script>
   function check(e) {
-    console.log('function !!!', e)
+    console.log('oncheck 事件觸發 !!!', e)
   }
 
   document.querySelector('wc-08').addEventListener('check', e => console.log('註冊 & 監聽 check 事件 !!!', e.detail.check))

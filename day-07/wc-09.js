@@ -1,4 +1,4 @@
-class WebComponent07 extends HTMLElement {
+class WebComponent09 extends HTMLElement {
 
   constructor() {
 
@@ -76,6 +76,22 @@ class WebComponent07 extends HTMLElement {
 
     this.attachShadow({mode: 'open'}).innerHTML = fontAwesomeStyle + styleStr + htmlStr
   }
+
+  static get observedAttributes() {
+    return ['icon']
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+
+    const shadowRoot = this.shadowRoot;
+
+    if (name === 'icon'){
+
+      const i = shadowRoot.querySelector('i');
+      i.className = newValue;
+    }
+
+  }
 }
 
-window.customElements.define('wc-07', WebComponent07);
+window.customElements.define('wc-09', WebComponent09);
