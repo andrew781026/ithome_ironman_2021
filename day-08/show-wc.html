@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>顯示自訂的 WC 元件</title>
+  <style>
+    body {
+      display: flex;
+      gap: 40px;
+      margin: 50px;
+      flex-wrap: wrap;
+      background-color: #ebf5fc;
+    }
+  </style>
+
+</head>
+<body>
+<button class="btn" onclick='showModal()'>
+  開啟 Modal
+</button>
+<my-modal @confirm="() => console.log('確定送出 !')">
+  <h2 slot="modal-title">
+    表頭寫入
+  </h2>
+  <h2 slot="modal-body">
+    這是內文...這是內文...這是內文...這是內文...
+  </h2>
+</my-modal>
+
+<script src="./modal-wc.js"></script>
+<script>
+  function showModal() {
+    document.querySelector('my-modal')._open()
+  }
+</script>
+</body>
+</html>
