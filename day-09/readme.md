@@ -4,237 +4,151 @@
 
 那我們可以使用 `is` 這個屬性來處理
 
+下面我們來將 `<a>` 這個 HTML Tag 追加一個詢問是否離開頁面的 popup 吧 !
 
-網頁元件中 , 常會使用 Modal 這種類型的元件
-
-![](https://i.imgur.com/DUd4ZuT.png)
-
-如果我們將其製作成一個 `<Modal>` 的 WebComponent , 之後在使用時 , 應該會輕鬆不少吧 !
-
-下面我們來製作 `<Modal>` 吧 !
+![](https://i.imgur.com/eHu90De.gif)
 
 ------
 
-## 前期準備
-
-![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 我們先到 [CodePen 下載今天的 Modal 範本](https://codepen.io/andrew781026/pen/jOmKgzg)
-
-- [Modal 範例](https://codepen.io/andrew781026/pen/jOmKgzg) > ![](https://i.imgur.com/JMtYrkx.png) > export .zip
-
-![](https://i.imgur.com/z7UpgrE.png)
-
-![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 解壓縮後 , 觀察 html 中的 pop-up-container 結構
-
-我們可以發現 `Modal` 的大致結構如下
-
-```html
-<div class="pop-up-container" style="display: none;">
-  <div class="pop-up-container-root">
-    <div class="pop-up-box">
-      <div class="pop-up-title">
-        <h3>Title</h3>
-        <close-icon/>
-      </div>
-      <div class="pop-up-content">
-      </div>
-      <div class="pop-up-action">
-        <button onclick='closeModal()'>取消</button>
-        <button onclick='closeModal()'>確定送出</button>
-      </div>
-    </div>
-  </div>
-</div>
-```
-
-| 區塊名稱 | 描述 |
-|---|---|
-| pop-up-container | Modal 的容器 , 黑底遮罩放在這 , 不會改變 |
-| pop-up-container-root | Modal 的捲動區塊 , 不會改變 |
-| pop-up-box | Modal 的內容放在其中 , 不會改變 |
-| pop-up-title | 標題區塊 , 可能會修改其內容 |
-| pop-up-content | 內文區塊 , 可能會修改其內容  |
-| pop-up-action | 按鈕區域 , 可能會修改其內容 |
-
-有 `pop-up-title` . `pop-up-content` . `pop-up-action` 這 3 個區塊需要塞入 html 內容
-
-在 [Day02](https://ithelp.ithome.com.tw/articles/10261965) 介紹 `wired-element` 時 , 我們了解到 slot 可以塞入 html 內容
-
-不過 , 需要區分 `pop-up-title` . `pop-up-content` . `pop-up-action` 3 個區塊的 slot 要如何製作呢 ?
-
-![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) Name Slot 的介紹
-
-我們可以在 `shadow-dom` 中設定 `<slot name="modal-body">` 在使用 `<Modal>` 時設定 `slot="modal-body"` , 
-
-```html
-<Modal>
-  <h2 slot="modal-body">
-    這是內文...這是內文...這是內文...這是內文...
-  </h2>
-</Modal>
-``` 
-
 ## 實作開始
 
-![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 建立 customElements - `my-modal`
+![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 找出對應的 HTML Class 名稱
 
-```js
-class Modal extends HTMLElement {
+由於我們是要延伸基礎的 HTML 元素 , 因此需要 extend 的對象不是 HTMLElement , 而是 Tag 對應的那個 HTML Class
 
-}
+以今天要用的 `<a>` 為例 , `class MyComp extends HTMLAnchorElement`
 
-window.customElements.define('my-modal', Modal);
+| Tag Name | Class Name |
+|---|---|
+| `<a>` | HTMLAnchorElement |
+| `<progress>` | HTMLProgressElement |
+| `<video>` | HTMLVideoElement |
+
+上述對應表在 [MDN 文件 - interfaces](https://developer.mozilla.org/en-US/docs/Web/API#interfaces) 有表列 , 請 `邦友` 們可自行參考
+
+
+![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 在 defined 元件時 , 需要補上 extend 的對象
+
+```javascript
+window.customElements.define('wavy-link', WavyLink, {extends: 'a'});
 ```
 
-![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 開啟 `shadow-dom` & 將 html 結構複製到 class 中
+![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 參考昨天的 Modal 設定 , 將其加到 wavy-link 上面
 
-```js
-class Modal extends HTMLElement {
+```javascript
+window.addEventListener('DOMContentLoaded', (event) => {
+
+  /*
+ 'beforebegin': 在 element 之前。
+ 'afterbegin': 在 element 裡面，第一個子元素之前。
+ 'beforeend': 在 element 裡面，最後一個子元素之後。
+ 'afterend': 在 element 之後。
+  */
+
+  const head = document.querySelector('head')
+
+  head.insertAdjacentHTML('beforeend', `<link rel="stylesheet" href="./modal.css">`);
+  head.insertAdjacentHTML('beforeend', `
+        <style>
+         .wave-link{
+            display: inline-block;
+            position:relative;
+            background: url(http://i.imgur.com/HlfA2is.gif) bottom repeat-x;
+         }
+       </style>
+    `);
+
+});
+
+function createElementFromHTML(htmlString) {
+  var div = document.createElement('div');
+  div.innerHTML = htmlString.trim();
+
+  // Change this to div.childNodes to support multiple top-level nodes
+  return div.firstChild;
+}
+
+class WavyLink extends HTMLAnchorElement {
 
   connectedCallback() {
 
-    const styleStr = `<link rel="stylesheet" href="./modal.css">`
+    this.classList.add('wave-link')
+
+    this.addEventListener('click', event => {
+
+      event.preventDefault() // 停止 <a> 的預設行為 "跳轉頁面" 
+      this._open()
+    })
+
+  }
+
+  _open() {
+
+    // append popupbox to body
+
+    const href = this.getAttribute('href')
 
     const htmlStr = `
-        <div class="pop-up-container" style="display: none;">
+        <div class="pop-up-container">
           <div class="pop-up-container-root">
             <div class="pop-up-box">
               <div class="pop-up-title flex justifyContent">
-               <h3>這是 Modal 的 Title</h3>
-                <img class='close' src="./close.png" />
+                <h3 class="mr-30">您要離開此頁嗎 ?</h3>
+                <img class='close' src="./close.svg" />
               </div>
               <div class="pop-up-content">
-                這是 Modal 的 Body
+                你將會前往 <span class="wave-link url">${href}</span>
               </div>
               <div class="pop-up-action flex justifyContent">
+               <slot name="modal-action">
                   <button class='close'>取消</button>
-                  <button class='confirm'>確定送出</button>
+                  <button class='confirm'>確定</button>
+                </slot>
               </div>
             </div>
           </div>
         </div>
     `
 
-    this.attachShadow({mode: 'open'}).innerHTML = styleStr + htmlStr
-  }
+    const popupEl = createElementFromHTML(htmlStr)
+    popupEl.querySelector('.pop-up-action .close').addEventListener('click', () => this._close())
+    popupEl.querySelector('.pop-up-title .close').addEventListener('click', () => this._close())
+    popupEl.querySelector('.pop-up-action .confirm').addEventListener('click', () => this._confirm())
+    this._popupEl = popupEl
 
-}
-
-window.customElements.define('my-modal', Modal);
-```
-
-![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 將 Name Slot 設定到 html 中
-
-- 將右側的 3 區塊 `pop-up-title` . `pop-up-content` . `pop-up-action` 設定對應的 slot
-
-| 區塊名稱 | Slot 名稱 |
-|---|---|
-| pop-up-title | modal-title |
-| pop-up-content | modal-body |
-| pop-up-action | modal-action |
-
-```html
-<div class="pop-up-box">
-  <div class="pop-up-title flex justifyContent">
-+   <slot name="modal-title"><h3>這是 Modal 的 Title</h3></slot>
-    <img class='close' src="" />
-  </div>
-  <div class="pop-up-content">
-+    <slot name="modal-body">這是 Modal 的 Body</slot>
-  </div>
-  <div class="pop-up-action flex justifyContent">
-+    <slot name="modal-action">
-       <button class='close'>取消</button>
-       <button class='confirm'>確定送出</button>
-+    </slot>
-  </div>
-</div>
-```
-
-![four](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/four.png) 設定 Modal 的 open . close 事件
-
-```javascript
-class Modal extends HTMLElement {
-
-  connectedCallback() {
-
-    this.attachShadow({mode: 'open'}).innerHTML = styleStr + htmlStr
-
-    this.shadowRoot.querySelector('.close:nth-child(1)').addEventListener('click', () => this._close())
-    this.shadowRoot.querySelector('.close:nth-child(2)').addEventListener('click', () => this._close())
-    this.shadowRoot.querySelector('.confirm').addEventListener('click', () => this._confirm())
-  }
-
-  _open() {
-
-    const shadowRoot = this.shadowRoot;
-    const modalWrap = shadowRoot.querySelector('.pop-up-container');
-    const popup = modalWrap.querySelector('.pop-up-box');
-
-    modalWrap.style.display = 'flex';
-    popup.style.transform = 'scale(0)';
-
-    setTimeout(() => popup.style.transform = 'scale(1)', 0)
+    document.querySelector('body').appendChild(popupEl);
   }
 
   _close() {
 
-    const shadowRoot = this.shadowRoot;
-    const modalWrap = shadowRoot.querySelector('.pop-up-container');
-    const popup = modalWrap.querySelector('.pop-up-box');
-
+    const popup = this._popupEl.querySelector('.pop-up-container .pop-up-box');
     popup.style.transform = 'scale(0)';
 
-    setTimeout(() => modalWrap.style.display = 'none', 300)
+    setTimeout(() => this._popupEl.remove(), 300)
   }
-  
+
+  _confirm() {
+
+    this._close()
+    setTimeout(() => location.href = this.getAttribute('href'), 400)
+  }
 }
 
-window.customElements.define('my-modal', Modal);
-
-```
-
-![five](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/five.png) 在頁面中使用 `my-modal`
-
-```html
-<body>
-<my-modal @confirm="() => console.log('確定送出 !')">
-  <h2 slot="modal-title">
-    表頭寫入
-  </h2>
-  <h2 slot="modal-body">
-    這是內文...這是內文...這是內文...這是內文...
-  </h2>
-</my-modal>
-
-<script src="./modal-wc.js"></script>
-</body>
-</html>
-```
-
-![six](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/six.png) 建立按鈕來開啟今天製作的 Modal
-
-```html
-<button onclick='showModal()'>
-  開啟 Modal
-</button>
-<script>
-  function showModal() {
-    document.querySelector('my-modal')._open()
-  }
-</script>
+window.customElements.define('wavy-link', WavyLink, {extends: 'a'});
 ```
 
 完成 !!
 
 ## 成果
 
-![](https://i.imgur.com/bsrYtQX.gif)
+![](https://i.imgur.com/eHu90De.gif)
 
 
-如果想直接體驗成果 , 請到 [web-component-modal.html](https://andrew781026.github.io/ithome_ironman_2021/day-08/show-wc.html) 查看
+如果想直接體驗成果 , 請到 [web-component-modal.html](https://andrew781026.github.io/ithome_ironman_2021/day-09/show-wc.html) 查看
 
 
 ## 參考資料 :
 
 - [Udemy 課程 - Web Components & Stencil.js - Build Custom HTML Elements](https://www.udemy.com/course/web-components-stenciljs-build-custom-html-elements/)
-- [webcomponents 官方網站 - Using templates and slots](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_templates_and_slots)
+- [MDN 文件 - interfaces](https://developer.mozilla.org/en-US/docs/Web/API#interfaces)
+- [MDN 文件 - Element.insertAdjacentHTML()](https://developer.mozilla.org/zh-TW/docs/Web/API/Element/insertAdjacentHTML)

@@ -74,6 +74,7 @@ class WavyLink extends HTMLAnchorElement {
 
     const popupEl = createElementFromHTML(htmlStr)
     popupEl.querySelector('.pop-up-action .close').addEventListener('click', () => this._close())
+    popupEl.querySelector('.pop-up-title .close').addEventListener('click', () => this._close())
     popupEl.querySelector('.pop-up-action .confirm').addEventListener('click', () => this._confirm())
     this._popupEl = popupEl
 
