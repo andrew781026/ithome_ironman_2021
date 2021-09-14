@@ -1,5 +1,8 @@
 # [Day09] - 未知網址的彈跳視窗 - :is 設定
 
+> 早上查看文章時 , 發現貼到昨天的資料 ![/images/emoticon/emoticon04.gif](/images/emoticon/emoticon04.gif)
+> 本魯立馬作文章修改 , 如造成 `邦友` 的不便 , 請各位海涵 ![/images/emoticon/emoticon41.gif](/images/emoticon/emoticon41.gif)
+
 有時 客制化元件時 , 我們只是想在 HTML 基礎 Tag 上加一個小功能
 
 那我們可以使用 `is` 這個屬性來處理
@@ -14,20 +17,27 @@
 
 ![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 找出對應的 HTML Class 名稱
 
-由於我們是要延伸基礎的 HTML 元素 , 因此需要 extend 的對象不是 HTMLElement , 而是 Tag 對應的那個 HTML Class
+由於我們是要延伸基礎的 HTML 元素 , 因此需要 extend 的對象不是 HTMLElement , 而是 Tag 對應的那個 DOM interface
 
-以今天要用的 `<a>` 為例 , `class MyComp extends HTMLAnchorElement`
+我們可以到 [MDN 文件 去查出來](https://developer.mozilla.org/zh-TW/docs/Web/HTML/Element/a)
+
+以今天要用的 `<a>` 為例 , 對應的 DOM interface 是 `HTMLAnchorElement`
+
+![](https://i.imgur.com/PbAf6cL.png)
+
+
+下方表列一些常用的 Tag 跟其對應的 DOM interface
 
 | Tag Name | Class Name |
 |---|---|
 | `<a>` | HTMLAnchorElement |
-| `<progress>` | HTMLProgressElement |
-| `<video>` | HTMLVideoElement |
+| `<span>` | HTMLSpanElement |
+| `<div>` | HTMLDivElement |
+| `<ul>` | HTMLUListElement |
+| `<li>` | HTMLLIElement |
 
-上述對應表在 [MDN 文件 - interfaces](https://developer.mozilla.org/en-US/docs/Web/API#interfaces) 有表列 , 請 `邦友` 們可自行參考
 
-
-![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 在 defined 元件時 , 需要補上 extend 的對象
+![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 在 defined 元件時 , 補上要 extend 的 DOM interface
 
 ```javascript
 window.customElements.define('wavy-link', WavyLink, {extends: 'a'});
