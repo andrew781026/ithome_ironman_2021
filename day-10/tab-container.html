@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>Tab 結構顯示</title>
+  <style>
+    body {
+      display: flex;
+      gap: 40px;
+      margin: 50px;
+      flex-wrap: wrap;
+      background-color: #ebf5fc;
+    }
+
+    .tab-container {
+
+      width: 1000px;
+      border: 1px solid #ccc;
+    }
+
+    .tab-container .tab-head {
+
+      color: #000;
+      background-color: #f1f1f1;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+    }
+
+    .tab-container .tab-head .item {
+
+      cursor: pointer;
+      font-size: 20px;
+      padding: 8px 16px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .tab-container .tab-head .item:hover {
+
+      background-color: #ccc;
+    }
+
+    .tab-container .tab-head .item.active {
+
+      color: #fff;
+      background-color: #616161;
+    }
+
+    .tab-container .tab-body {
+
+      padding: 8px;
+      background-color: #ffffff;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="tab-container">
+  <div class="w3-bar w3-black tab-head">
+    <div class="item" onclick="openCity('London')">London</div>
+    <div class="item" onclick="openCity('Paris')">Paris</div>
+    <div class="item" onclick="openCity('Tokyo')">Tokyo</div>
+  </div>
+  <div id="London" class="tab-body">
+    <h2>London</h2>
+    <p>London is the capital of England.</p>
+  </div>
+
+  <div id="Paris" class="tab-body" style="display:none">
+    <h2>Paris</h2>
+    <p>Paris is the capital of France.</p>
+  </div>
+
+  <div id="Tokyo" class="tab-body" style="display:none">
+    <h2>Tokyo</h2>
+    <p>Tokyo is the capital of Japan.</p>
+  </div>
+</div>
+
+
+<script>
+  function openCity(cityName) {
+    const cities = document.querySelectorAll(".tab-container .tab-body");
+    const item = document.querySelectorAll(".tab-container .tab-head .item");
+
+    cities.forEach(content =>  (content.id === cityName) ?  content.style.display = "block" :  content.style.display = "none")
+    item.forEach(item =>  (item.innerText === cityName) ?  item.classList.add('active') :  item.classList.remove('active'))
+  }
+</script>
+</body>
+</html>

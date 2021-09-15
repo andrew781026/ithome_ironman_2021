@@ -1,0 +1,124 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 所有使用 CustomElementRegistry.define() 的 Tag 都上色 */
+:defined {
+  border-left: 2px solid rebeccapurple;
+}
+
+/* component 的根 styling */
+:host {
+
+  width: 1000px;
+  border: 1px solid #ccc;
+}
+
+/* 單個 component 內的 styling */
+:host(.item) {
+  cursor: pointer;
+  font-size: 20px;
+  padding: 8px 16px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.tab-head {
+  color: #000;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+}
+
+.tab-head .item {
+  cursor: pointer;
+  font-size: 20px;
+  padding: 8px 16px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.tab-head .item:hover {
+
+  background-color: #ccc;
+}
+
+.tab-head .item.active {
+
+  color: #fff;
+  background-color: #616161;
+}
+
+/* component 內的 styling ( 包括子層 ) */
+:host-context(span) {
+  font-size: 12px;
+  color: #0df1f1;
+}
+
+/* component 內的 styling ( 包括子層 ) */
+::part {
+
+}
+
+/* 所有 slot 的 styling */
+::slotted {
+  border: 1px solid #ccc;
+}
+
+/* Selects any <span> placed inside a slot */
+::slotted(div) {
+  font-weight: bold;
+}
+
+.tab-container {
+
+  width: 1000px;
+  border: 1px solid #ccc;
+}
+
+.tab-container .tab-head {
+
+  color: #000;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+}
+
+.tab-container .tab-head .item {
+
+  cursor: pointer;
+  font-size: 20px;
+  padding: 8px 16px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.tab-container .tab-head .item:hover {
+
+  background-color: #ccc;
+}
+
+.tab-container .tab-head .item.active {
+
+  color: #fff;
+  background-color: #616161;
+}
+
+.tab-container .tab-body {
+
+  padding: 8px;
+  background-color: #ffffff;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

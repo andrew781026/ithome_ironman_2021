@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>顯示自訂的 WC 元件</title>
+  <style>
+    body {
+      display: flex;
+      gap: 40px;
+      margin: 50px;
+      flex-wrap: wrap;
+      background-color: #ebf5fc;
+    }
+  </style>
+
+</head>
+<body>
+
+<my-tab>
+  <div class="item">London</div>
+  <div class="item">Paris</div>
+  <div class="item">Tokyo</div>
+
+  <div slot="London" class="tab-body">
+    <h2>London</h2>
+    <p>London is the capital of England.</p>
+  </div>
+  <div slot="Paris" class="tab-body" style="display:none">
+    <h2>Paris</h2>
+    <p>Paris is the capital of France.</p>
+  </div>
+  <div slot="Tokyo" class="tab-body" style="display:none">
+    <h2>Tokyo</h2>
+    <p>Tokyo is the capital of Japan.</p>
+  </div>
+</my-tab>
+
+
+<script src="./tab.js"></script>
+</body>
+</html>
