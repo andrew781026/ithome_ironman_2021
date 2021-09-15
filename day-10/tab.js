@@ -35,7 +35,6 @@ class MyTab extends HTMLElement {
 
   _tabClick(e) {
 
-    console.log(e)
     const tabName = e.target.innerText;
     const shadowRoot = this.shadowRoot;
     const tabBodies = this.querySelectorAll(".tab-body");
