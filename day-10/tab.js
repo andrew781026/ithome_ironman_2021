@@ -12,7 +12,6 @@ class MyTab extends HTMLElement {
 
     const tabHeaders = [...this.querySelectorAll('.item')]
 
-
     const tabBodies = [...this.querySelectorAll('[slot]')]
 
     const tabBodyStr = tabBodies
@@ -22,7 +21,7 @@ class MyTab extends HTMLElement {
     const styleStr = `<link rel="stylesheet" href="./tab.css">`
 
     const htmlStr = `
-        <div class="tab-head">
+        <div class="tab-head" part="tab-head">
           ${tabHeaders.map(head => head.outerHTML).join('')}
         </div>
         ${tabBodyStr}
@@ -39,10 +38,10 @@ class MyTab extends HTMLElement {
     console.log(e)
     const tabName = e.target.innerText;
     const shadowRoot = this.shadowRoot;
-    const tabBodies = shadowRoot.querySelectorAll(".tab-body");
+    const tabBodies = this.querySelectorAll(".tab-body");
     const items = shadowRoot.querySelectorAll(".tab-head .item");
 
-    tabBodies.forEach(content => (content.id === tabName) ? content.style.display = "block" : content.style.display = "none")
+    tabBodies.forEach(content => (content.slot === tabName) ? content.style.display = "block" : content.style.display = "none")
     items.forEach(item => (item.innerText === tabName) ? item.classList.add('active') : item.classList.remove('active'))
   }
 
