@@ -32,6 +32,8 @@
 - [7 Tools for Building Web Components](https://blog.bitsrc.io/7-tools-for-developing-web-components-in-2019-1d5b7360654d)
 - [vue-custom-element - 包裝 Vue 元件 , 將其轉換成 custom-element](https://github.com/karol-f/vue-custom-element)
 - [css-doodle - 基於 Web Components 技術的元件](https://css-doodle.com/)
+- [Virtual DOM | 為了瞭解原理，那就來實作一個簡易 Virtual DOM 吧！](https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/build-a-simple-virtual-dom-5cf12ccf379f)
+
 
 ![vue-custom-element](https://github.com/karol-f/vue-custom-element/raw/master/demo/assets/images/vue-custom-element-schema.png)
 
