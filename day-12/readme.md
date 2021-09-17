@@ -1,5 +1,7 @@
 # [Day12] - refactor 元件 to render 
 
+// Tooltip -> 利用 Tooltip 來做出 tooltip 的東西 , 然後利用 render 來產出
+
 => 加上昨天的例子 , 我們建立下 render 的機制
 
 === 佔位
