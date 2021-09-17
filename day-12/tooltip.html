@@ -23,12 +23,13 @@
       position: absolute;
       top: 0;
       left: 0;
-      display: none;
+      opacity: 0;
       background-color: #ffffff;
       border-radius: 8px;
       padding: 16px;
       border: 2px solid #91d52b;
       min-width: 30px;
+      transition: opacity 0.4s;
     }
 
     /* CSS三角形產生器 : http://apps.eky.hk/css-triangle-generator/zh-hant */
@@ -60,6 +61,15 @@
 
       display: block;
     }
+
+    .tooltip-body.enter {
+      opacity: 1;
+    }
+
+    .tooltip-body.leave {
+      pointer-events: none;
+      opacity: 0;
+    }
   </style>
 
 </head>
@@ -76,7 +86,7 @@
   <div class="tooltip-btn">顯示 Tooltip</div>
   <div class="tooltip-btn">顯示 Tooltip</div>
   <template>
-    <div slot="tooltip" class="tooltip-body">
+    <div slot="tooltip" class="tooltip-body leave">
       <span>custom tooltip with &lt;my-tooltip&gt;</span>
       <button>客制</button>
     </div>
@@ -91,12 +101,8 @@
     const tooltipBody = document.querySelector('.tooltip-wrap > template')
     const body = document.querySelector('body')
 
-    const div = tooltipBody.content.cloneNode(true).querySelector('.tooltip-body')
+    const div = tooltipBody.content.cloneNode(true).children[0]
     body.append(div)
-
-    console.log(tooltipWrap.getBoundingClientRect())
-    console.log(div)
-
 
     // the position of div
     const rect = tooltipWrap.getBoundingClientRect()
@@ -104,14 +110,16 @@
     div.style.left = `${rect.left}px`
     div.style.top = `${rect.bottom + 15}px`
 
-    tooltipWrap.addEventListener('mouseenter', function () {
+    tooltipWrap.addEventListener('mouseenter', () => {
 
-      div.style.display = 'block'
+      div.classList.remove('leave')
+      div.classList.add('enter')
     })
 
-    tooltipWrap.addEventListener('mouseleave', function () {
+    tooltipWrap.addEventListener('mouseleave', () => {
 
-      div.style.display = 'none'
+      div.classList.remove('enter')
+      div.classList.add('leave')
     })
 
   }, false);

@@ -1,49 +1,84 @@
-function createElementFromHTML(htmlString) {
-  var div = document.createElement('div');
-  div.outerHTML = htmlString.trim();
+function listAllEventListeners() {
+  const allElements = Array.prototype.slice.call(document.querySelectorAll('*'));
+  allElements.push(document);
+  allElements.push(window);
 
-  // Change this to div.childNodes to support multiple top-level nodes
-  return div;
+  const types = [];
+
+  for (let ev in window) {
+    if (/^on/.test(ev)) types[types.length] = ev;
+  }
+
+  let elements = [];
+  for (let i = 0; i < allElements.length; i++) {
+    const currentElement = allElements[i];
+    for (let j = 0; j < types.length; j++) {
+      if (typeof currentElement[types[j]] === 'function') {
+        elements.push({
+          "node": currentElement,
+          "type": types[j],
+          "func": currentElement[types[j]].toString(),
+        });
+      }
+    }
+  }
+
+  return elements.sort(function (a, b) {
+    return a.type.localeCompare(b.type);
+  });
 }
 
-class MyTab extends HTMLElement {
+// 參考資料 : https://medium.com/@westbrook/your-content-in-shadow-dom-portals-b964578a2e74
+class TooltipBody extends HTMLElement {
 
   connectedCallback() {
 
-    const tabHeaders = [...this.querySelectorAll('.item')]
+    const styleStr = `<link rel="stylesheet" href="./tooltip.css">`
 
-    const tabBodies = [...this.querySelectorAll('[slot]')]
+    const htmlStr = `<slot name="tooltip"/>`
 
-    const tabBodyStr = tabBodies
-      .map(tabContent => `<slot name="${tabContent.getAttribute('slot')}" class="city tab-body"></slot>`)
-      .join('')
+    this.attachShadow({mode: 'open'}).innerHTML = styleStr + htmlStr;
+  }
+}
 
-    const styleStr = `<link rel="stylesheet" href="./tab.css">`
+class MyTooltip extends HTMLElement {
 
-    const htmlStr = `
-        <div class="tab-head" part="tab-head">
-          ${tabHeaders.map(head => head.outerHTML).join('')}
-        </div>
-        ${tabBodyStr}
-    `
+  _tooltipBodys = []
+
+  connectedCallback() {
+
+    const styleStr = `<link rel="stylesheet" href="./tooltip.css">`
+
+    const htmlStr = `<slot></slot>`
 
     this.attachShadow({mode: 'open'}).innerHTML = styleStr + htmlStr;
 
-    const items = this.shadowRoot.querySelectorAll('.item');
-    [...items].map(item => item.addEventListener('click', e => this._tabClick(e)))
+    this.addEventListener('mouseenter', e => this._open(e))
+    this.addEventListener('mouseleave', e => this._close(e))
+    this._open()
   }
 
-  _tabClick(e) {
+  _open(e) {
 
-    const tabName = e.target.innerText;
-    const shadowRoot = this.shadowRoot;
-    const tabBodies = this.querySelectorAll(".tab-body");
-    const items = shadowRoot.querySelectorAll(".tab-head .item");
+    const body = document.body
+    // let template = document.getElementById('my-paragraph');
+    // let templateContent = template.content;
+    // document.body.appendChild(templateContent);
 
-    tabBodies.forEach(content => (content.slot === tabName) ? content.style.display = "block" : content.style.display = "none")
-    items.forEach(item => (item.innerText === tabName) ? item.classList.add('active') : item.classList.remove('active'))
+    // slot = 'tooltip'
+
+    const tooltipBody = document.createElement('tooltip-body')
+    tooltipBody.innerHTML = this.querySelector('[slot="tooltip"]').outerHTML
+
+    this._tooltipBodys.push(tooltipBody)
+    body.append(tooltipBody)
   }
 
+  _close(e) {
+
+    this._tooltipBodys.pop().remove()
+  }
 }
 
-window.customElements.define('my-tab', MyTab);
+window.customElements.define('my-tooltip', MyTooltip);
+window.customElements.define('tooltip-body', TooltipBody);
