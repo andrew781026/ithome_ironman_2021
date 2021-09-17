@@ -5,6 +5,7 @@
   <title>顯示自訂的 WC 元件</title>
   <style>
     body {
+      min-height: calc(100vh - 100px);
       display: flex;
       gap: 40px;
       margin: 50px;
@@ -18,19 +19,20 @@
       position: relative;
     }
 
-    .tooltip-wrap .tooltip-body {
+    .tooltip-body {
       position: absolute;
-      top: calc(100% + 15px);
-      left: 20px;
-      /*display: none;*/
+      top: 0;
+      left: 0;
+      display: none;
       background-color: #ffffff;
       border-radius: 8px;
       padding: 16px;
       border: 2px solid #91d52b;
+      min-width: 30px;
     }
 
     /* CSS三角形產生器 : http://apps.eky.hk/css-triangle-generator/zh-hant */
-    .tooltip-wrap .tooltip-body::before {
+    .tooltip-body::before {
       top: -15px;
       left: 25px;
       content: '';
@@ -42,7 +44,7 @@
       border-color: transparent transparent #91d52b transparent;
     }
 
-    .tooltip-wrap .tooltip-body::after {
+    .tooltip-body::after {
       top: -12px;
       left: 25px;
       content: '';
@@ -73,12 +75,47 @@
   <div class="tooltip-btn">顯示 Tooltip</div>
   <div class="tooltip-btn">顯示 Tooltip</div>
   <div class="tooltip-btn">顯示 Tooltip</div>
-  <div slot="tooltip" class="tooltip-body">
-    <span>custom tooltip with &lt;my-tooltip&gt;</span>
-    <button>客制</button>
-  </div>
+  <template>
+    <div slot="tooltip" class="tooltip-body">
+      <span>custom tooltip with &lt;my-tooltip&gt;</span>
+      <button>客制</button>
+    </div>
+  </template>
 </div>
 
-<script src="./tooltip.js"></script>
+<script>
+
+  document.addEventListener('DOMContentLoaded', function () {
+
+    const tooltipWrap = document.querySelector('.tooltip-wrap')
+    const tooltipBody = document.querySelector('.tooltip-wrap > template')
+    const body = document.querySelector('body')
+
+    const div = tooltipBody.content.cloneNode(true).querySelector('.tooltip-body')
+    body.append(div)
+
+    console.log(tooltipWrap.getBoundingClientRect())
+    console.log(div)
+
+
+    // the position of div
+    const rect = tooltipWrap.getBoundingClientRect()
+
+    div.style.left = `${rect.left}px`
+    div.style.top = `${rect.bottom + 15}px`
+
+    tooltipWrap.addEventListener('mouseenter', function () {
+
+      div.style.display = 'block'
+    })
+
+    tooltipWrap.addEventListener('mouseleave', function () {
+
+      div.style.display = 'none'
+    })
+
+  }, false);
+
+</script>
 </body>
 </html>
