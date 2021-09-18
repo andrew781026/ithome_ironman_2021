@@ -1,31 +1,18 @@
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-:host{
-  background-color: #73e308;
-}
-
-.tooltip-wrap {
-  align-self: flex-start;
-  position: relative;
-}
-
-.tooltip-body {
+:host(tooltip-body){
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 20px;
+  left: 20px;
   opacity: 0;
   background-color: #ffffff;
   border-radius: 8px;
   padding: 16px;
   border: 2px solid #91d52b;
   min-width: 30px;
-  transition: opacity 0.4s;
+  transition: opacity 1s;
 }
 
 /* CSS三角形產生器 : http://apps.eky.hk/css-triangle-generator/zh-hant */
-.tooltip-body::before {
+:host::before {
   top: -15px;
   left: 25px;
   content: '';
@@ -37,7 +24,7 @@
   border-color: transparent transparent #91d52b transparent;
 }
 
-.tooltip-body::after {
+:host::after {
   top: -12px;
   left: 25px;
   content: '';
@@ -49,16 +36,11 @@
   border-color: transparent transparent #ffffff transparent;
 }
 
-.tooltip-wrap:hover .tooltip-body {
-
-  display: block;
-}
-
-.tooltip-body.enter {
+:host(.enter) {
   opacity: 1;
 }
 
-.tooltip-body.leave {
+:host(.leave) {
   pointer-events: none;
   opacity: 0;
 }

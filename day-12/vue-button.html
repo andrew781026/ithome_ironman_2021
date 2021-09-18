@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue Button</title>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/http-vue-loader"></script>
+</head>
+<body>
+<div id="my-app">
+  <my-button></my-button>
+</div>
+
+<script type="text/javascript">
+  new Vue({
+    el: '#my-app',
+    components: {
+      'my-button': httpVueLoader('my-button.vue')
+    }
+  });
+</script>
+</body>
+</html>

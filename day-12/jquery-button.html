@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>JQuery Button</title>
+  <style>
+    body {
+      margin: 100px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<button></button>
+
+<script>
+
+  let cost = 0, left = 500
+
+  function login() {
+
+    $('.btn').prop('disabled', false)
+  }
+
+  function logout() {
+
+    $('.btn').prop('disabled', true)
+  }
+
+  function costChange() {
+
+    if (cost > left) $('.btn').css({backgroundColor: 'gary'}).prop('disabled', true)
+    else if (cost === left) $('.btn').css({backgroundColor: 'orange'}).prop('disabled', false)
+    else $('.btn').css({backgroundColor: 'green'}).prop('disabled', false)
+  }
+
+  function addCost(amount) {
+    cost += amount
+    costChange()
+  }
+
+  function minusCost(amount) {
+    cost -= amount
+    costChange()
+  }
+</script>
+</body>
+</html>

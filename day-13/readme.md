@@ -1,4 +1,4 @@
-# [Day12] - refactor 元件 to render 
+# [Day12] - eval to Function 
 
 // day 13 改造一下 eval => 讓其可以 $event 當作 event 參數
 

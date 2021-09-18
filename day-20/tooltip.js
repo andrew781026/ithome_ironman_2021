@@ -31,52 +31,92 @@ function listAllEventListeners() {
 // 參考資料 : https://medium.com/@westbrook/your-content-in-shadow-dom-portals-b964578a2e74
 class TooltipBody extends HTMLElement {
 
+  data = new Proxy({}, {
+
+    get: (target, property) => target[property],
+    set: (target, property, value) => {
+      target[property] = value;
+      this._render()
+      return true
+    },
+  })
+
   connectedCallback() {
 
-    const styleStr = `<link rel="stylesheet" href="./tooltip.css">`
-
-    const htmlStr = `<slot name="tooltip"/>`
-
-    this.attachShadow({mode: 'open'}).innerHTML = styleStr + htmlStr;
+    this.attachShadow({mode: 'open'})
+    this.data.open = this.getAttribute('open')
   }
+
+  static get observedAttributes() {
+    return ['open']
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+
+    this.data[name] = newValue
+  }
+
+  _render() {
+
+    const styleStr = `<link rel="stylesheet" href="./tooltip-body.css">`
+    const htmlStr = `<slot name="tooltip"/>`
+    if (this.shadowRoot) this.shadowRoot.innerHTML = styleStr + htmlStr;
+
+    this.className = `${this.data.open ? 'enter' : 'leave'}`
+  }
+
 }
 
 class MyTooltip extends HTMLElement {
 
-  _tooltipBodys = []
-
   connectedCallback() {
 
-    const styleStr = `<link rel="stylesheet" href="./tooltip.css">`
+    const styles = `
+      <style>
+      :host{
+        align-self: flex-start;
+      }
+      </style>
+    `;
 
     const htmlStr = `<slot></slot>`
 
-    this.attachShadow({mode: 'open'}).innerHTML = styleStr + htmlStr;
+    this.attachShadow({mode: 'open'}).innerHTML = styles + htmlStr;
 
     this.addEventListener('mouseenter', e => this._open(e))
     this.addEventListener('mouseleave', e => this._close(e))
-    this._open()
+
+    const body = document.body
+    const tooltipBody = document.createElement('tooltip-body')
+    this.tooltipBody = tooltipBody
+    tooltipBody.innerHTML = this.querySelector('[slot="tooltip"]').outerHTML
+
+    const rect = this.getBoundingClientRect()
+
+    tooltipBody.style.left = `${rect.left}px`
+    tooltipBody.style.top = `${rect.bottom + 15}px`
+
+    body.append(tooltipBody)
+
+    /*
+    // slot change 往這丟
+    let slots = this.shadowRoot.querySelectorAll('slot');
+    slots[1].addEventListener('slotchange', function (e) {
+      let nodes = slots[1].assignedNodes();
+      console.log('Element in Slot "' + slots[1].name + '" changed to "' + nodes[0].outerHTML + '".');
+    });
+
+     */
   }
 
   _open(e) {
 
-    const body = document.body
-    // let template = document.getElementById('my-paragraph');
-    // let templateContent = template.content;
-    // document.body.appendChild(templateContent);
-
-    // slot = 'tooltip'
-
-    const tooltipBody = document.createElement('tooltip-body')
-    tooltipBody.innerHTML = this.querySelector('[slot="tooltip"]').outerHTML
-
-    this._tooltipBodys.push(tooltipBody)
-    body.append(tooltipBody)
+    this.tooltipBody.setAttribute('open', 'true')
   }
 
   _close(e) {
 
-    this._tooltipBodys.pop().remove()
+    this.tooltipBody.removeAttribute('open')
   }
 }
 
