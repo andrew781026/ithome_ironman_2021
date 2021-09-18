@@ -38,7 +38,7 @@ function minusCost(amount) {
 
 可是當客戶在調整購買項目 (多買一個法帳 . 少買一個套裝) 後 , 就會發現按鈕不能點 sad icon
 
-> 按鈕無法點 img
+![](https://i.imgur.com/MyW8oNV.gif)
 
 這時我們才想到 , 客戶買超過後 , 再將東西扣回來 , 我們需要將那個 disabled 給拿掉
 
@@ -54,7 +54,7 @@ function costChange(cost , left) {
 }
 ```
 
-> 正常 img
+![](https://i.imgur.com/sTrRtOx.gif)
 
 沒有登入 , 就可以消費點數 , 變成隨便人都可以花你的剩餘點數 , 補上個登入狀態吧
 
@@ -84,6 +84,7 @@ function login(cost , left) {
 
  if ( cost > left )  $('.btn').prop('disabled',true)
  else  $('.btn').prop('disabled',false)
+ costChange()
 }
 ```
 
