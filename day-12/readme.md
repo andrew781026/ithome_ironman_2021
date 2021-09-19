@@ -1,4 +1,4 @@
-# [Day12] - Tooltip 元件 - 追加 render 函式
+# [Day12] - 利用 Button 範例 - 解說 render 函式
 
 在 React 跟 Vue 中我們可以較為輕鬆的利用資料 來做 render 對應的話畫面生出來
 
@@ -34,9 +34,9 @@ function minusCost(amount) {
 }
 ```
 
-初看 Code 時 , 會覺得蠻正常的 , 將文字描述都轉換成 Jquery Code ,
+初看 Code 時 , 會覺得蠻正常的 , 就是直接將文字描述都轉換成 Jquery Code ,
 
-可是當客戶在調整購買項目 (多買一個法帳 . 少買一個套裝) 後 , 就會發現按鈕不能點 sad icon
+可是當客戶在調整購買項目 (多買一個法帳 . 少買一個套裝) 後 , 就會發現按鈕不能點 , 無法購買 ![emoticon23.gif](https://ithelp.ithome.com.tw/images/emoticon/emoticon23.gif)
 
 ![](https://i.imgur.com/MyW8oNV.gif)
 
@@ -56,7 +56,11 @@ function costChange(cost , left) {
 
 ![](https://i.imgur.com/sTrRtOx.gif)
 
-沒有登入 , 就可以消費點數 , 變成隨便人都可以花你的剩餘點數 , 補上個登入狀態吧
+當我們以為天下太平時 , 客戶投訴了 < 為何我家小孩可以用我的點數買東西 ![emoticon23.gif](https://ithelp.ithome.com.tw/images/emoticon/emoticon23.gif) >
+
+阿 ! 當初忘了加上登入機制 ![emoticon16.gif](https://ithelp.ithome.com.tw/images/emoticon/emoticon16.gif) ,
+變成同一台電腦的使用者 , 就可以消費點數 , 讓隨便人都可以花使用者的剩餘點數 , ![emoticon20.gif](https://ithelp.ithome.com.tw/images/emoticon/emoticon20.gif)
+我們補上個登入狀態吧 ![/images/emoticon/emoticon13.gif](https://ithelp.ithome.com.tw/images/emoticon/emoticon13.gif)
 
 ```javascript
 // .btn = 按鈕 
@@ -71,10 +75,10 @@ function logout() {
 }
 ```
 
-登出後 , 不能買東西 , 運作正常 `hapy icon` ,
-可是先將要買的東西塞滿 , 再登入 , 奇怪 `wired icon` 可以買東西 `偷笑 icon` 我們利用這個 BUG 將東西買好買滿吧 `讚 icon`
+登出後 , 不能買東西 , 運作正常 ![/images/emoticon/emoticon07.gif](https://ithelp.ithome.com.tw/images/emoticon/emoticon07.gif) ,
+可是先將要買的東西塞滿 , 再登入 , 奇怪 ![/images/emoticon/emoticon19.gif](https://ithelp.ithome.com.tw/images/emoticon/emoticon19.gif) 可以買東西 ![/images/emoticon/emoticon39.gif](https://ithelp.ithome.com.tw/images/emoticon/emoticon39.gif) 我們利用這個 BUG 將東西買好買滿吧 ![/images/emoticon/emoticon34.gif](https://ithelp.ithome.com.tw/images/emoticon/emoticon34.gif)
 
-> 可以買東西 img
+![可以買東西](https://i.imgur.com/7i4I05C.gif)
 
 然後 , 我們需要在登入時 , 多傳入與判斷 `花費點數 & 儲值點數` 這種與登入登出無關的參數
 
