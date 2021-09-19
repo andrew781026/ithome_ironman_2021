@@ -31,6 +31,8 @@ class MyButton extends HTMLElement {
     </style>
   `
 
+  listFn = () => Object.getOwnPropertyNames(this)
+
   connectedCallback() {
 
     this.attachShadow({mode: 'open'}).innerHTML = this.styles + `<div></div>`;
@@ -47,28 +49,43 @@ class MyButton extends HTMLElement {
   }
 
   // the :params resolve
-  vBind() {
+  vOn() {
 
-    let el = `<button @click="minusCost(100)" :disabled="cost === 0">減買法帳( 100 點 )</button>`
-    const attrs = el.attributes
-      .filter(attr => attr.name.startsWith(':'))
-      .reduce((pre, curr) => {
+    // 特殊字元 ( @ : ) 在 querySelector 的處理 - https://stackoverflow.com/questions/45110893/select-elements-by-attributes-with-colon
+    const onClickEls = this.shadowRoot.querySelectorAll('button[\\@click]')
 
-        return {
-          ...pre,
-          [curr.name]: curr.value
-        }
+    onClickEls.forEach(el => {
 
-      }, {});
-    const temp = (el, attr, data) => {
+      const onclickStr = el.getAttribute('@click')
 
-      const f = new Function(...Object.keys(data), `return ${attrs[attr]}`)
-      const attrVal = f(...Object.values(data))
-      el.setAttribute(attr, attrVal)
-      return attrVal
-    };
-    temp(el, attr, this.data)
+      if (onclickStr.indexOf('(') > -1) {
 
+        const fn = this[onclickStr.split('(')[0]]
+
+        // 取得 () 中的參數設定
+
+        const paramStrs = onclickStr.split('(')[1].replace(')', '').split(',')
+        const param = paramStrs.map(param => {
+
+          const numberReg = /^[\+\-]?\d*\.?\d+(?:[Ee][\+\-]?\d+)?$/
+
+          if (param === 'true') return true
+          else if (param === 'false') return false
+          else if (param === 'false') return false
+          else if (numberReg.test(param)) return parseFloat(param)
+          else if (this.data[param]) return this.data[param]
+          else return param
+        })
+
+        el.addEventListener('click', e => fn.call(this, ...param))
+
+      } else {
+
+        const fn = this[onclickStr]
+        el.addEventListener('click', e => fn.call(this, e))
+      }
+
+    })
   }
 
   login() {
@@ -113,13 +130,13 @@ class MyButton extends HTMLElement {
 
   _render() {
 
+    console.log('this.data=', this.data)
     const rootDiv = this.shadowRoot.querySelector('div')
 
-    rootDiv.outerHTML = `
-      <div>
+    rootDiv.innerHTML = `
         <h2>目前有 <span class="left">${this.data.left}</span> 點數</h2>
         <h2>預計花費 <span class="cost">${this.data.cost}</span> 點數</h2>
-        <button class="btn" style="{backgroundColor: ${this.bgColor()}" disabled="${this.disabled()}" @click="buy">
+        <button class="btn" style="background-color: ${this.bgColor()};" disabled="${this.disabled()}" @click="buy">
           購買
         </button>
         <h2></h2>
@@ -127,9 +144,10 @@ class MyButton extends HTMLElement {
         <button @click="logout">登出</button>
         <h2></h2>
         <button @click="addCost(100)">加買法帳( 100 點 )</button>
-        <button @click="minusCost(100)" disabled="${this.data.cost === 0}">減買法帳( 100 點 )</button>
-      </div>
+        <button @click="minusCost(100)" ${this.data.cost === 0 ? 'disabled':'' }>減買法帳( 100 點 )</button>
     `
+
+    this.vOn()
   }
 
 }

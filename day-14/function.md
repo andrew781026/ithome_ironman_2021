@@ -1,14 +1,6 @@
-# [Day13] - 利用 Button 範例 - 解說 render 函式
+# [Day12] - eval to Function 
 
-昨天我們解說了 , Jquery 跟 Vue 兩種處理 Dom 的模式
-
-在文末 , 提到了 Web Component 中沒有 Vue 可用 , 
-
-不過我們可以建立 _render 函式 , 來達到資料的單向綁定
-
-----
-
-
+// day 13 改造一下 eval => 讓其可以 $event 當作 event 參數
 
 | 參數 | 說明 |
 |---|---|
