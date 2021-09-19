@@ -1,41 +1,25 @@
-### 製作 Web Component 可用的相關套件
+# 利用 Vue CLI 3 來建立 Web Components 的 JS 檔
 
-- [Stencil JS](https://blog.techbridge.cc/2020/03/30/stencil-claps-web-component/) - 專門製作 Web Component 的 JS 工具
-- [7 Tools for Building Web Components](https://blog.bitsrc.io/7-tools-for-developing-web-components-in-2019-1d5b7360654d)
-
-### 7 個套件大 PK
-
-1. [Stencil JS](https://stenciljs.com/docs/introduction)
-
-由 ionic 團隊製作的套件 , 利用 @ 設定參數
-
-```jsx
-import { Component } from '@stencil/core';
-
-@Component({
-  tag: 'todo-list',
-  styleUrl: 'todo-list.css'
-})
-export class TodoList {
-   render() {
-     return (
-       <div>
-         {this.todos.map((todo) =>
-           <div>
-             <div>{todo.taskName}</div>
-             <div>{todo.isCompleted}</div>
-           </div>
-         )}
-       </div>
-     )
-   }
-}
+```shell script
+$ vue create vue-web-component-project
 ```
 
-2. [LitElement](https://lit-element.polymer-project.org/guide/templates)
+![利用Vue CLI 3 , 建立 Vue 2](https://i.imgur.com/LP6N8oW.png)
 
-由 ionic 團隊製作的套件 , 利用 @ 設定參數
+![建立專案中...](https://i.imgur.com/mNuzsp9.png)
 
-### 9 個 Web-Component
 
-- [9 Web Components UI Libraries You Should Know in 2021](https://blog.bitsrc.io/9-web-component-ui-libraries-you-should-know-in-2019-9d4476c3f103)
+
+```shell
+$ vue-cli-service build --target wc --name my-custom-element ./src/main.js
+```
+
+解說一下上方的一些參數
+
+- --target : wc 代表建立 Web-Component
+- --name : Web-Component 的名稱 ( tag-name )
+- ./src/main.js : compile 的來源檔案
+
+## 參考資料 
+
+- [Create & Publish Web Components With Vue CLI 3](https://vuejsdevelopers.com/2018/05/21/vue-js-web-component/)
