@@ -21,7 +21,7 @@ $ npm start
 
 ![create react app](https://miro.medium.com/max/700/1*BarMohttHm6rUB4NiiTsVg.gif)
 
-![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 利用 `npm run build` 建立 Web Component
+![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 建立一個 React Component 
 
 
 ```jsx
@@ -70,8 +70,21 @@ App.propTypes = {
 export default App;
 ```
 
+![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 利用 `DireflowComponent.create` 來設定要建立的 Web Component
 
-![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 利用 `npm run build` 建立 Web Component
+```javascript
+import { DireflowComponent } from 'direflow-component';
+import App from './App.jsx';
+
+export default DireflowComponent.create({
+  component: App,
+  configuration: {
+    tagname: 'film-countdown',
+  },
+});
+```
+
+![four](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/four.png) 利用 `npm run build` 建立 Web Component
 
 ```shell script
 $ npm run build
@@ -94,7 +107,7 @@ $ npm run build
 
 ## 成果
 
-![count-down](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-16/count-down.png)
+![count-down](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-16/count-down.gif)
 
 
 如果想直接體驗成果 , 請到 [react-web-component.html](https://andrew781026.github.io/ithome_ironman_2021/day-16/index.html) 查看
