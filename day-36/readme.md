@@ -8,3 +8,5 @@
 - [查看瀏覽器是否支援 <portal>](https://codedamn.github.io/html-portals/)
 - [MDN 文件 - interfaces](https://developer.mozilla.org/en-US/docs/Web/API#interfaces)
 - [MDN 文件 - Element.insertAdjacentHTML()](https://developer.mozilla.org/zh-TW/docs/Web/API/Element/insertAdjacentHTML)
+
+- [在不同專案中使用 Web Component](https://academind.com/tutorials/web-components-introduction)
