@@ -1,11 +1,13 @@
 class MyButton extends HTMLElement {
 
   data = new Proxy(
+    // 將預設設定到 target 中
     {
       cost: 0,
       left: 500,
       isLogin: false
     },
+    // handler set 資料後 , 執行 render 函式
     {
 
       get: (target, property) => target[property],
