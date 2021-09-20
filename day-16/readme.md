@@ -24,6 +24,52 @@ $ npm start
 ![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 利用 `npm run build` 建立 Web Component
 
 
+```jsx
+import React from 'react';
+import PropTypes from 'prop-types';
+import {Styled} from 'direflow-component';
+import styles from './App.css';
+
+class App extends React.Component {
+
+  state = {timer: 10}
+
+  constructor() {
+    super();
+
+    console.log(this.props)
+    this.state.timer = this.props?.timer || 10
+  }
+
+  componentDidMount() {
+
+    setInterval(() => this.setState({timer: this.state.timer - 1}), 1000)
+  }
+
+  render() {
+
+    return (
+      <Styled styles={styles}>
+        <div className="box">
+          <div className="circle circle1"></div>
+          <div className="circle circle2"></div>
+          <div className="number">{this.state?.timer}</div>
+          <div className="niddle"></div>
+        </div>
+      </Styled>
+    );
+  }
+}
+
+App.defaultProps = {timer: 10,}
+
+App.propTypes = {
+  timer: PropTypes.number,
+};
+
+export default App;
+```
+
 
 ![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 利用 `npm run build` 建立 Web Component
 
@@ -33,10 +79,28 @@ $ npm run build
 
 我們看到 build 資料夾中多了一個 `direflowBundle.js` 的檔案
 
-![]()
+![build-folder](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-16/build-folder.png)
 
+將建立出來的 `direflowBundle.js` 引入到 html 中 , 即可使用 `<film-countdown>` 這個 custom-tag
+
+```html
+<body style="margin: 0">
+
+<film-countdown timer="40"></film-countdown>
+
+<script src="./direflowBundle.js"></script>
+</body>
+```
+
+## 成果
+
+![count-down](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-16/count-down.png)
+
+
+如果想直接體驗成果 , 請到 [react-web-component.html](https://andrew781026.github.io/ithome_ironman_2021/day-16/index.html) 查看
 
 
 ## 參考資料 
 
 - [React and Web Components](https://itnext.io/react-and-web-components-3e0fca98a593)
+- [youtube - Film Countdown Timer](https://www.youtube.com/watch?v=Mo0WpdsGuXA&t=447s)
