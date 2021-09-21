@@ -1,21 +1,118 @@
-# [day01] - 歡迎來到 Web Component 的世界
+# [Day17] - 在 Vue 中引入現成的 Web Component
 
-貓咪 ?
+昨天解說 Vue 如何製作 Web-Component 今天來說明一下 , 
 
-去年寶哥在 Mordren WEB 中介紹過 Angular 版本之間不相容 , 可以用 Angular Web Component 去處理這個 issue
+那 React 如何製作 Web-Component 呢 ? 可以利用 [direflow.io](https://github.com/Silind-Software/direflow)
 
-Vue . React 也可以做出 Web Component 來處理 ,
+![](https://camo.githubusercontent.com/5c2cbc9bda1c32e225f6487093d5b923e67663d62d0892508439cb3580f18d44/68747470733a2f2f73696c696e642d73332e73332e65752d776573742d322e616d617a6f6e6177732e636f6d2f64697265666c6f772f64697265666c6f772d636f6d706f6e656e742d6e65772d626173652e706e67)
+
+----
+
+![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 利用 [direflow.io](https://github.com/Silind-Software/direflow) 的 `direflow create` 建立專案 
+
+> 參考 [direflow.io - 官方網站](https://direflow.io/get-started)
+
+```shell script
+$ npm i -g direflow-cli
+$ direflow create my-app
+$ cd my-app
+$ npm start
+```
+
+![create react app](https://miro.medium.com/max/700/1*BarMohttHm6rUB4NiiTsVg.gif)
+
+![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 建立一個 React Component 
 
 
+```jsx
+import React from 'react';
+import PropTypes from 'prop-types';
+import {Styled} from 'direflow-component';
+import styles from './App.css';
 
-### 微前端
+class App extends React.Component {
 
-我們可以不用 iframe 來切片我們的網頁 ? 使用 Web Component 來處理 😁
+  state = {timer: 10}
 
-## 參考資料 :
+  constructor() {
+    super();
 
-- [一起探討 Micro Frontends 的世界](https://blog.techbridge.cc/2019/01/12/micro-frontends-concept/)
-- [微前端架構解析：定義、好處與缺陷](https://kknews.cc/zh-tw/code/o3bpbo6.html)
-- [微服務很夯，那你有聽過微前端嗎？初探 Micro Frontends 程式架構](https://medium.com/starbugs/%E5%BE%AE%E6%9C%8D%E5%8B%99%E5%BE%88%E5%A4%AF-%E9%82%A3%E4%BD%A0%E6%9C%89%E8%81%BD%E9%81%8E%E5%BE%AE%E5%89%8D%E7%AB%AF%E5%97%8E-%E5%88%9D%E6%8E%A2-micro-frontends-%E6%9E%B6%E6%A7%8B-e0a8469be601)
+    console.log(this.props)
+    this.state.timer = this.props?.timer || 10
+  }
 
-- [qiankun - single-SPA 的延伸](https://qiankun.umijs.org/zh/guide/getting-started)
+  componentDidMount() {
+
+    setInterval(() => this.setState({timer: this.state.timer - 1}), 1000)
+  }
+
+  render() {
+
+    return (
+      <Styled styles={styles}>
+        <div className="box">
+          <div className="circle circle1"></div>
+          <div className="circle circle2"></div>
+          <div className="number">{this.state?.timer}</div>
+          <div className="niddle"></div>
+        </div>
+      </Styled>
+    );
+  }
+}
+
+App.defaultProps = {timer: 10,}
+
+App.propTypes = {
+  timer: PropTypes.number,
+};
+
+export default App;
+```
+
+![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 利用 `DireflowComponent.create` 來設定要建立的 Web Component
+
+```javascript
+import { DireflowComponent } from 'direflow-component';
+import App from './App.jsx';
+
+export default DireflowComponent.create({
+  component: App,
+  configuration: {
+    tagname: 'film-countdown',
+  },
+});
+```
+
+![four](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/four.png) 利用 `npm run build` 建立 Web Component
+
+```shell script
+$ npm run build
+```
+
+我們看到 build 資料夾中多了一個 `direflowBundle.js` 的檔案
+
+![build-folder](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-16/build-folder.png)
+
+將建立出來的 `direflowBundle.js` 引入到 html 中 , 即可使用 `<film-countdown>` 這個 custom-tag
+
+```html
+<body style="margin: 0">
+
+<film-countdown timer="40"></film-countdown>
+
+<script src="./direflowBundle.js"></script>
+</body>
+```
+
+## 成果
+
+![count-down](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-16/count-down.gif)
+
+
+如果想直接體驗成果 , 請到 [react-web-component.html](https://andrew781026.github.io/ithome_ironman_2021/day-16/index.html) 查看
+
+
+## 參考資料 
+
+- [Integrate Web Components with Your Vue.js App](https://www.digitalocean.com/community/tutorials/vuejs-vue-integrate-web-components)

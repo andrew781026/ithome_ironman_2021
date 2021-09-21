@@ -78,5 +78,6 @@ $ vue-cli-service build --target wc --name my-custom-element [entry] --inline-vu
 
 ## 參考資料 
 
-- [Create & Publish Web Components With Vue CLI 3](https://vuejsdevelopers.com/2018/05/21/vue-js-web-component/)
 - [Vue CLI - 构建目标](https://cli.vuejs.org/zh/guide/build-targets.html#%E5%BA%94%E7%94%A8)
+- [Vue and Web Components](https://v3.vuejs.org/guide/web-components.html)
+- [Your First Web Component with Vue.js](https://medium.com/tunaiku-tech/your-first-web-component-with-vue-js-3386cffc0b1f)
