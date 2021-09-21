@@ -1,118 +1,150 @@
 # [Day17] - 在 Vue 中引入現成的 Web Component
 
-昨天解說 Vue 如何製作 Web-Component 今天來說明一下 , 
+當我們拿到一個現有的 Web Component 時 , 如果直接在 Vue 專案中使用會抱錯
 
-那 React 如何製作 Web-Component 呢 ? 可以利用 [direflow.io](https://github.com/Silind-Software/direflow)
+![抱錯圖片](https://i.imgur.com/e5rPERq.png)
 
-![](https://camo.githubusercontent.com/5c2cbc9bda1c32e225f6487093d5b923e67663d62d0892508439cb3580f18d44/68747470733a2f2f73696c696e642d73332e73332e65752d776573742d322e616d617a6f6e6177732e636f6d2f64697265666c6f772f64697265666c6f772d636f6d706f6e656e742d6e65772d626173652e706e67)
+今天來解決這個 issue 吧 !
 
 ----
 
-![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 利用 [direflow.io](https://github.com/Silind-Software/direflow) 的 `direflow create` 建立專案 
-
-> 參考 [direflow.io - 官方網站](https://direflow.io/get-started)
+![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 利用 vue-cli 建立一個新專案 
 
 ```shell script
-$ npm i -g direflow-cli
-$ direflow create my-app
-$ cd my-app
-$ npm start
+$ vue create vue-web-component-project
 ```
 
-![create react app](https://miro.medium.com/max/700/1*BarMohttHm6rUB4NiiTsVg.gif)
+![利用Vue CLI 3 , 建立 Vue 2](https://i.imgur.com/LP6N8oW.png)
 
-![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 建立一個 React Component 
+![建立專案中...](https://i.imgur.com/mNuzsp9.png)
 
+![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 在 `public/index.html` 中引入要使用的 Web Component ( `word-count.js` )
 
-```jsx
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Styled} from 'direflow-component';
-import styles from './App.css';
+```hmtl
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= htmlWebpackPlugin.options.title %></title>
 
-class App extends React.Component {
-
-  state = {timer: 10}
-
-  constructor() {
-    super();
-
-    console.log(this.props)
-    this.state.timer = this.props?.timer || 10
-  }
-
-  componentDidMount() {
-
-    setInterval(() => this.setState({timer: this.state.timer - 1}), 1000)
-  }
-
-  render() {
-
-    return (
-      <Styled styles={styles}>
-        <div className="box">
-          <div className="circle circle1"></div>
-          <div className="circle circle2"></div>
-          <div className="number">{this.state?.timer}</div>
-          <div className="niddle"></div>
-        </div>
-      </Styled>
-    );
-  }
-}
-
-App.defaultProps = {timer: 10,}
-
-App.propTypes = {
-  timer: PropTypes.number,
-};
-
-export default App;
+    <!-- 引入 Web Component -->
+    <!-- Web Components Polyfill -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.13/webcomponents-lite.js"></script>
+    <!-- Loading our component -->
+    <link rel="import" href="./ticking-paragraph.html">
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
 ```
 
-![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 利用 `DireflowComponent.create` 來設定要建立的 Web Component
+![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 在專案中使用 custom element `<word-count>`
 
-```javascript
-import { DireflowComponent } from 'direflow-component';
-import App from './App.jsx';
 
-export default DireflowComponent.create({
-  component: App,
-  configuration: {
-    tagname: 'film-countdown',
-  },
+```js
+// src/main.js
+import Vue from 'vue';
+import App from './App.vue';
+
+// 將特定的 tag 做 ignore 處理 , 避免 Vue 將這些 tag 當作 Vue Componet 處理 , 而找不到元件
+Vue.config.ignoredElements = [
+  'word-count'
+]
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
 });
 ```
 
-![four](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/four.png) 利用 `npm run build` 建立 Web Component
+
+```html
+<!-- src/App.vue -->
+<template>
+  <div id="app">
+    <h1>Vue ❤ Web Components</h1>
+    <div class="container">
+      <word-count :limit="limit">
+        <h3>個人自介</h3>
+        <textarea class="needcount" rows="10" placeholder="請輸入您的個人描述...">
+        </textarea>
+      </word-count>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    data(){
+
+      return {
+        limit : 100
+      }
+    }
+  }
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap');
+
+    * {
+      font-family: 'Noto Sans TC', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      background-color: #64cfff;
+      margin: 0;
+    }
+
+    .container{
+      width: 550px;
+      padding: 0 40px;
+      background-color: #e3f2fd;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .container textarea{
+      border-radius: 4px;
+      position: relative;
+      resize: none;
+      padding: 10px;
+      width: 95%;
+      border: none;
+      outline: none;
+    }
+
+    .container textarea:focus{
+      border: 2px solid black;
+    }
+</style>
+```
+
+![four](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/four.png) 利用 `npm run serve` 查看使用情況
 
 ```shell script
 $ npm run build
 ```
 
-我們看到 build 資料夾中多了一個 `direflowBundle.js` 的檔案
-
-![build-folder](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-16/build-folder.png)
-
-將建立出來的 `direflowBundle.js` 引入到 html 中 , 即可使用 `<film-countdown>` 這個 custom-tag
-
-```html
-<body style="margin: 0">
-
-<film-countdown timer="40"></film-countdown>
-
-<script src="./direflowBundle.js"></script>
-</body>
-```
-
 ## 成果
 
-![count-down](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-16/count-down.gif)
-
-
-如果想直接體驗成果 , 請到 [react-web-component.html](https://andrew781026.github.io/ithome_ironman_2021/day-16/index.html) 查看
+![word-count](https://i.imgur.com/SHKqvKV.gif)
 
 
 ## 參考資料 
 
 - [Integrate Web Components with Your Vue.js App](https://www.digitalocean.com/community/tutorials/vuejs-vue-integrate-web-components)
+- [youtube - Live Character Counter using CSS & Javascript | Mini Project](https://www.youtube.com/watch?v=uMxvRVfqyc8)
