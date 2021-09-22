@@ -132,13 +132,12 @@ class MyButton extends HTMLElement {
 
   _render() {
 
-    console.log('this.data=', this.data)
     const rootDiv = this.shadowRoot.querySelector('div')
 
     rootDiv.innerHTML = `
         <h2>目前有 <span class="left">${this.data.left}</span> 點數</h2>
         <h2>預計花費 <span class="cost">${this.data.cost}</span> 點數</h2>
-        <button class="btn" style="background-color: ${this.bgColor()};" disabled="${this.disabled()}" @click="buy">
+        <button class="btn" style="background-color: ${this.bgColor()};" ${this.disabled() ? 'disabled':'' } @click="buy">
           購買
         </button>
         <h2></h2>
