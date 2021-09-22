@@ -1,31 +1,69 @@
-什麼事 web component ? 
+# [Day17] - 在 React 中引入現成的 Web Component
 
--> Vue 在初期設計時 , 有參考 Web Component 的概念去做 ?
-    (需要找出處)
+當我們拿到一個現有的 Web Component 時 , 如何在 React 專案中引用呢 ?
 
-### 一些特別的 WebComponent
+----
 
-- [Wired Elements](https://wiredjs.com/) - 手繪感十足的原件
-- [React & Web Component](https://zh-hant.reactjs.org/docs/web-components.html)
-- [Vue & Web Component](https://v3.cn.vuejs.org/guide/web-components.html#tips-for-a-vue-custom-elements-library)
+![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 利用 [create]-react-app](https://github.com/facebook/create-react-app) 建立一個新專案 
 
-### WebComponent 的金三角
-
-- Custom elements（自定义元素）：一组JavaScript API，允许您定义custom elements及其行为，然后可以在您的用户界面中按照需要使用它们。
-- Shadow DOM（影子DOM）：一组JavaScript API，用于将封装的“影子”DOM树附加到元素（与主文档DOM分开呈现）并控制其关联的功能。通过这种方式，您可以保持元素的功能私有，这样它们就可以被脚本化和样式化，而不用担心与文档的其他部分发生冲突。
-- HTML templates（HTML模板）： <template> 和 <slot> 元素使您可以编写不在呈现页面中显示的标记模板。然后它们可以作为自定义元素结构的基础被多次重用。
-
-```css
-/*
-这在你有一个复杂的自定义元素需要一段时间才能加载到页面中时非常有用 
-    —— 你可能想要隐藏元素的实例直到定义完成为止，这样你就不会在页面上出现一些难看的元素。
-*/
-
-simple-custom:not(:defined) {
-  display: none;
-}
-
-simple-custom:defined {
-  display: block;
-}
+```shell script
+$ npx create-react-app my-app
 ```
+
+![建立專案中...](https://camo.githubusercontent.com/b275c108e1c9e2d1c732a66ca1e0b6ecb1ae260824fb5d6ca4c4e46ee85d1ca0/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f66616365626f6f6b2f6372656174652d72656163742d61707040323762343261633765666130313866323534313135336162333064363331383066356661333965302f73637265656e636173742e737667)
+
+![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 在 `src/index.jsx` 中引入要使用的 Web Component ( `word-count.js` )
+
+```diff
+// src/index.jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
++ // 只需要做全域 import , 之後你就可以使用定義的 custom element  
++ import './word-count.js';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App/>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+```
+
+![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 在專案中使用 custom element `<word-count>`
+
+```jsx
+// src/App.jsx
+import './App.css';
+
+function App() {
+  return (
+    <div className="container">
+      <word-count limit="100">
+        <h3>個人自介</h3>
+        <textarea className="needcount" rows="10" placeholder="請輸入您的個人描述...">
+    </textarea>
+      </word-count>
+    </div>
+  );
+}
+
+export default App;
+```
+
+![four](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/four.png) 利用 `npm run start` 查看引入成果
+
+```shell script
+$ npm run build
+```
+
+## 成果
+
+![word-count](https://i.imgur.com/SHKqvKV.gif)
+
+
+## 參考資料 
+
+- [youtube - Live Character Counter using CSS & Javascript | Mini Project](https://www.youtube.com/watch?v=uMxvRVfqyc8)
+- [React 官方文件 - Web Components](https://zh-hant.reactjs.org/docs/web-components.html)
