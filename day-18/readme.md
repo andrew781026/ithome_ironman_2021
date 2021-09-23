@@ -1,4 +1,4 @@
-# [Day17] - 在 React 中引入現成的 Web Component
+# [Day18] - 在 React 中引入現成的 Web Component
 
 當我們拿到一個現有的 Web Component 時 , 如何在 React 專案中引用呢 ?
 
