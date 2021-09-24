@@ -1,5 +1,3 @@
-/*jshint -W030 */
-var tagRE = /<[a-zA-Z\-\!\/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/g
 
 
 // 不能有 end tag 的 html tag , void-elements : https://github.com/pugjs/void-elements/blob/master/index.js
@@ -106,6 +104,9 @@ function parse(html, options) {
       content: end === -1 ? html : html.substring(0, end),
     })
   }
+
+  /*jshint -W030 */
+  var tagRE = /<[a-zA-Z\-\!\/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/g
 
   html.replace(tagRE, function (tag, index) {
     if (inComponent) {

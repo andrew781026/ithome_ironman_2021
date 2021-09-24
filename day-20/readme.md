@@ -25,7 +25,15 @@ day-13 介紹 , 當資料改變時 , 我們可以利用 _render 來更新 dom
 
 ## 建立轉換函式 parse
 
+所有的 HTML 結構的開頭都是 `<xxx>` 而且結尾都是 `</xxx>` 
 
+我們可以利用這個來解析 HTML string 
+
+```javascript
+var tagRE = /<[a-zA-Z\-\!\/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/g
+```
+
+抓出 tag name 後 , 就可以
 
 ## 參考資料
 
@@ -33,3 +41,4 @@ day-13 介紹 , 當資料改變時 , 我們可以利用 _render 來更新 dom
 - [Vue learning – Convert HTML string to AST, how to convert HTML string to ast array structure](https://developpaper.com/vue-learning-convert-html-string-to-ast-how-to-convert-html-string-to-ast-array-structure/)
 - [vue学习—Convert HTML string to AST，如何将html字符串转换为ast数组结构](https://segmentfault.com/a/1190000018277868)
 - [html-parse-stringify](https://github.com/HenrikJoreteg/html-parse-stringify)
+- [聊一聊 Javascript 中的 AST](https://juejin.cn/post/6844903960650711054)
