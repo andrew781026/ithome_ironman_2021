@@ -1,0 +1,62 @@
+[
+  {
+    "type": "text",
+    "content": "\n"
+  },
+  {
+    "type": "tag",
+    "name": "div",
+    "voidElement": false,
+    "attrs": {
+      "class": "container"
+    },
+    "children": [
+      {
+        "type": "text",
+        "content": "\n  "
+      },
+      {
+        "type": "tag",
+        "name": "word-count",
+        "voidElement": false,
+        "attrs": {
+          "limit": "100"
+        },
+        "children": [
+          {
+            "type": "text",
+            "content": "\n    "
+          },
+          {
+            "type": "tag",
+            "name": "h3",
+            "voidElement": false,
+            "attrs": {},
+            "children": [
+              {
+                "type": "text",
+                "content": "個人自介"
+              }
+            ]
+          },
+          {
+            "type": "tag",
+            "name": "textarea",
+            "voidElement": false,
+            "attrs": {
+              "class": "needcount",
+              "rows": "10",
+              "placeholder": "請輸入您的個人描述..."
+            },
+            "children": [
+              {
+                "type": "text",
+                "content": "\n    "
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
