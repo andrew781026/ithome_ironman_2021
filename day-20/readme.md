@@ -25,19 +25,67 @@ day-13 介紹 , 當資料改變時 , 我們可以利用 _render 來更新 dom
 
 ## 建立轉換函式 parse
 
-所有的 HTML 結構的開頭都是 `<xxx>` 而且結尾都是 `</xxx>` 
+在上方我們整理了 6 個類型的 HTML Element , 只有第一個類型的 void elements 
 
-我們可以利用這個來解析 HTML string 
+是 tag 不會成對的 element , 其餘 element 都符合以下標準形式
+
+```html
+<[tag-name]>
+    [tag-body]
+</[tag-name]>
+```
+
+因此我們可以借助 regex `tagRE`
 
 ```javascript
 var tagRE = /<[a-zA-Z\-\!\/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/g
 ```
 
-抓出 tag name 後 , 就可以
+來取得 `<[tag-name]>` 跟其中的 tag-name 
+
+```javascript
+function parse(html) {
+
+  const tagRE = /<[a-zA-Z\-\!\/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/g
+
+  const result = html.match(tagRE);
+
+  return result
+}
+
+// 從 bootstrap 5 擷取出來的測試 html : 
+// 來源 : https://getbootstrap.com/docs/5.0/forms/overview/#overview
+const tt = `
+    <form>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+`
+
+const arr = parse(tt)
+console.log('matchArr=', arr)
+```
+
+因此我們可以抓出字串中的所有 `<[tag-name] attrs>` 區塊
+
+![tag-name & attrs](https://i.imgur.com/vIlhGHY.png)
+
+> 利用 tag 的閉合特性 , 抓出 [tag-body] 
+
+當遇到 `<[tag-name] attrs>` 時 , 我們可以分析一下 , 
+
+- <! ~~~ > : 這是 註解的起始標籤
+- </ ~~~ > : 這是 結束標籤
+- <input> : 這是 void elements , 只有起始標籤 , 不會有結束標籤
+
+因此我們可以
 
 ## 參考資料
 
-- [vue學習—Convert HTML string to AST，如何將html字串轉換為ast陣列結構](https://itw01.com/YCZ3HEN.html)
 - [Vue learning – Convert HTML string to AST, how to convert HTML string to ast array structure](https://developpaper.com/vue-learning-convert-html-string-to-ast-how-to-convert-html-string-to-ast-array-structure/)
 - [vue学习—Convert HTML string to AST，如何将html字符串转换为ast数组结构](https://segmentfault.com/a/1190000018277868)
 - [html-parse-stringify](https://github.com/HenrikJoreteg/html-parse-stringify)
