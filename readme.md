@@ -48,6 +48,14 @@
 - [BetterScroll](https://better-scroll.github.io/docs/zh-CN/guide/base-scroll-options.html#scrollx) - BetterScroll 是一款重点解决移动端（已支持 PC）各种滚动场景需求的插件
 - [omi.js](https://github.com/Tencent/omi/tree/v6/packages/omi-30-seconds#font-face-doesnt-work-in-shadow-dom)
 
+### JSONql
+
+-[jsonql with GO](https://github.com/elgs/jsonql)
+-[APIJSON, 让接口和文档见鬼去吧！](https://my.oschina.net/tommylemon/blog/805459)
+-[github - APIJSON](https://github.com/Tencent/APIJSON)
+
+![](https://camo.githubusercontent.com/d2ac0b753e96c7c1a2bd92fe38cbc7cae9b64d8b0ff2821b30f0e0886d895389/68747470733a2f2f6f7363696d672e6f736368696e612e6e65742f6f73636e65742f75702d65323132343065663337373033323665653630313565303532323236643064613138342e4a504547)
+
 ### 其他
 
 - [OBS](https://obsproject.com/) - 線上直播工具 
