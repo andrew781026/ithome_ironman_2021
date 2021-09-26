@@ -56,6 +56,31 @@
 
 ![](https://camo.githubusercontent.com/d2ac0b753e96c7c1a2bd92fe38cbc7cae9b64d8b0ff2821b30f0e0886d895389/68747470733a2f2f6f7363696d672e6f736368696e612e6e65742f6f73636e65742f75702d65323132343065663337373033323665653630313565303532323236643064613138342e4a504547)
 
+### 寫 Markdown 的工具
+
+- [tree-node-cli](https://www.npmjs.com/package/tree-node-cli)
+
+在 Windows 中你可以執行 `tree [<drive>:][<path>] [/f] [/a]` 來顯示下述結構
+
+```
+  tree-node-cli
+  ├── LICENSE
+  ├── README.md
+  ├── __tests__
+  │   ├── __fixtures__
+  │   ├── __snapshots__
+  │   ├── fixtures
+  │   └── tree.test.js
+  ├── bin
+  │   └── tree
+  ├── jest.config.js
+  ├── package.json
+  ├── tree.js
+  └── yarn.lock
+```
+
+![](https://i.imgur.com/aQMpd1V.png)
+
 ### 其他
 
 - [OBS](https://obsproject.com/) - 線上直播工具 
