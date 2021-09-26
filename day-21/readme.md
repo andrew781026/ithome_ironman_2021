@@ -1,3 +1,5 @@
+# [Day21] - 製作 Web component 的一些工具
+
 前幾天我們花費心力 , 說明 Web Component 如何製作 ,
 
 與當資料變換時 , 我們需要使用的 _render
@@ -18,7 +20,7 @@
 
 > extend 設定好的 HTMLElement 來建立 Web Component
 
-- [LitElement](https://lit-element.polymer-project.org/guide)
+- [LitElement](https://lit-element.polymer-project.org/guide) - Google 製作的 Web Component 框架
 
 ```javascript
 export class MyElement extends LitElement { ... } 
@@ -32,9 +34,9 @@ customElements.define('my-element', MyElement);
 
 ![alpine.js LOGO](https://i.imgur.com/emCpGJN.png)
 
-- [omi.js](https://github.com/Tencent/omi#getting-started)
+- [omi.js](https://github.com/Tencent/omi#getting-started) - Tencent 製作的 Web Component 框架
 
-![omi.js LOGO](https://i.imgur.com/14uKDNd.png)
+![omi.js LOGO](https://i.imgur.com/KlS4C4v.png)
 
 ```javascript
 class MyElement extends WeElement{ ... } 
@@ -46,8 +48,13 @@ customElements.define('my-element', MyElement);
 
 > 通過 Build 編譯出對應的 Web Component
 
-- [stencil.js](https://stenciljs.com/docs/getting-started)
+- [stencil.js](https://stenciljs.com/docs/getting-started) - ionic 團隊製作的 Compiler 框架
+
+![stencil.js LOGO](https://i.imgur.com/zz2J7lI.png)
+
 - [Svelte.js](https://svelte.dev/)
+
+![Svelte.js LOGO](https://i.imgur.com/r4lHGAM.png)
 
 之後的幾天 , 我們就來接觸這些工具如何使用
 
