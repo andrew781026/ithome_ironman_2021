@@ -26,50 +26,80 @@ $ vue create element-ui-web-component
 $ npm i element-ui -S
 ```
 
-![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 利用 `build` 指令建立 web component
+![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 利用 `@vue/web-component-wrapper` 來包裝 web component
 
-```shell
-$ vue-cli-service build --target wc --name my-custom-element [entry]
+```javascript
+// in scr/main.js
+import Vue from 'vue'
+import 'element-ui/lib/theme-chalk/index.css';
+import wrap from '@vue/web-component-wrapper'
+import {Button} from 'element-ui';
+
+const CustomElement = wrap(Vue, Button)
+
+window.customElements.define('el-button', CustomElement)
 ```
 
-解說一下上方的一些參數
+`element-UI` 的 css 是獨立單檔 , 因此需要將 `element-ui/lib/theme-chalk/index.css` 在 web component 中引用
 
-- --target : wc 代表建立 Web-Component
-- --name : Web-Component 的名稱 ( tag-name )
-- [entry] : 入口 , 可以是一个 .js 或一个 .vue 檔案。如果没有指定入口，預設使用 src/App.vue。
+因此我們可以需要建立一個中間 vue 來 extends el-button 
 
-執行上述指令後 , 我們就會在 dist 資料夾中 , 得到 `demo.html` 跟 `my-custom-element.js` 這兩個檔案
-
-![](https://i.imgur.com/CXwbcsW.png)
-
-如果想要在 html 中使用建立出來的 component , 只要跟 `demo.html` 相同 , 引入 `vue` 跟 `my-custom-element.js` 即可使用
+並在 style 上引用之
 
 ```html
-<!-- 引入 vue -->
-<script src="https://unpkg.com/vue"></script>
+<script>
+  import {Button} from "element-ui";
 
-<!-- 引入 web component -->
-<script src="./my-custom-element.js"></script>
+  export default {
+    extends: Button,
+  };
+</script>
 
-<!-- 使用建立出來的 web component -->
-<my-custom-element></my-custom-element>
+<!-- 引用 element-ui 的 css -->
+<style scoped src="element-ui/lib/theme-chalk/index.css"/>
 ```
 
-如果不想要產出的 web component 需要使用者引入 vue 才能用 ,
 
-可以利用 `--inline-vue` 這個參數將 Vue 放到你的 web component 中
+只要在 build 的時候 , 加上參數 `--enable-shadow-dom false` 就可以關閉了 !
+
+之後 引入 `element-UI` 的 css , 我們就可以得到跟 element-UI 官網相同長相的 `el-button`
+
+```html
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+```
+
+![four](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/four.png) 利用 `build` 指令建立 web component
 
 ```shell
-$ vue-cli-service build --target wc --name my-custom-element [entry] --inline-vue
+$ vue-cli-service build --target wc --name el-button ./src/main.js --inline-vue
 ```
 
-> ### 注意对 Vue 的依赖
->
-> 在 Web Components 模式中，Vue 是外置的。
-> 这意味着包中不会有 Vue，即便你在代码中导入了 Vue。
-> 这里的包会假设在页面中已经有一个可用的全局变量 Vue。
-> 要避免此行为，可以在 build 命令中添加 --inline-vue 标志。
+編譯完成後 , 你可以在 dist 資料夾中 , 看到 `el-button.js` , 那就是產生的 web-component
+
+![](https://i.imgur.com/K6g6wLe.png)
+
+之後你就可以在 html 中自由使用 `<el-button>` 了 ~~
+
+![five](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/five.png) 在 html 中使用建立出來的 el-button
+
+```html
+<!-- demo.html -->
+<meta charset="utf-8">
+<title>el-button demo</title>
+<script src="./el-button.js"></script>
+
+<el-button type="warning">警告按钮</el-button>
+```
+
+## 成果
+
+![](https://i.imgur.com/vYNeShT.png)
 
 ### 備註
 
 雖然我們知道如何在 React 專案中使用 Vue Component 不過不建議這樣混和使用 , 這樣容易提升專案的複雜性 
+
+## 參考資料
+
+- [Create and Publish Web Components With Vue CLI 3](https://dzone.com/articles/create-amp-publish-web-components-with-vue-cli-3)
+- [Vue style里面使用 @import 引入外部 css](https://segmentfault.com/a/1190000012728854)

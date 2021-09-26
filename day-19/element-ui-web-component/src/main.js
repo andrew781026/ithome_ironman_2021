@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import App from './App.vue'
 
-Vue.config.productionTip = false
+import wrap from '@vue/web-component-wrapper'
+import myButton from './components/myButton';
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+const CustomElement = wrap(Vue, myButton)
+
+window.customElements.define('el-button', CustomElement)
