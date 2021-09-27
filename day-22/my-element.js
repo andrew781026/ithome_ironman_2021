@@ -1,23 +1,36 @@
-import {LitElement, html, css} from './lit-element.js';
+import {LitElement, html, css} from 'https://unpkg.com/lit-element/lit-element.js?module';
 
-class MyElement extends LitElement {
+class MyCircle extends LitElement {
 
   static get properties() {
     return {
-      mood: {type: String}
+      color1: {type: String},
+      color2: {type: String},
+      percent: {type: Number},
     }
   }
 
-  static get styles() {
-    return css`.green-txt {
-      color: green;
-    }`;
+
+  get myStyles() {
+
+    const middleDegrees = parseInt(this.percent) / 100 * 360
+
+    return html`
+      <style>
+        .pie {
+          width: 100px;
+          height:100px;
+          border-radius:50%;
+          background: conic-gradient(${this.color1} 0deg ${middleDegrees}deg, ${this.color2} ${middleDegrees}deg 360deg);
+        }
+      </style>
+    `;
   }
 
   render() {
-    return html`Web Components are <span class="green-txt">${this.mood}</span>!`;
+    return html`${this.myStyles}<div class="pie"></div>`;
   }
 
 }
 
-customElements.define('my-element', MyElement);
+customElements.define('my-circle', MyCircle);
