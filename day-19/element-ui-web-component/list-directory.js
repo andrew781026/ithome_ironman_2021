@@ -1,7 +1,8 @@
 const tree = require('tree-node-cli');
 
-const string = tree('E:\\web_projects\\ithome_ironman_2021\\day-19\\element-ui-web-component\\node_modules\\element-ui', {
+const string = tree('D:\\test\\ithome_ironman_2021\\day-23\\test-comp', {
   allFiles: true,
+  exclude: [/node_modules/, /lcov/],
   maxDepth: 4,
 });
 

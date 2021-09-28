@@ -4,14 +4,7 @@ export const config: Config = {
   namespace: 'test-comp',
   outputTargets: [
     {
-      type: 'dist',
-      esmLoaderPath: '../loader',
-    },
-    {
       type: 'dist-custom-elements-bundle',
-    },
-    {
-      type: 'docs-readme',
     },
     {
       type: 'www',

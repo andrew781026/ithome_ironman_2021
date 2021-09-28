@@ -1,0 +1,21 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Stencil Component Starter</title>
+  <script type="module" data-stencil data-resources-url="/build/" data-stencil-namespace="test-comp">import {
+    p as t,
+    b as m
+  } from "./p-3c7074bc.js";
+
+  (() => {
+    const m = import.meta.url, o = {};
+    return "" !== m && (o.resourcesUrl = new URL(".", m).href), t(o)
+  })().then((t => m([["p-6b3a390b", [[1, "my-component", {first: [1], middle: [1], last: [1]}]]]], t)));</script>
+  <script nomodule="" src="./test-comp.js" data-stencil></script>
+</head>
+<body>
+<my-component first="Stencil" last="'Don't call me a framework' JS"></my-component>
+</body>
+</html>
