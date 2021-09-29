@@ -60,15 +60,38 @@ test-comp
 npm run build
 ```
 
+我們可以看到多出一個 www/build 的資料夾
 
+![](https://i.imgur.com/bpsJepC.png)
+
+將資料夾中的所有檔案 copy 出來
 
 ![four](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/four.png) 引用建立出來的 Web Component
 
-```shell
-unpkg.com/:package@:version/:file
+利用 script 引入 `[專案名稱].js` 跟 `[專案名稱].esm.js` 這兩個檔案 
+
+```html
+<script type="module" src="./test-comp.esm.js"></script>
+<script nomodule="" src="./test-comp.js"></script>
 ```
 
-<script src='https://unpkg.com/andrew-test-comp@0.0.1/dist/index.js'></script>
+我們就可以在 html 中使用我們產出的 web component
+
+```html
+<!doctype html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Stencil Component Starter</title>
+  <script type="module" src="./test-comp.esm.js"></script>
+  <script nomodule="" src="./test-comp.js"></script>
+</head>
+<body>
+<my-component first="Stencil" last="'Don't call me a framework' JS"></my-component>
+</body>
+</html>
+```
 
 ## 參考資料
 
