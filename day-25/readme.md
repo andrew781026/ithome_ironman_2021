@@ -22,7 +22,7 @@
 
 ![](https://i.imgur.com/Dl7t5Fn.png)
 
-如果 userData 改變 , 你就要通知向上通知 , 又向下通知 , 通過層層關卡的通知鏈
+如果在 user 元件中改變姓名 ( userData.name ) 改變 , 你就要通知向上通知 , 又向下通知 , 通過層層關卡的通知鏈
 
 ![](https://i.imgur.com/xSe3Ipa.png)
 
@@ -36,7 +36,14 @@
 
 ## 前期準備
 
-[]
+當然是建立要用到的組件
+
+- navigation
+- create-story
+- navbar
+- stories
+
+這裡有一個 zip 提供下載 
 
 首先 , 我們需要有一個多層的 web components 組 ( 至少要有 4 層 )
 
