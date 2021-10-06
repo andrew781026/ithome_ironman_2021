@@ -54,4 +54,3 @@
 ## 參考資料
 
 - [Web Components Redux](https://github.com/sheeshpaul/webcomponents-redux)
-- [el-admin](https://el-admin.vip/guide/)
