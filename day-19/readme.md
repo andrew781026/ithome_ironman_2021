@@ -91,9 +91,11 @@ $ vue-cli-service build --target wc --name el-button ./src/main.js --inline-vue
 <el-button type="warning">警告按钮</el-button>
 ```
 
-## 成果
-
 ![](https://i.imgur.com/vYNeShT.png)
+
+> demo.html 上可以使用 el-button 這個元件 , 後面利用 create-react-app 建立 React 專案 & 引用 `<el-button>`
+
+
 
 ### 備註
 
