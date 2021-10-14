@@ -8,6 +8,11 @@
 
 ----
 
+1.安裝 angular CLI tool  
+2.建立專案 `$ ng new angular-web-component --routing=false --skip-tests=true --style=css`  
+3.建立 component `cd angular-web-component && ng generate component info-box`   
+4.   
+
 ![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 安裝 [Angualr CLI](https://angular.io/cli) 
 
 ```shell script
@@ -20,79 +25,85 @@ $ ng add @angular/elements
 
 ![](https://i.imgur.com/fuKVJxq.png)
 
-![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 下載 [@angular/elements](https://angular.io/guide/elements) 套件
-
-```shell script
-$ ng new web-demo
-$ ng add @angular/elements
-```
-
-![](https://i.imgur.com/tglBSX8.png)
-
-![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 利用 [Angualr CLI](https://angular.io/cli) 建立 Angular Component
-
-```shell script
-$ ng g c custom-list --inline-template --inline-style
-```
-
-
 ```shell script
 $ ng generate component UIButton
 ```
 
-產生 `custom-list/custom-list.component.spec.ts` 跟 `custom-list/custom-list.component.ts` 這 2 個檔案
+open `src/app/app.module.ts` 
 
-![](https://i.imgur.com/bxtxhmY.png)
+```typescript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-![four](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/four.png) 改造一下 `custom-list.component.ts` 的內容
+import { AppComponent } from './app.component';
+import { UIButtonComponent } from './uibutton/uibutton.component';
 
-```javascript
-import {Component, Input, Output, EventEmitter} from '@angular/core';
-
-interface ListItem {
-  desc: string;
-  id: number;
-}
-
-@Component({
-  selector: 'app-custom-list',
-  template: `
-    <p *ngFor="let item of items;let i = index;" (click)="handleItemClick(item)" )>
-      {{i + 1}} - {{item.desc}}
-    </p>
-  `,
-  styles: []
+@NgModule({
+  declarations: [
+    AppComponent,
+    UIButtonComponent
+  ],
+  imports: [
+    BrowserModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
 })
-export class CustomListComponent {
+export class AppModule { }
+```
 
-  @Input()
-  items = [{desc: 'Good Job', id: 1}]
+追加 customElements 的相關設定 , 讓 UIButtonComponent 變成 Web Component
 
-  @Output()
-  itemClicked = new EventEmitter<number>();
+```typescript
+import {NgModule, DoBootstrap, Injector} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {createCustomElement} from '@angular/elements';
 
-  constructor() {
+import {AppComponent} from './app.component';
+import {UIButtonComponent} from './uibutton/uibutton.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    UIButtonComponent
+  ],
+  imports: [
+    BrowserModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+  entryComponents: [UIButtonComponent],
+})
+export class AppModule implements DoBootstrap {
+
+  constructor(private injector: Injector) {
+    const webComponent = createCustomElement(UIButtonComponent, {injector});
+    customElements.define('ui-button', webComponent);
   }
 
-  handleItemClick(item: ListItem) {
-    this.itemClicked.emit(item.id)
+  ngDoBootstrap() {
   }
-
 }
 ```
 
-然後 `npm run start` , 我們可以看到在 `http://localhost` 上有我們做的 Angular Component
+執行 `ng build FirstWebComponent` 
 
-![five](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/five.png) 新增  `custom-list.module.ts` & `custom-list.main.ts` , 當作 Web Component 的進入點
+download the @angular/element using example 
 
-
-![six](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/six.png) 修改 `angular.json` 的設定
-
-打開專案根目錄的 `angular.json` , 我們可以看到有一個 project 的區塊 , 裡面有 `web-demo` ~我們當初建立的專案名稱~
-
-![](https://i.imgur.com/IC7rhmG.png)
+![](https://i.imgur.com/TyF47QN.png)
 
 
+```shell
+$ ng new angular-web-component --routing=false --skip-tests=true --style=css
+```
+
+```shell
+$ cd angular-web-component && ng generate component info-box
+```
+
+```shell
+$ ng add @angular/elements
+```
 
 ## 參考資料
 

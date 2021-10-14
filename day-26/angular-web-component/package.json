@@ -1,5 +1,5 @@
 {
-  "name": "web-demo",
+  "name": "angular-web-component",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -14,7 +14,7 @@
     "@angular/common": "~12.2.0",
     "@angular/compiler": "~12.2.0",
     "@angular/core": "~12.2.0",
-    "@angular/elements": "^12.2.8",
+    "@angular/elements": "^12.2.10",
     "@angular/forms": "~12.2.0",
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
