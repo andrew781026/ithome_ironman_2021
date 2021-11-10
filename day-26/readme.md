@@ -11,101 +11,37 @@
 1.安裝 angular CLI tool  
 2.建立專案 `$ ng new angular-web-component --routing=false --skip-tests=true --style=css`  
 3.建立 component `cd angular-web-component && ng generate component info-box`   
-4.   
+4.安裝 `@angular/elements` 套件到專案中 `ng add @angular/elements`   
+5.調整 info-box 元件的內容 < in src/app/app.module.ts >
 
-![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 安裝 [Angualr CLI](https://angular.io/cli) 
-
-```shell script
-$ npm install -g @angular/cli
-$ ng new web-components --createApplication=false
-$ cd web-components 
-$ ng generate application FirstWebComponent  --skipInstall=true
-$ ng add @angular/elements
-```
-
-![](https://i.imgur.com/fuKVJxq.png)
-
-```shell script
-$ ng generate component UIButton
-```
-
-open `src/app/app.module.ts` 
+i. @NgModule 的區塊做改變 , 拿掉 
 
 ```typescript
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+// src/app/app.module.ts
 
-import { AppComponent } from './app.component';
-import { UIButtonComponent } from './uibutton/uibutton.component';
+import { createCustomElement } from '@angular/elements';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    UIButtonComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [],
+  entryComponents: [CounterComponent]
 })
-export class AppModule { }
-```
-
-追加 customElements 的相關設定 , 讓 UIButtonComponent 變成 Web Component
-
-```typescript
-import {NgModule, DoBootstrap, Injector} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {createCustomElement} from '@angular/elements';
-
-import {AppComponent} from './app.component';
-import {UIButtonComponent} from './uibutton/uibutton.component';
-
-@NgModule({
-  declarations: [
-    AppComponent,
-    UIButtonComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
-  entryComponents: [UIButtonComponent],
-})
-export class AppModule implements DoBootstrap {
-
+export class AppModule {
   constructor(private injector: Injector) {
-    const webComponent = createCustomElement(UIButtonComponent, {injector});
-    customElements.define('ui-button', webComponent);
-  }
 
+  }
   ngDoBootstrap() {
+    const counterElement = createCustomElement(CounterComponent, { injector: this.injector });
+    customElements.define('my-counter', counterElement);
   }
 }
+
 ```
 
-執行 `ng build FirstWebComponent` 
-
-download the @angular/element using example 
-
-![](https://i.imgur.com/TyF47QN.png)
-
-
-```shell
-$ ng new angular-web-component --routing=false --skip-tests=true --style=css
-```
-
-```shell
-$ cd angular-web-component && ng generate component info-box
-```
-
-```shell
-$ ng add @angular/elements
-```
+6. 將 web component 建立出來 `ng build --output-hashing=none`
 
 ## 參考資料
 
 - [Angular elements overview](https://angular.io/guide/elements)
 - [Angular + Web Components: a complete guide](https://indepth.dev/posts/1116/angular-web-components-a-complete-guide)
+- [[Angular進階議題] Angular Elements 簡介](https://wellwind.idv.tw/blog/2018/05/08/angular-advanced-angular-elements-intro/)
+- [Angular Web Components](https://www.codementor.io/blog/angular-web-components-8e4n0r0zw7)
