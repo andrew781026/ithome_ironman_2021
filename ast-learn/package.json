@@ -1,0 +1,17 @@
+{
+  "name": "ast-learn",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "parse-test": "node parser.js"
+  },
+  "keywords": [
+    "ast"
+  ],
+  "author": "andrew",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/parser": "^7.16.3"
+  }
+}
