@@ -593,6 +593,22 @@ $(function () {
 })
 */
 
+function getAttributes(el) {
+
+  const attrs = el.attributes;
+  return Object.values(attrs).reduce((prev, curr) => {
+
+    prev[curr.name] = curr.value
+    return prev;
+  }, {});
+}
+
+function setAttributes(el, attrs) {
+  for (var key in attrs) {
+    el.setAttribute(key, attrs[key]);
+  }
+}
+
 // 需要控制 top . left 的位置
 const getPosition = (e, tooltip) => {
 
@@ -636,12 +652,34 @@ class DropdownList extends HTMLElement {
     this.state.show = true;
 
 
+    // 取得目前 element 的位置
     const rect = filterSelector.getBoundingClientRect();
+    const tooltipWidth = this.container.getBoundingClientRect().width;
     // console.log(rect.top, rect.right, rect.bottom, rect.left);
 
     this.container.style.display = 'inline-flex';
     this.container.style.top = `${rect.top + rect.height + 8}px`;
-    this.container.style.left = `${rect.left}px`;
+    this.container.style.left = `${rect.left + (rect.width - tooltipWidth) / 2}px`;
+  }
+
+  close = () => {
+
+    this.state.filterSelector = null;
+    this.state.show = false;
+  }
+
+  // 取得單一實例
+  static getInstance() {
+
+    const currentTooltip = document.querySelector('dropdown-list');
+
+    if (currentTooltip) return currentTooltip;
+    else {
+
+      const newTooltip = document.createElement('dropdown-list');
+      document.querySelector('body').append(newTooltip);
+      return newTooltip;
+    }
   }
 
   // as Component mounted to page
@@ -751,6 +789,7 @@ class DropdownList extends HTMLElement {
 
     const selector = this.state.filterSelector;
 
+    /*
     if (!selector) return this.container.innerHTML = `
         <div class='fri-select-dropdown__wrap fri-scrollbar__wrap'>
           <ul class='fri-select-dropdown__list'>
@@ -766,6 +805,7 @@ class DropdownList extends HTMLElement {
     const filterStr = input.value
     const data = this.state.data
     const isRemoteLoading = selector.state.remoteLoading
+     */
 
     // 產生下拉選單
     this.container.innerHTML = `
@@ -780,9 +820,12 @@ class DropdownList extends HTMLElement {
           </ul>
         </div>
     `
+
+    // 將內容建立妥當 , 再設定顯示性 , 較不會出現寬高不正確的狀況
+    if (this.state.show) this.container.style.display = 'block'
+    else this.container.style.display = 'none'
   }
 }
-
 
 class FilterSelect extends HTMLElement {
 
@@ -791,6 +834,8 @@ class FilterSelect extends HTMLElement {
   state = new Proxy(
     // 將預設設定到 target 中 , 預設值
     {
+      showClose: false,
+      mode: 'view', // data-mode 有 edit . view . create
       value: '',
       json: [],
     },
@@ -799,8 +844,11 @@ class FilterSelect extends HTMLElement {
 
       get: (target, property) => target[property],
       set: (target, property, value) => {
+
         target[property] = value;
-        this._render()
+        if (property === 'open') this.tooltipCtrl(value);
+        else if (property === 'showClose') this.closeCtrl(value);
+        else this._render();
         return true
       },
     })
@@ -811,14 +859,66 @@ class FilterSelect extends HTMLElement {
     // Always call super first in constructor
     super();
 
-    this.tooltip = document.querySelector('dropdown-list') || document.createElement('dropdown-list')
-    document.querySelector('body').append(this.tooltip)
+    // 建立一個下拉選單
+    this.tooltip = DropdownList.getInstance();
 
     const div = document.createElement('div');
     div.classList.add('filter-select');
-    this.append(div);
     this.container = div;
+    this.append(div);
     this._render();
+    this.setEvents();
+  }
+
+  setEvents() {
+
+    // mouseenter - 有值時 , arrow-icon 變成 close-icon
+    this.container.addEventListener('mouseenter', e => {
+
+      // console.log('mouseenter');
+      this.state.showClose = Boolean(this.computed.dataText());
+
+    }, false);
+
+    // mouseleave - close-icon 變成 arrow-icon
+    this.container.addEventListener('mouseleave', e => {
+
+      //   mouseleave - 遇到子元素會觸發 / mouseout - 遇到子元素不會觸發
+
+      // console.log('mouseleave');
+      this.state.showClose = false;
+
+    }, false);
+
+    // selector 點擊的時候 , 控制 DropdownList 的顯示性
+    this.container.addEventListener('click', e => {
+
+      /*
+        - target is the element that triggered the event (e.g., the user clicked on) 發生地
+        - currentTarget is the element that the event listener is attached to. 事件實際處理的地方
+       */
+
+      const isCloseIcon = e.target.matches('i.close');
+
+      // 目前 click 事件作用在 this.container 上面
+      if (e.target === e.currentTarget) {
+
+        const tooltipTarget = this.tooltip.state.filterSelector;
+
+        if (this.state.mode === 'create') this.state.open = false;
+        else if (tooltipTarget === this) this.state.open = false;
+        else this.state.open = true;
+      }
+
+      // 目前 click 事件作用在 i.close 上面
+      else if (isCloseIcon) {
+
+        // 點擊 close , 清空 value 值
+        this.state.value = '';
+      }
+
+
+    }, true);  // 第三個參數 useCapture = true , 代表子元素的 bubble event 也處理
   }
 
   listFn = () => Object.getOwnPropertyNames(this)
@@ -981,33 +1081,110 @@ class FilterSelect extends HTMLElement {
     })
   }
 
-  _render() {
+  getDataText = (selector, value) => {
 
-    const selector = this;
+    const jsonData = JSON.parse(selector.getAttribute('data-json') || '[]');
+    const dataValue = value || selector.getAttribute('data-value');
+    const dataTextObj = jsonData.find(item => dataValue === item.value);
+    return dataTextObj ? dataTextObj.text : '';
+  }
+
+  tooltipCtrl(open) {
+
+    const arrowIcon = this.container.querySelector('i.arrow')
+
+    if (open) {
+      this.tooltip.open(this);
+      arrowIcon.classList.add('rotate');
+    } else {
+      this.tooltip.close();
+      arrowIcon.classList.remove('rotate');
+    }
+  }
+
+  closeCtrl = (showClose) => {
+
+    const arrowIcon = this.container.querySelector('i.arrow')
+    const closeIcon = this.container.querySelector('i.close')
+
+    if (showClose) {
+      arrowIcon.style.display = 'none';
+      closeIcon.style.display = 'inline';
+    } else {
+      arrowIcon.style.display = 'inline';
+      closeIcon.style.display = 'none';
+    }
+  }
+
+  computed = {
+
+    placeholder: () => (this.state.mode === 'edit') ? this.state.placeholder : this.getAttribute('placeholder'),
+    dataText: () => this.getDataText(this),
+  }
+
+  _copyAttrToInput = (selector, inputEl) => {
+
+    // 取得 <filter-select /> 上面的 attr
+    const attrs = getAttributes(selector);
+    const {id, dataJson, dataValue, ...otherAttrs} = attrs;
+
+    // 將 attr copy 到 input 上面
+    setAttributes(inputEl, {...otherAttrs, value: selector.computed.dataText()});
+
+    return selector;
+  }
+
+  // 需要計算出 placeholder
+
+  // 需要計算出 dataText
+
+  // 每次 this.state.mode 改變時 , 都需要重新 render 一次
+  _render() {
 
     // get element attrs
 
-    /**
-     * 1. parent 的 attr 要 copy 下來 , 除了 id , data-json , data-value
-     * 2. 剛剛 copy 的要刪除 class='filter-select' ?
-     * 3. setSelectorInputText($selector[0])
-     * 4. if ($selector.is('[disabled]')) myTooltip.detach($selector)
-     * 5. if ($selector[0].afterInit) $selector[0].afterInit.call($selector[0])  // 呼叫註冊的 afterInit
-     * 6. 避免 enter 時 , 觸發 button click => $input.on('keypress', e => (e.keyCode === 13) ? e.returnValue = false : '')
+    /** TODO 以下為待辦事項 -
+     * ✔ ✖ 口
+     * ✔ 1. parent 的 attr 要 copy 下來 , 除了 id , data-json , data-value
+     * 口 3. setSelectorInputText($selector[0])
+     * 口 4. if ($selector.is('[disabled]')) myTooltip.detach($selector) - disabled 後就不會有反應
+     * 口 5. if ($selector[0].afterInit) $selector[0].afterInit.call($selector[0])  // 呼叫註冊的 afterInit
+     * 口 6. 避免 enter 時 , 觸發 button click => $input.on('keypress', e => (e.keyCode === 13) ? e.returnValue = false : '')
      */
 
-    this.getAttributeNames();
+    // 不同的情況顯示不同的 UI 呈現
 
-    console.log('render');
+    // A. create mode
+    if (this.state.mode === 'create') {
+
+      this.container.innerHTML = `
+        <input type='text' autocomplete='off'>
+        <i class='close'></i>
+        <i class='corner'></i>
+      `
+
+      return this._copyAttrToInput(this, this.container.querySelector('input'))
+    }
+
+    // B. view mode
+    else if (this.state.mode === 'view') {
+
+      this.container.innerHTML = `
+        <input type='text' autocomplete='off'>
+        <i class='close' style="display: ${this.state.showClose ? '' : 'none'}"></i>
+        <i class='arrow' style="display: ${this.state.showClose ? 'none' : ''}"></i>
+      `
+
+      return this._copyAttrToInput(this, this.container.querySelector('input'))
+    }
+
 
     this.container.innerHTML = `
       <input type='text' autocomplete='off'>
       <i class='close'></i>
       <i class='arrow'></i>
-      <i class='corner'></i>
     `
 
-    this.container.addEventListener('click', () => this.tooltip.open(selector), true)
   }
 
 }

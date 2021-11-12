@@ -27,8 +27,29 @@
 </head>
 <body>
 
-<filter-select></filter-select>
-<filter-select></filter-select>
+<filter-select
+  placeholder='Search..'
+  scroll-height='130px'
+  allow-create
+  data-value='JQuery'
+  data-json='
+            [
+              {"value":"JQuery","text":"JQuery"},
+              {"value":"js","text":"JavaScript"},
+              {"value":"java","text":"Java"},
+              {"value":"Python","text":"python"},
+              {"value":"react","text":"React"},
+              {"value":"vue","text":"vue"},
+              {"value":"go","text":"go 🐈"},
+              {"value":"c++","text":"C++"},
+              {"value":"c#","text":"C#"}
+            ]
+          '
+>
+</filter-select>
+
+
+<filter-select placeholder='Search..'></filter-select>
 
 <script src="./filter-select.js"></script>
 </body>
