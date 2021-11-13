@@ -31,3 +31,15 @@ export const getPosition = (e, tooltip) => {
     top: (viewHeight > currentY + 500) ? currentY : currentY - tooltip.offsetHeight,
   }
 }
+
+export const copyAttrToInput = (selector, inputEl) => {
+
+  // 取得 <filter-select /> 上面的 attr
+  const attrs = getAttributes(selector);
+  const {id, dataJson, dataValue, ...otherAttrs} = attrs;
+
+  // 將 attr copy 到 input 上面
+  setAttributes(inputEl, {...otherAttrs, value: selector.computed.dataText()});
+
+  return selector;
+}

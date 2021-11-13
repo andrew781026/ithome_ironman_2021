@@ -593,7 +593,7 @@ $(function () {
 })
 */
 
-import {getAttributes, setAttributes, wait, getPosition} from './utility.js';
+import {getAttributes, setAttributes, wait, copyAttrToInput, getPosition} from './utility.js';
 import {DropdownList} from './dropdown-list.js';
 
 class FilterSelect extends HTMLElement {
@@ -622,6 +622,14 @@ class FilterSelect extends HTMLElement {
       },
     })
 
+  static initRootContainer = (selector) => {
+
+    const div = document.createElement('div');
+    div.classList.add('filter-select');
+    selector.container = div;
+    selector.append(div);
+  }
+
   // as Component mounted to page
   constructor() {
 
@@ -631,15 +639,25 @@ class FilterSelect extends HTMLElement {
     // 建立一個下拉選單
     this.tooltip = DropdownList.getInstance();
 
-    const div = document.createElement('div');
-    div.classList.add('filter-select');
-    this.container = div;
-    this.append(div);
+    // 設定根 container
+    FilterSelect.initRootContainer(this);
     this._render();
     this.setEvents();
   }
 
+  // 設定相關 event listener
   setEvents() {
+
+    // 註冊 filterSelect 的捲動處理
+    this.on('loading-start', () => {
+
+      const query = this.querySelector('input').value;
+      this.loadingMethod(query)
+        .then(result => this.trigger('loading-end', result))
+        .catch(err => {
+          console.error('[loading] selector = ', this, 'in filterSelect.loadingMethod happen Error !! \n', err)
+        })
+    })
 
     // mouseenter - 有值時 , arrow-icon 變成 close-icon
     this.container.addEventListener('mouseenter', e => {
@@ -687,7 +705,6 @@ class FilterSelect extends HTMLElement {
         this.state.value = '';
       }
 
-
     }, true);  // 第三個參數 useCapture = true , 代表子元素的 bubble event 也處理
   }
 
@@ -716,48 +733,16 @@ class FilterSelect extends HTMLElement {
   on = (eventName, listener) => this.emitters[eventName] = listener
   trigger = (eventName, ...params) => this.emitters[eventName].call(this, this, params[0])
 
-  loadingMethod = async query => {
+  loadingMethod = async query => await wait(1000);
+  remoteMethod = async query => await wait(1000);
 
-    await wait(1000)
-    return null
-  }
-
-  remoteMethod = async query => {
-
-    await wait(1000)
-    return null
-  }
 
   bindFilterSelectEvents(filterSelect) {
-
-    // 註冊 filterSelect 的捲動處理
-    filterSelect.on('loading-start', () => {
-
-      const query = $(filterSelect).find('input').val()
-      filterSelect.loadingMethod(query)
-        .then(result => filterSelect.trigger('loading-end', result))
-        .catch(err => {
-          console.error('[loading] selector = ', filterSelect, 'in filterSelect.loadingMethod happen Error !! \n', err)
-        })
-    })
 
     const observer = new MutationObserver(dropdownListMutation)
     observer.observe(filterSelect, {
       attributes: true,
       attributeOldValue: true,
-    })
-
-    // 進入時 , 確認有沒有資料
-    $(filterSelect).on('mouseenter', function (e) {
-      const $selector = $(this)
-      if ($selector.find('input').val()) {
-        $selector.addClass('has-data')
-      }
-    })
-
-    // 離開時 , 永遠顯示 i.arrow
-    $(filterSelect).on('mouseleave', function (e) {
-      $(e.currentTarget).removeClass('has-data')
     })
 
     // 避免 focus 時 , 再次點擊讓 tooltip 關閉
@@ -870,17 +855,6 @@ class FilterSelect extends HTMLElement {
     dataText: () => this.getDataText(this),
   }
 
-  _copyAttrToInput = (selector, inputEl) => {
-
-    // 取得 <filter-select /> 上面的 attr
-    const attrs = getAttributes(selector);
-    const {id, dataJson, dataValue, ...otherAttrs} = attrs;
-
-    // 將 attr copy 到 input 上面
-    setAttributes(inputEl, {...otherAttrs, value: selector.computed.dataText()});
-
-    return selector;
-  }
 
   // 需要計算出 placeholder
 
@@ -911,7 +885,7 @@ class FilterSelect extends HTMLElement {
         <i class='corner'></i>
       `
 
-      return this._copyAttrToInput(this, this.container.querySelector('input'))
+      return copyAttrToInput(this, this.container.querySelector('input'))
     }
 
     // B. view mode
@@ -923,7 +897,7 @@ class FilterSelect extends HTMLElement {
         <i class='arrow'></i>
       `
 
-      return this._copyAttrToInput(this, this.container.querySelector('input'))
+      return copyAttrToInput(this, this.container.querySelector('input'))
     }
 
 

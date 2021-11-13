@@ -23,8 +23,28 @@ day-13 介紹 , 當資料改變時 , 我們可以利用 _render 來更新 dom
 - foreign elements : `MathML namespace` and `the SVG namespace`
 - normal elements : 上述以外的 element 
 
-## 建立轉換函式 parse
+## 開發前分析
 
+當我們拿到一個 html string 想要將其轉換成 AST Object 時 , 
+
+其實對於 parser 來說 , html 上的 element 主要分為 3 大類型
+
+- 存文字 
+- tag 元素 , 且必定沒有子元素 ( void element )
+- tag 元素 ( 其他元素都可以併成這一類型 )
+
+## 使用套件 [html-parse-stringify](https://github.com/HenrikJoreteg/html-parse-stringify)
+
+> 在此執行一下這個套件 , 先有初步概念這個套件轉換出來的 AST Object 長得如何 ?
+
+## 分析套件的內容
+
+1. 抓取所有的 tag 元素
+2. 父子層的關係建立
+3. 遇到 void 元素 / 存文字 , 視其為最子層
+
+## 建立轉換函式 parse
+ 
 在上方我們整理了 6 個類型的 HTML Element , 只有第一個類型的 void elements 
 
 是 tag 不會成對的 element , 其餘 element 都符合以下標準形式
@@ -74,6 +94,8 @@ console.log('matchArr=', arr)
 
 ![tag-name & attrs](https://i.imgur.com/vIlhGHY.png)
 
+### 2. 接著我們要建立 tag 的父子關係 , 建立一個 Abstract DOM Tree
+
 > 利用 tag 的閉合特性 , 抓出 [tag-body] 
 
 當遇到 `<[tag-name] attrs>` 時 , 我們可以分析一下 , 
@@ -84,9 +106,12 @@ console.log('matchArr=', arr)
 
 因此我們可以
 
+> 靈感發想
+
 ## 參考資料
 
 - [Vue learning – Convert HTML string to AST, how to convert HTML string to ast array structure](https://developpaper.com/vue-learning-convert-html-string-to-ast-how-to-convert-html-string-to-ast-array-structure/)
 - [vue学习—Convert HTML string to AST，如何将html字符串转换为ast数组结构](https://segmentfault.com/a/1190000018277868)
 - [html-parse-stringify](https://github.com/HenrikJoreteg/html-parse-stringify)
 - [聊一聊 Javascript 中的 AST](https://juejin.cn/post/6844903960650711054)
+- [造轮子系列(三): 一个简单快速的html虚拟语法树(AST)解析器](https://segmentfault.com/a/1190000010759220)
