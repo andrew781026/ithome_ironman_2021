@@ -593,7 +593,7 @@ $(function () {
 })
 */
 
-import {getAttributes, setAttributes, wait, copyAttrToInput, getPosition} from './utility.js';
+import {wait, copyAttrToInput} from './utility.js';
 import {DropdownList} from './dropdown-list.js';
 
 class FilterSelect extends HTMLElement {
@@ -711,7 +711,7 @@ class FilterSelect extends HTMLElement {
   // Object.getOwnPropertyNames( HTMLElement ) => 取得物件上設定的 function & property
   listFn = () => Object.getOwnPropertyNames(this)
 
-  // 選種某一個項目 , 會執行的事情
+  // 需要設定 , 選擇某個項目後 , 會執行的事情
   selectItem = ({value} = {}) => {
 
     if (!value) {

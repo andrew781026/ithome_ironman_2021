@@ -50,7 +50,7 @@ export class DropdownList extends HTMLElement {
     this.state.show = false;
   }
 
-  // 取得單一實例
+  // 取得單一實例 => 不同的名稱 , 建立不同的 Dropdown , 沒設定名稱 , 就隨機產生一個 uuid 給他
   static getInstance() {
 
     const currentTooltip = document.querySelector('dropdown-list');
@@ -95,7 +95,7 @@ export class DropdownList extends HTMLElement {
     })
 
     $li.append($textWrap)
-    $li.click(() => {
+    $li.click(() => { // 將
 
       $selector.attr('data-value', $li.attr('data-value'))
       $selector.find('input').val($li.attr('data-text'))
@@ -169,6 +169,7 @@ export class DropdownList extends HTMLElement {
   // 設定下拉選單
   _render() {
 
+    // 目前 dropdownList 對應的 filterSelector
     const selector = this.state.filterSelector;
 
     /*
