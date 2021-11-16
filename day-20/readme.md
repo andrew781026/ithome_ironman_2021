@@ -41,7 +41,8 @@ day-13 介紹 , 當資料改變時 , 我們可以利用 _render 來更新 dom
 
 - voidElements - 表列所有的 voidElements 的 tag 名稱
 - parseTag - 將 tag 名稱取出做比對 , 決定 tag 的類型 < 文字 . vold . 一般 >
-- parser - 
+- parser - 解析的進入點
+
 
 
 ## 分析套件的內容

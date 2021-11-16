@@ -193,4 +193,16 @@ function parse(html, options) {
   return result
 }
 
-module.exports = parse
+// 參考來源 : https://github.com/umdjs/umd/blob/master/templates/commonjsStrict.js
+(function (global, factory) {
+
+  // AMD. Register as an anonymous module.
+  if (typeof define === 'function' && define.amd) define(factory);
+
+  // CommonJS
+  else if (typeof exports === 'object' && typeof module !== 'undefined') module.exports = factory();
+
+  // Browser globals
+  else (global = global || self, global.parse = factory());
+
+}(typeof self !== 'undefined' ? self : this, () => parse));

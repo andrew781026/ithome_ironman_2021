@@ -1,4 +1,4 @@
-const parse = require('./html-parse-stringify.cjs')
+const parse = require('./html-parse-stringify.umd')
 
 const tt = `
 <div class="container">
