@@ -1,5 +1,6 @@
-
-
+/**
+ * 下方檔案為 html-parse-stringify 展開出來的結果
+ */
 // 不能有 end tag 的 html tag , void-elements : https://github.com/pugjs/void-elements/blob/master/index.js
 const voidElements = {
   "area": true,
@@ -55,7 +56,7 @@ var parseTag = function (tag) {
   const attrRE = /\s([^'"/\s><]+?)[\s/>]|([^\s=]+)=\s?(".*?"|'.*?')/g
   const reg = new RegExp(attrRE)
   let result = null
-  for (;;) {
+  for (; ;) {
     result = reg.exec(tag)
 
     if (result === null) {
@@ -192,15 +193,4 @@ function parse(html, options) {
   return result
 }
 
-const tt = `
-<div class="container">
-  <word-count limit="100">
-    <h3>個人自介</h3>
-    <textarea class="needcount" rows="10" placeholder="請輸入您的個人描述...">
-    </textarea>
-  </word-count>
-</div>
-`
-
-const w = parse(tt)
-console.log(JSON.stringify(w))
+module.exports = parse

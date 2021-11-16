@@ -30,12 +30,19 @@ day-13 介紹 , 當資料改變時 , 我們可以利用 _render 來更新 dom
 其實對於 parser 來說 , html 上的 element 主要分為 3 大類型
 
 - 存文字 
-- tag 元素 , 且必定沒有子元素 ( void element )
-- tag 元素 ( 其他元素都可以併成這一類型 )
+- void tag 元素 , 且必定沒有子元素 ( void element )
+- 一般 tag 元素 ( 其他元素都可以併成這一類型 )
 
 ## 使用套件 [html-parse-stringify](https://github.com/HenrikJoreteg/html-parse-stringify)
 
 > 在此執行一下這個套件 , 先有初步概念這個套件轉換出來的 AST Object 長得如何 ?
+
+套件其實很小 , 只由 parser . parseTag 跟 voidElements 所組成
+
+- voidElements - 表列所有的 voidElements 的 tag 名稱
+- parseTag - 將 tag 名稱取出做比對 , 決定 tag 的類型 < 文字 . vold . 一般 >
+- parser - 
+
 
 ## 分析套件的內容
 
