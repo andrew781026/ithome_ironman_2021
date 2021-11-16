@@ -8,7 +8,8 @@ const tt = `
     </textarea>
   </word-count>
 </div>
+<div class="footer"></div>
 `
 
 const w = parse(tt)
-console.log(w)
+// console.log(w)

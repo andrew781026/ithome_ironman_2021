@@ -100,6 +100,10 @@ function parse(html, options) {
 
   if (html.indexOf('<') !== 0) {
     var end = html.indexOf('<')
+
+    console.log('html:', html)
+    console.log('end:', end)
+
     result.push({
       type: 'text',
       content: end === -1 ? html : html.substring(0, end),
@@ -110,6 +114,7 @@ function parse(html, options) {
   var tagRE = /<[a-zA-Z\-\!\/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/g
 
   html.replace(tagRE, function (tag, index) {
+
     if (inComponent) {
       if (tag !== '</' + current.name + '>') {
         return
@@ -117,10 +122,12 @@ function parse(html, options) {
         inComponent = false
       }
     }
+
     var isOpen = tag.charAt(1) !== '/'
     var start = index + tag.length
     var nextChar = html.charAt(start)
     var parent
+    console.log('--------tag: ' + tag)
 
     if (isOpen) {
       level++
@@ -190,19 +197,21 @@ function parse(html, options) {
     }
   })
 
+  console.log('result:', result)
+
   return result
 }
 
-// 參考來源 : https://github.com/umdjs/umd/blob/master/templates/commonjsStrict.js
+// 參考來源 : https://leohxj.gitbooks.io/front-end-database/content/javascript-modules/about-umd.html
 (function (global, factory) {
 
   // AMD. Register as an anonymous module.
-  if (typeof define === 'function' && define.amd) define(factory);
+  if (typeof define === 'function' && define.amd) define([], factory);
 
   // CommonJS
   else if (typeof exports === 'object' && typeof module !== 'undefined') module.exports = factory();
 
   // Browser globals
-  else (global = global || self, global.parse = factory());
+  else global.parse = factory();
 
-}(typeof self !== 'undefined' ? self : this, () => parse));
+}(this, () => parse));
