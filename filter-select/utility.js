@@ -56,3 +56,98 @@ export const copyAttrToInput = (selector, inputEl) => {
 
   return selector;
 }
+
+export function createElementFromHTML(htmlString) {
+  var div = document.createElement('div');
+  div.innerHTML = htmlString.trim();
+
+  // Change this to div.childNodes to support multiple top-level nodes
+  return div.firstChild;
+}
+
+// 收集已設定的 debounce
+const debounceMap = {}
+
+function debounce(func, delay) {
+  var timer = null
+  return function() {
+    var context = this
+    var args = arguments
+    clearTimeout(timer)
+    timer = setTimeout(() => func.apply(context, args), delay)
+  }
+}
+
+/**
+ * 產生延遲一秒效果的 function
+ * <br>
+ * 參考資料 :
+ *  <a href='https://mropengate.blogspot.com/2017/12/dom-debounce-throttle.html'>
+ *    https://mropengate.blogspot.com/2017/12/dom-debounce-throttle.html
+ *  </a>
+ * <br>
+ * 使用範例 : getDebounceFunc('name', waitSec)(fn);
+ * @param debounceId
+ * @param wait
+ * @return {(function(): void)|*}
+ */
+export const getDebounceFunc = (debounceId, wait = 1000) => {
+
+  const tempFunc = debounceMap[`${debounceId}`]
+
+  if (tempFunc) return tempFunc
+  else {
+
+    const newTempFunc = debounce(func => func(), wait)
+    debounceMap[`${debounceId}`] = newTempFunc
+    return newTempFunc
+  }
+}
+
+function throttle(func, threshhold = 250) {
+  var last, timer
+  return function() {
+    var context = this
+    var args = arguments
+    var now = +new Date()
+    if (last && now < last + threshhold) {
+      clearTimeout(timer)
+      timer = setTimeout(function() {
+        last = now
+        func.apply(context, args)
+      }, threshhold)
+    } else {
+      last = now
+      func.apply(context, args)
+    }
+  }
+}
+
+// 收集已設定的 throttle
+const throttleMap = {}
+
+/**
+ * 產生每一秒呼叫一次的 function
+ * <br>
+ * 參考資料 :
+ *  <a href='https://mropengate.blogspot.com/2017/12/dom-debounce-throttle.html'>
+ *    https://mropengate.blogspot.com/2017/12/dom-debounce-throttle.html
+ *  </a>
+ * <br>
+ * 使用範例 : getThrottleFunc('name', waitSec)(fn);
+ * @param throttleId
+ * @param wait
+ * @return {(function(): void)|*}
+ */
+export const getThrottleFunc = (throttleId, wait = 1000) => {
+
+  const tempFunc = throttleMap[`${throttleId}`]
+
+  if (tempFunc) return tempFunc
+  else {
+
+    const newTempFunc = throttle(func => func(), wait)
+    throttleMap[`${throttleId}`] = newTempFunc
+    return newTempFunc
+  }
+}

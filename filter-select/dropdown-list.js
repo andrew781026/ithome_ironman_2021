@@ -1,3 +1,5 @@
+import {createElementFromHTML, getDebounceFunc} from './utility.js';
+
 // 下拉選單
 export class DropdownList extends HTMLElement {
 
@@ -17,10 +19,22 @@ export class DropdownList extends HTMLElement {
       get: (target, property) => target[property],
       set: (target, property, value) => {
         target[property] = value;
-        this._render()
-        return true
+
+        this._render();
+        return true;
       },
     })
+
+  position(selector) {
+
+    // 取得目前 element 的位置
+    const rect = selector.getBoundingClientRect();
+    const tooltipWidth = this.container.getBoundingClientRect().width;
+
+    this.container.style.display = 'inline-flex';
+    this.container.style.top = `${rect.top + rect.height + 8}px`;
+    this.container.style.left = `${rect.left + (rect.width - tooltipWidth) / 2}px`;
+  }
 
   open(filterSelector) {
 
@@ -33,15 +47,8 @@ export class DropdownList extends HTMLElement {
     this.state.filterSelector = newFilterSelector;
     this.state.show = true;
 
-
-    // 取得目前 element 的位置
-    const rect = filterSelector.getBoundingClientRect();
-    const tooltipWidth = this.container.getBoundingClientRect().width;
-    // console.log(rect.top, rect.right, rect.bottom, rect.left);
-
-    this.container.style.display = 'inline-flex';
-    this.container.style.top = `${rect.top + rect.height + 8}px`;
-    this.container.style.left = `${rect.left + (rect.width - tooltipWidth) / 2}px`;
+    // 設定 tooltip 的位置
+    this.position(newFilterSelector);
   }
 
   close = () => {
@@ -78,80 +85,93 @@ export class DropdownList extends HTMLElement {
   }
 
   // 追加單個 item 到 dropdownList 中
-  appendItemToListFn = ({$selector, $dropdown}) => ({text, value}) => {
+  appendItemToListFn = ({dropdown}) => ({text, value}) => {
 
-    const filterStr = $selector.find('input').val()
-    const selectedValue = $selector.attr('data-value')
+    const myTooltip = this
+    const selector = this.state.filterSelector
+    const filterStr = selector.querySelector('input').value
+    const selectedValue = selector.state.value
 
-    const $li = $(`<li class='fri-select-dropdown__item' data-value='${value}' data-text='${text}'></li>`)
+    const li = createElementFromHTML(`<li class='fri-select-dropdown__item' data-value='${value}' data-text='${text}'></li>`)
 
-    const $textWrap = $(`<span>${text}</span>`)
-    $textWrap.html(text.replace(/\S/g, '<font>$&</font>'))
-    $textWrap.children().each(function () {
+    // 有篩選到的文字 , 標成紅色
+    const textWrap = createElementFromHTML(`<span>${text}</span>`)
+    textWrap.innerHTML = text.replace(/\S/g, '<font>$&</font>')
+    const children = [...textWrap.children]
+    children.forEach(font => {
 
-      const $font = $(this)
-      const char = $font.text()
-      if (filterStr.indexOf(char) > -1) $font.addClass('text-red font-900')
+      const char = font.innerHTML
+      if (filterStr.indexOf(char) > -1) font.className = 'text-red font-900'
     })
 
-    $li.append($textWrap)
-    $li.click(() => { // 將
+    li.append(textWrap)
+    li.onclick = () => {
 
-      $selector.attr('data-value', $li.attr('data-value'))
-      $selector.find('input').val($li.attr('data-text'))
+      selector.state.value = li.getAttribute('data-value')
+      selector.querySelector('input').value = li.getAttribute('data-text')
       myTooltip.close()
-    })
+    }
 
-    if (value === selectedValue) $li.addClass('selected')
-    $dropdown.append($li)
+    if (value === selectedValue) li.classList.add('selected')
+    dropdown.append(li)
   }
 
-  renderDropdownList(div, selector) {
-    const $selector = $(selector)
-    const data = this.state.data
-    const $input = $selector.find('input')
-    const filterStr = $input.val()
-    const isRemoteLoading = $selector.attr('remote-loading')
+  renderDropdownList() {
 
-    div.html('')
+    console.log('renderDropdownList')
+
+    const div = this.container.querySelector('.fri-select-dropdown__list')
+    const selector = this.state.filterSelector
+    // this.appendItemToListFn({dropdown})
+
+    if (!this.state.filterSelector) return
+
+    const data = selector.state.json
+    const filterStr = selector.querySelector('input').value
+    const isRemoteLoading = selector.hasAttribute('remote-loading')
+
+    div.innerHTML = ''
 
     const filteredData = data.filter((obj) => obj.text.indexOf(filterStr) > -1)
 
     const appendCreateItem = () => {
 
-      const $li = $(`<li class='fri-select-dropdown__item' data-value='@@新增@@' data-text='新增'><span>新增</span></li>`)
-      $li.click(() => $selector.attr('data-mode', 'create'))
-      div.append($li)
+      const li = createElementFromHTML(`<li class='fri-select-dropdown__item' data-value='@@新增@@' data-text='新增'><span>新增</span></li>`)
+      li.onclick = () => selector.state.mode = 'create'
+      div.append(li)
     }
 
     // 載入中
     if (isRemoteLoading) {
 
-      const $li = $(`
+      const li = createElementFromHTML(`
           <li class='fri-select-dropdown__item info loader-item'>
             <i class='loader'></i>
             <span style='margin-left: 5px'>資料載入中...</span>
           </li>
         `)
 
-      div.append($li)
+      div.append(li)
 
       // 沒有預設選項 : 資料尚未載入
     } else if (data.length === 0) {
 
-      if ($selector.is('[allow-create]')) appendCreateItem()
-      else div.append($(`<li class='fri-select-dropdown__item info'><span>資料尚未載入</span></li>`))
+      if (selector.hasAttribute('allow-create')) appendCreateItem()
+      else div.append(createElementFromHTML(`<li class='fri-select-dropdown__item info'><span>資料尚未載入</span></li>`))
 
       // 篩選條件沒資料 : 無對應資料
     } else if (filteredData.length === 0) {
 
-      div.append($(`<li class='fri-select-dropdown__item info'><span>無對應資料</span></li>`))
+      div.append(createElementFromHTML(`<li class='fri-select-dropdown__item info'><span>無對應資料</span></li>`))
 
       // 有資料
     } else {
 
-      if ($selector.is('[allow-create]')) appendCreateItem()
+      if (selector.hasAttribute('allow-create')) appendCreateItem()
 
+      filteredData.forEach(this.appendItemToListFn({dropdown: div}))
+
+      /*
       const currentPage = parseInt($selector.attr('current-page')) || 1
       const nextPage = currentPage + 1
 
@@ -160,10 +180,9 @@ export class DropdownList extends HTMLElement {
       const pagedFilteredData = (filteredData.length > endNum) ? filteredData.slice(0, endNum) : filteredData
 
       pagedFilteredData.forEach(this.appendItemToListFn({$selector, $dropdown: $(div)}))
+       */
     }
 
-    // 設定 tooltip 的位置
-    myTooltip.position(selector) // Recalculates your jBoxes position.
   }
 
   // 設定下拉選單
@@ -193,16 +212,11 @@ export class DropdownList extends HTMLElement {
     // 產生下拉選單
     this.container.innerHTML = `
         <div class='fri-select-dropdown__wrap fri-scrollbar__wrap'>
-          <ul class='fri-select-dropdown__list'>
-            <li class='fri-select-dropdown__item info loader-item'>
-               <span>SOSOSOSOSOSO</span>
-            </li>
-            <li class='fri-select-dropdown__item info loader-item'>
-               <span>SOSOSOSOSOSO</span>
-            </li>
-          </ul>
+          <ul class='fri-select-dropdown__list'></ul>
         </div>
     `
+
+    this.renderDropdownList()
 
     // 將內容建立妥當 , 再設定顯示性 , 較不會出現寬高不正確的狀況
     if (this.state.show) this.container.style.display = 'block'
