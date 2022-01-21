@@ -78,6 +78,8 @@ day-13 介紹 , 當資料改變時 , 我們可以利用 _render 來更新 dom
 
 ## 分析套件的內容
 
+我們在下方解說 套件 [html-parse-stringify](https://github.com/HenrikJoreteg/html-parse-stringify)
+
 ```
 步驟提示 :
 1. 抓取所有的 tag 元素
@@ -127,9 +129,11 @@ console.log('matchArr=', arr)
  */
 ```
 
-![](https://i.imgur.com/cvi5xGl.png)
+> STEP 2: 利用 BFS (廣度優先搜尋) 的固定步驟來走過所有 tag 節點 
 
-> STEP 2: 遍歷取到的 tag 並取得其名稱(name).屬性(attrs).子層(children)
+
+
+> STEP 3: 遍歷取到的 tag 並取得其名稱(name).屬性(attrs).子層(children)
 
 ```javascript
 var parseTag = function (tag) {
@@ -237,3 +241,4 @@ var tagRE = /<[a-zA-Z\-\!\/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/g
 - [html-parse-stringify](https://github.com/HenrikJoreteg/html-parse-stringify)
 - [聊一聊 Javascript 中的 AST](https://juejin.cn/post/6844903960650711054)
 - [造轮子系列(三): 一个简单快速的html虚拟语法树(AST)解析器](https://segmentfault.com/a/1190000010759220)
+- [bfs 演算法 - 廣度優先搜尋 ](https://www.youtube.com/watch?v=uYcRlR0E_3s)

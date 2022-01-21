@@ -101,9 +101,6 @@ function parse(html, options) {
   if (html.indexOf('<') !== 0) {
     var end = html.indexOf('<')
 
-    console.log('html:', html)
-    console.log('end:', end)
-
     result.push({
       type: 'text',
       content: end === -1 ? html : html.substring(0, end),
@@ -127,7 +124,6 @@ function parse(html, options) {
     var start = index + tag.length
     var nextChar = html.charAt(start)
     var parent
-    console.log('--------tag: ' + tag)
 
     if (isOpen) {
       level++
@@ -196,8 +192,6 @@ function parse(html, options) {
       current = arr[level]
     }
   })
-
-  console.log('result:', result)
 
   return result
 }
