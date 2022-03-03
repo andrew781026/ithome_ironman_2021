@@ -64,11 +64,11 @@ console.log('c' in p, p.c); // false, '資料未定義~~'
 
 因為 newValue 存在 , 因此 handler.set 會將  target 物件改成 `{ a : 2 }`
 
-![img.png](img.png)
+![img.png](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-11/img.png)
 
 > p.b = undefined
 
-![img_1.png](img_1.png)
+![img_1.png](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-11/img_1.png)
 
 > console.log(p.a)
 
@@ -81,7 +81,7 @@ console.log('c' in p, p.c); // false, '資料未定義~~'
 
 因為 obj[a] 存在 , 因此 handler.get 回傳數值 2
 
-![img_2.png](img_2.png)
+![img_2.png](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-11/img_2.png)
 
 > console.log(p.b)
 
@@ -94,7 +94,7 @@ console.log('c' in p, p.c); // false, '資料未定義~~'
 
 因為 obj[b] 不存在 , 因此 handler.get 回傳字串 '資料未定義~~'
 
-![img_4.png](img_4.png)
+![img_4.png](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-11/img_4.png)
 
 ## 參考資料 :
 
