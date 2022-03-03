@@ -1,7 +1,6 @@
 # [Day11] - 利用 Proxy 來監聽資料的變化
 
-在 `connectedCallback` 初始建立時 , 我們需要處理 html 如何呈現
-在 `attributeChangedCallback` 屬性變更時 , 根據不同的屬性來做對應的處理
+在 `connectedCallback` 初始建立時 , 我們需要處理 html 如何呈現 在 `attributeChangedCallback` 屬性變更時 , 根據不同的屬性來做對應的處理
 
 我們何不效仿 React 做出一個根據 data 的 render 函式 ,
 
@@ -25,28 +24,80 @@
 > 下面我們來舉例說明一下
 
 ```javascript
-var handler = {
+const handler = {
 
-    // 取出資料時 , undefined 回傳 "資料未定義~~"
-    get: function(obj, prop) {
-        return obj[prop] || '資料未定義~~';
-    },
+  // 取出資料時 , undefined 回傳 "資料未定義~~"
+  get: function (obj, prop) {
+    return obj[prop] || '資料未定義~~';
+  },
 
-    // 更新的數值都 * 2
-    set: function(obj, prop, newValue) {
-       if (newValue) obj[prop] = 2 * newValue;
-    }
+  // 更新的數值都 * 2
+  set: function (obj, prop, newValue) {
+    if (newValue) obj[prop] = 2 * newValue;
+  }
 };
 
-var p = new Proxy({}, handler);
+const target = {};
+const p = new Proxy(target, handler);
 p.a = 1;
 p.b = undefined;
 
-console.log(p.a, p.b); // 2, '資料未定義~~'
+console.log(p.a); // 2
+console.log(target); // { a : 2 }
+console.log(p.b); // '資料未定義~~'
 console.log('c' in p, p.c); // false, '資料未定義~~'
 ```
+
+### 圖解
+
+下面我們用圖片來解說 , 上面的範例都發生了那些事情 ~
+
+> p.a = 1
+
+設定 p.a 的時候 , 我們會將數值丟給 handler.set 函式做處理
+
+並且 set 函式接收到的參數如下 :
+
+- obj = {} ( target 物件 )
+- prop = a ( 目前要設定的屬性 )
+- newValue = 1 ( 目前要設定的數值 )
+
+因為 newValue 存在 , 因此 handler.set 會將  target 物件改成 `{ a : 2 }`
+
+![img.png](img.png)
+
+> p.b = undefined
+
+![img_1.png](img_1.png)
+
+> console.log(p.a)
+
+取出 p.a 的時候 , Proxy 會透過 handler.get 函式做處理
+
+並且 get 函式接收到的參數如下 :
+
+- obj = { a : 2 } ( target 物件 )
+- prop = a ( 目前要取出的屬性 )
+
+因為 obj[a] 存在 , 因此 handler.get 回傳數值 2
+
+![img_2.png](img_2.png)
+
+> console.log(p.b)
+
+同理 , 取出 p.b 的時候 , Proxy 會透過 handler.get 函式做處理
+
+並且 get 函式接收到的參數如下 :
+
+- obj = { a : 2 } ( target 物件 )
+- prop = b ( 目前要取出的屬性 )
+
+因為 obj[b] 不存在 , 因此 handler.get 回傳字串 '資料未定義~~'
+
+![img_4.png](img_4.png)
 
 ## 參考資料 :
 
 - [Virtual DOM | 使用 ES6 Proxy 監聽資料的變化](https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/using-proxy-to-monitor-object-e57af6326d73)
 - [MDN 文件 - Proxy](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
+- [JavaScript Proxy](https://www.javascripttutorial.net/es6/javascript-proxy/)
