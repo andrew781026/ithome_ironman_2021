@@ -242,3 +242,4 @@ var tagRE = /<[a-zA-Z\-\!\/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/g
 - [聊一聊 Javascript 中的 AST](https://juejin.cn/post/6844903960650711054)
 - [造轮子系列(三): 一个简单快速的html虚拟语法树(AST)解析器](https://segmentfault.com/a/1190000010759220)
 - [bfs 演算法 - 廣度優先搜尋 ](https://www.youtube.com/watch?v=uYcRlR0E_3s)
+- [the-super-tiny-compiler](https://github.com/jamiebuilds/the-super-tiny-compiler/blob/master/the-super-tiny-compiler.js)
