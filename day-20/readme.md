@@ -1,5 +1,7 @@
 # [Day20] - Vue 的 Html 字串處理 ( Html String to Ast Object )
 
+// 這篇改成介紹套件的使用 & 研究 input 跟 output
+
 day-13 介紹 , 當資料改變時 , 我們可以利用 _render 來更新 dom
 
 可是如果每次資料改變時 , 都需要 rootDiv.innerHTML 來重新設定整個 dom ,

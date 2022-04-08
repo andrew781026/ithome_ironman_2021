@@ -1,47 +1,55 @@
-# [Day26] - Angular Component to Web Component
+# [Day26] - 自製 AST 分析器 - 深入解析 html-parse-stringify (一)
 
-後來發現 , 之前說明了 Vue . React Component 如何變成 Web Component 但是忘記說明 Angular Component 如何轉換成 Web Component , 今天補上這個的說明吧 !
-
-我們可以利用官方的 [Angular-Element](https://angular.io/guide/elements) 來製作 Web Component
-
-![](https://i.imgur.com/a9aI9PQ.png)
-
-----
-
-1.安裝 angular CLI tool  
-2.建立專案 `$ ng new angular-web-component --routing=false --skip-tests=true --style=css`  
-3.建立 component `cd angular-web-component && ng generate component info-box`   
-4.安裝 `@angular/elements` 套件到專案中 `ng add @angular/elements`   
-5.調整 info-box 元件的內容 < in src/app/app.module.ts >
-
-i. @NgModule 的區塊做改變 , 拿掉 
-
-```typescript
-// src/app/app.module.ts
-
-import { createCustomElement } from '@angular/elements';
-
-@NgModule({
-  bootstrap: [],
-  entryComponents: [CounterComponent]
-})
-export class AppModule {
-  constructor(private injector: Injector) {
-
-  }
-  ngDoBootstrap() {
-    const counterElement = createCustomElement(CounterComponent, { injector: this.injector });
-    customElements.define('my-counter', counterElement);
-  }
-}
-
+```javascript
+/*jshint -W030 */
+var tagRE = /<[a-zA-Z\-\!\/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/g
 ```
 
-6. 將 web component 建立出來 `ng build --output-hashing=none`
+當我們有一個 html 字串時 , 我們可以利用 tagRE 將其中的 tag 都抓出來
 
-## 參考資料
+```javascript
+/*jshint -W030 */
+var tagRE = /<[a-zA-Z\-\!\/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/g
+```
 
-- [Angular elements overview](https://angular.io/guide/elements)
-- [Angular + Web Components: a complete guide](https://indepth.dev/posts/1116/angular-web-components-a-complete-guide)
-- [[Angular進階議題] Angular Elements 簡介](https://wellwind.idv.tw/blog/2018/05/08/angular-advanced-angular-elements-intro/)
-- [Angular Web Components](https://www.codementor.io/blog/angular-web-components-8e4n0r0zw7)
+得到的 match 結果如下 : 
+
+```
+root
+  ├─ <input>
+  ├─ <div>
+  ├─ <p>
+  ├─ [text-node] 小 7 店鋪 
+  ├─ </p>
+  ├─ [text-node] 歡迎光臨
+  └─ </div>
+```
+
+可能有人會覺得奇怪 , 因為要分析結構時 , 
+
+直覺是
+
+1. 找出 startTag 跟其對應的 closeTag 
+2. 取得對應的 startIndex . endIndex
+3. 再找其內部的 children 元素
+
+-----
+
+可是第一步的 closeTag 尋找有諸多的麻煩 , 因此我們利用一個事實
+
+```
+如果下一個 tag 不是 void element 或是 closeTag
+那下一個 tag 必定是前一個 tag 的子層
+```
+
+
+目標的 AST 結構
+
+```
+root
+  ├─ <input>
+  ├─ <div>
+  │    ├─ <p>
+  │    │   └─ [text-node] 小 7 店鋪 
+  │    └─ [text-node] 歡迎光臨
+```
