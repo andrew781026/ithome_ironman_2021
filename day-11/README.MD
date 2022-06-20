@@ -4,7 +4,7 @@
 
 我們何不效仿 React 做出一個根據 data 的 render 函式 ,
 
-建立 render 函式前 , 我們可能需要有一個元件的資料中心 ( React 是 this.state / Vue 是 )
+建立 render 函式前 , 我們可能需要有一個元件的資料中心 ( React 是 this.state / Vue 是 vm )
 
 然後資料變更時 , 會通知元件需要觸發 render 函式
 

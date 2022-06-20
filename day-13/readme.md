@@ -78,7 +78,7 @@ class MyButton01 extends HTMLElement {
 window.customElements.define('my-button-01', MyButton01);
 ```
 
-![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 將昨天學到的 Proxy 建立 
+![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 將 [day-11] 學到的 Proxy 建立 
 
 > this.data = new Proxy 
 
