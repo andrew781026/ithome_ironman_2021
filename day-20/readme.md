@@ -97,3 +97,5 @@ function compiler(input) {
 
 - [書籍 - Vue.js 設計與實踐](https://www.tenlong.com.tw/products/9787115583864)
 - [the-super-tiny-compiler](https://github.com/jamiebuilds/the-super-tiny-compiler/blob/master/the-super-tiny-compiler.js)
+- [前端大概要的知道 AST](https://www.gushiciku.cn/pl/aEfc/zh-tw)
+- [AST explorer](https://astexplorer.net/)
