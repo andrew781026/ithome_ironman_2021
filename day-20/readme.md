@@ -131,9 +131,51 @@ console.log('matchArr=', arr)
  */
 ```
 
-> STEP 2: 利用 BFS (廣度優先搜尋) 的固定步驟來走過所有 tag 節點 
+> STEP 2: 利用 DFS (深度優先搜尋) 的固定步驟來走過所有 tag 節點
 
+---> 需要舉一些例子 , 跟放一些圖片
 
+I.遇到 <xxx 往內走一層 ,    
+II.遇到尾巴 /xxx> . --> . void elements , 必定不會有 child 不往內走   
+III.遇到尾巴 /xxx> 向外走一層   
+IV.這樣就可以走完全部的的 TAG 了！
+
+```javascript
+const parseHTML = (html) => {
+
+  // regex show the array
+  const tagRE = /<[a-zA-Z\-\!\/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/g
+
+  const result = html.match(tagRE);
+
+  const isEndTag = tag => tag.startsWith('</');
+
+  // root element must be template tag 
+  let parent, current, level;
+  let levelArr = [];
+
+  for (let i = 0; i < result.length; i++) {
+
+    // check it is end tag or not 
+    if (!isEndTag(tag)) {
+
+      parent = current // 將前 current 
+      current = tag
+
+      // 需要加一層
+      levelArr[level + 1] = tag
+    }
+
+    // is endTag
+    else {
+
+      current = parent; // 新 current 是目前 parent
+      parent = levelArr[level - 1]; // levelArr 中上面那個
+      level--;
+    }
+  }
+}
+```
 
 > STEP 3: 遍歷取到的 tag 並取得其名稱(name).屬性(attrs).子層(children)
 
