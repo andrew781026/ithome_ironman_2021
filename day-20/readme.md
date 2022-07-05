@@ -1,18 +1,114 @@
 # [Day20] - Vue 的 Html 字串處理 ( Html String to Ast Object )
 
-// 這篇改成介紹套件的使用 & 研究 input 跟 output
-
 day-13 介紹 , 當資料改變時 , 我們可以利用 _render 來更新 dom
+
+每次更新 isLogin 的資料時 , 就會用 innerHTML 更新 dom
+
+目前 isLogin 資料只有跟 `<購買 BTN>` 是有相關的 , 但是我們資料變更時 , 都用 innerHTML 更新全部的 dom
+
+因此我們在 devtool 中觀察時會發現與 isLogin 資料沒相關的 h2 也被重新 render 了！
+
+![](./imgs/innerHTML-update.jpg)
+
+也就是說 , isLogin 資料改變時 , 會發生下圖的內容
+
+![](./imgs/data-login-change-process-innerHTML.jpg)
+
+如果 html 的結構再大一些 , 每次都需要重新 render 全部的 dom , 這種方式肯定會讓變更又慢又久
+
+有沒有什麼方式 , 可以讓我們只重新 render 資料變動的部分呢 ?
+
+這時就可以引入 Virtual DOM 的概念 , 追蹤變化的部分 , 只重新 render 變化的部分
+
+![](./imgs/virtual-dom.png)
+
+也就是說 , 在 htmlString -> innerHTML 中間有一個東東 , 然後可以比較 BEFORE 跟 AFTER 的資料差異 , 再根據差異的做變更
+
+這個東東就是 模板 AST
+
+```js
+const oldAst = {
+  type: "tag",
+  tag: "ul",
+  attrs: {
+    id: "list"
+  },
+  children: [
+    {
+      type: "tag",
+      tag: "li",
+      children: [
+        {
+          type: "text",
+          text: "Item_1"
+        }
+      ]
+    },
+    {
+      type: "tag",
+      tag: "li",
+      children: [
+        {
+          type: "text",
+          text: "Item_2"
+        }
+      ]
+    }
+  ]
+}
+```
+
+不過要如何實作呢？
+
+
+你可以發現 模板ＡＳＴ 跟你的 ＨＴＭＬ元素 是一一對應的
+因此你可以了解新的流程會是如下所示
+
+![](./imgs/parseFlow.jpg)
+
+也就是說新的流程會如下所示 
+
+![](./imgs/render-flow-change.jpg)
+
+接下來幾天 , 我們會介紹
+
+1.如何將 HtmlString 轉換成模板 AST ( only tag )
+2.如何將模板 AST 轉換成模板資料 ( plus attr )
+skip : some wired part solving (請看書籍)
+3.建立 h function
+4.比對 diff
+5.patch update dom
+
+
+
+> 20 日 , 就處理到了 Vue 的 Html 字串處理 ( Html String to 模板 AST )
+> 21 日 , 建立函式 createElement 將模板轉成 dom
+
+「在 diff 函式的後方」  
+也許有人會不服氣 , 不論是 innerHTML 或是 模板AST 都需要做 diff 的比對 , 只是一個是在 JS 的區塊 , 一個是在 DOM 的區塊
+下面我們來做一個實驗
+
+可是 Virtual DOM 要如何實作呢 ? 在 htmlString -> innerHTML 中間插一個 `模板 AST`
+
+之後我們就只需要比對出 `OLD 模板 AST` 和 `NEW 模板 AST` 相異的部分 , 來進行 render
+( 雖然都是全文 compare , 但是 JS 的 compare 比 innerHTML 較快 )
+
+-----
+html template -> { type : 'tag' , tagName:'span' , children : [ ... ] } -> h(xxx) -> dom
+
+-----
 
 可是如果每次資料改變時 , 都需要 rootDiv.innerHTML 來重新設定整個 dom ,
 
-當 Vue component 很多層時 , 資料一有變化 , 就需要等很久 ,
+當 Vue component 很多層時 , 資料一有變化 , innerHTML 就會跑很久 , 才更新
 
-因此我們需要有 Virtual Dom ( Ast Object ) 用於比對變化 ,
+因此我們需要有 Virtual Dom ( Ast Object ) 監控更改前與更改後資料的變化 , 來更新 dom ,
 
-再針對變化的部分 , 去更新對應的 element 即可 , 這樣在 render 時 , 也許可以加快速度
+data 更新 -> innerHTML 更新 -> dom 更新
 
-那在開始之前 , 我們先更深入了解一下 Html Element 吧 !
+更改後 -> data 更新 -> 比對 ast dom tree -> dom 更新
+
+要建立模板 ast 所以需要將 htmlString 轉成 ast object
 
 ## Html Element 的類型
 
@@ -280,12 +376,14 @@ var tagRE = /<[a-zA-Z\-\!\/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/g
 
 ## 參考資料
 
+- [Vue.js 30天隨身包系列_Day04 - Virtual DOM & V-Node](https://ithelp.ithome.com.tw/articles/10193220)
+- [書籍 - Vue.js 設計與實踐](https://www.tenlong.com.tw/products/9787115583864)
 - [Vue learning – Convert HTML string to AST, how to convert HTML string to ast array structure](https://developpaper.com/vue-learning-convert-html-string-to-ast-how-to-convert-html-string-to-ast-array-structure/)
 - [vue学习—Convert HTML string to AST，如何将html字符串转换为ast数组结构](https://segmentfault.com/a/1190000018277868)
 - [html-parse-stringify](https://github.com/HenrikJoreteg/html-parse-stringify)
 - [聊一聊 Javascript 中的 AST](https://juejin.cn/post/6844903960650711054)
 - [造轮子系列(三): 一个简单快速的html虚拟语法树(AST)解析器](https://segmentfault.com/a/1190000010759220)
-- [bfs 演算法 - 廣度優先搜尋 ](https://www.youtube.com/watch?v=uYcRlR0E_3s)
+- [bfs 演算法 - 廣度優先搜尋](https://www.youtube.com/watch?v=uYcRlR0E_3s)
 - [the-super-tiny-compiler](https://github.com/jamiebuilds/the-super-tiny-compiler/blob/master/the-super-tiny-compiler.js)
 - [前端大概要的知道 AST](https://www.gushiciku.cn/pl/aEfc/zh-tw)
 - [AST explorer](https://astexplorer.net/)
