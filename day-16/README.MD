@@ -1,4 +1,4 @@
-# [Day17] - 在 Vue 中引入現成的 Web Component
+# [Day16] - 在 Vue 中引入現成的 Web Component
 
 當我們拿到一個現有的 Web Component 時 , 如果直接在 Vue 專案中使用會抱錯
 
@@ -8,7 +8,7 @@
 
 ----
 
-![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 利用 vue-cli 建立一個新專案 
+![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 利用 vue-cli 建立一個新專案
 
 ```shell script
 $ vue create vue-web-component-project
@@ -144,7 +144,7 @@ $ npm run build
 ![word-count](https://i.imgur.com/SHKqvKV.gif)
 
 
-## 參考資料 
+## 參考資料
 
 - [Integrate Web Components with Your Vue.js App](https://www.digitalocean.com/community/tutorials/vuejs-vue-integrate-web-components)
 - [youtube - Live Character Counter using CSS & Javascript | Mini Project](https://www.youtube.com/watch?v=uMxvRVfqyc8)

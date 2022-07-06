@@ -1,83 +1,119 @@
-# [Day15] - 利用 Vue CLI 3 來建立 Web Components 的 JS 檔
+# [Day15] - 利用 [direflow.io](https://github.com/Silind-Software/direflow) 將 React Components 轉換成 Web Components
 
-前面花了大把的時間 , 來建立跟 Vue 很像的 Web Components 
+昨天解說 Vue 如何製作 Web-Component 今天來說明一下 , 
 
-其實 Vue CLI 也有提供建立 web-component 的方法
+那 React 如何製作 Web-Component 呢 ? 可以利用 [direflow.io](https://github.com/Silind-Software/direflow)
 
-下方來說明一下 , 
+![](https://camo.githubusercontent.com/5c2cbc9bda1c32e225f6487093d5b923e67663d62d0892508439cb3580f18d44/68747470733a2f2f73696c696e642d73332e73332e65752d776573742d322e616d617a6f6e6177732e636f6d2f64697265666c6f772f64697265666c6f772d636f6d706f6e656e742d6e65772d626173652e706e67)
 
-![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 利用 vue-cli 建立一個新專案 
+----
+
+![one](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/one.png) 利用 [direflow.io](https://github.com/Silind-Software/direflow) 的 `direflow create` 建立專案
+
+> 參考 [direflow.io - 官方網站](https://direflow.io/get-started)
 
 ```shell script
-$ vue create vue-web-component-project
+$ npm i -g direflow-cli
+$ direflow create my-app
+$ cd my-app
+$ npm start
 ```
 
-![利用Vue CLI 3 , 建立 Vue 2](https://i.imgur.com/LP6N8oW.png)
+![create react app](https://miro.medium.com/max/700/1*BarMohttHm6rUB4NiiTsVg.gif)
 
-![建立專案中...](https://i.imgur.com/mNuzsp9.png)
+![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 建立一個 React Component
 
-![two](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/two.png) 建立一個 .vue 檔當作要生成的 web-component
 
-```vue
-<template>
-  <div>
-    <h1>My Vue Web Component</h1>
-    <div>{{ msg }}</div>
-  </div>
-</template>
-<script>
-  export default {
-    props: ['msg']
+```jsx
+import React from 'react';
+import PropTypes from 'prop-types';
+import {Styled} from 'direflow-component';
+import styles from './App.css';
+
+class App extends React.Component {
+
+  state = {timer: 10}
+
+  constructor() {
+    super();
+
+    console.log(this.props)
+    this.state.timer = this.props?.timer || 10
   }
-</script>
+
+  componentDidMount() {
+
+    setInterval(() => this.setState({timer: this.state.timer - 1}), 1000)
+  }
+
+  render() {
+
+    return (
+      <Styled styles={styles}>
+        <div className="box">
+          <div className="circle circle1"></div>
+          <div className="circle circle2"></div>
+          <div className="number">{this.state?.timer}</div>
+          <div className="niddle"></div>
+        </div>
+      </Styled>
+    );
+  }
+}
+
+App.defaultProps = {timer: 10,}
+
+App.propTypes = {
+  timer: PropTypes.number,
+};
+
+export default App;
 ```
 
-![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 利用 `build` 指令建立 web component
+![three](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/three.png) 利用 `DireflowComponent.create` 來設定要建立的 Web Component
 
-```shell
-$ vue-cli-service build --target wc --name my-custom-element [entry]
+```javascript
+import { DireflowComponent } from 'direflow-component';
+import App from './App.jsx';
+
+export default DireflowComponent.create({
+  component: App,
+  configuration: {
+    tagname: 'film-countdown',
+  },
+});
 ```
 
-解說一下上方的一些參數
+![four](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-06/number-icon/four.png) 利用 `npm run build` 建立 Web Component
 
-- --target : wc 代表建立 Web-Component
-- --name : Web-Component 的名稱 ( tag-name )
-- [entry] : 入口 , 可以是一个 .js 或一个 .vue 檔案。如果没有指定入口，預設使用 src/App.vue。
+```shell script
+$ npm run build
+```
 
-執行上述指令後 , 我們就會在 dist 資料夾中 , 得到 `demo.html` 跟 `my-custom-element.js` 這兩個檔案 
+我們看到 build 資料夾中多了一個 `direflowBundle.js` 的檔案
 
-![](https://i.imgur.com/CXwbcsW.png)
+![build-folder](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-16/build-folder.png)
 
-如果想要在 html 中使用建立出來的 component , 只要跟 `demo.html` 相同 , 引入 `vue` 跟 `my-custom-element.js` 即可使用
+將建立出來的 `direflowBundle.js` 引入到 html 中 , 即可使用 `<film-countdown>` 這個 custom-tag
 
 ```html
-<!-- 引入 vue -->
-<script src="https://unpkg.com/vue"></script>
+<body style="margin: 0">
 
-<!-- 引入 web component -->
-<script src="./my-custom-element.js"></script>
+<film-countdown timer="40"></film-countdown>
 
-<!-- 使用建立出來的 web component -->
-<my-custom-element></my-custom-element>
+<script src="./direflowBundle.js"></script>
+</body>
 ```
 
-如果不想要產出的 web component 需要使用者引入 vue 才能用 , 
+## 成果
 
-可以利用 `--inline-vue` 這個參數將 Vue 放到你的 web component 中
+![count-down](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-16/count-down.gif)
 
-```shell
-$ vue-cli-service build --target wc --name my-custom-element [entry] --inline-vue
-```
 
-> ### 注意对 Vue 的依赖
->  
-> 在 Web Components 模式中，Vue 是外置的。
-> 这意味着包中不会有 Vue，即便你在代码中导入了 Vue。
-> 这里的包会假设在页面中已经有一个可用的全局变量 Vue。
-> 要避免此行为，可以在 build 命令中添加 --inline-vue 标志。
+如果想直接體驗成果 , 請到 [react-web-component.html](https://andrew781026.github.io/ithome_ironman_2021/day-16/index.html) 查看
 
-## 參考資料 
 
-- [Vue CLI - 构建目标](https://cli.vuejs.org/zh/guide/build-targets.html#%E5%BA%94%E7%94%A8)
-- [Vue and Web Components](https://v3.vuejs.org/guide/web-components.html)
-- [Your First Web Component with Vue.js](https://medium.com/tunaiku-tech/your-first-web-component-with-vue-js-3386cffc0b1f)
+## 參考資料
+
+- [React and Web Components](https://itnext.io/react-and-web-components-3e0fca98a593)
+- [youtube - Film Countdown Timer](https://www.youtube.com/watch?v=Mo0WpdsGuXA&t=447s)
