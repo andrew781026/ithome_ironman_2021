@@ -37,7 +37,15 @@ const middleware = store => next => action => {
 
 const store = createStore(todoApp);
 
-const unsubscribe = store.subscribe(() => console.log( 'logState in listener ,', store.getState()));
+const body = document.body;
+
+const unsubscribe = store.subscribe(() => {
+  console.log('logState in listener ,', store.getState())
+  body.innerHTML = `
+   <div>The Todos List :</div>
+   ${store.getState().todos.map((todo, index) => `<div>${index} - ${todo.text}</div>`).join('')}
+  `
+});
 
 // 記錄初始 state
 console.log('initState=', store.getState())

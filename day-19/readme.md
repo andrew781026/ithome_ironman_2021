@@ -89,3 +89,4 @@ connect(mapStateToProps, mapDispatchToProps)(Component);
 
 - [qinjunyi/myRedux](https://github.com/qinjunyi/MyRedux)
 - [lipeiwei-szu/myRedux](https://github.com/lipeiwei-szu/MyRedux)
+- [reduxjs/redux - v3.0](https://github.com/reduxjs/redux/blob/v3.0.0/src/createStore.js)
