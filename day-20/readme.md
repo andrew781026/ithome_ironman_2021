@@ -2,11 +2,10 @@
 
 day-13 介紹 , 當資料改變時 , 我們可以利用 _render 來更新 dom
 
-每次更新 isLogin 的資料時 , 就會用 innerHTML 更新 dom
+每次更新 isLogin 的資料時 , 就會用 innerHTML 更新全部的 dom
 
-目前 isLogin 資料只有跟 `<購買 BTN>` 是有相關的 , 但是我們資料變更時 , 都用 innerHTML 更新全部的 dom
 
-因此我們在 devtool 中觀察時會發現與 isLogin 資料沒相關的 h2 也被重新 render 了！
+當我們用 devtool 中觀察時會發現好多區壞都被 reRender 連與 isLogin 資料沒相關的 h2 也被 reRender 了！
 
 ![](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-20/imgs/innerHTML-update.jpg) 
 
@@ -14,13 +13,82 @@ day-13 介紹 , 當資料改變時 , 我們可以利用 _render 來更新 dom
 
 ![](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-20/imgs/data-login-change-process-innerHTML.jpg)
 
-如果 html 的結構再大一些 , 每次都需要重新 render 全部的 dom , 這種方式肯定會讓變更又慢又久
+可是不對啊！ 目前 isLogin 資料只有跟 `<購買 BTN>` 是有相關的 , 我們資料變更時 , 只要 reRender `<購買 BTN>` 就 OK 吧！
 
-有沒有什麼方式 , 可以讓我們只重新 render 資料變動的部分呢 ?
+那有沒有什麼方式 , 可以讓我們只 reRender 資料變動的部分呢 ?
 
-這時就可以引入 Virtual DOM 的概念 , 追蹤變化的部分 , 只重新 render 變化的部分
+這時往 react 看過去 , 就會發現有個 Virtual DOM 的概念 , 追蹤變化的部分 , 只重新 render 變化的部分
 
 ![](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-20/imgs/virtual-dom.png)
+
+是的 , 這個東西很讚 , 但是我們有沒有辦法不引入 `前端框架` 來使用 Virtual DOM 呢 ?
+
+A : 可以 , 那就是我們自行時做一個簡易的 Virtual DOM 的架構 , 在我們的 webcomponent 中 , 這樣就不需要引入前端框架了 
+
+接下來來說明一下 , 要如何將 Virtual DOM 的架構放到我們的 webcomponent 中？
+
+htmlString -> (tokenizer) -> tagList -> (parser) -> template_AST -> (transform) -> JS_AST < vnode > -> (render) -> DOM 
+
+說明一下 , 轉出來的中間產物大概長怎樣 , 才能了解 function 要如何實作
+
+```javascript
+let htmlString = `
+  <ul>
+    <li>Item_1</li>
+    <li>Item_2</li>
+  </ul>
+`
+
+let tagList = [
+  { type:'tagStart' , tagName:'ul' },
+  { type:'tagStart' , tagName:'li' },
+  { type:'text' , content:'Item_1' },
+  { type:'tagEnd' , tagName:'li' },
+  { type:'tagStart' , tagName:'li' },
+  { type:'text' , content:'Item_2' },
+  { type:'tagEnd' , tagName:'li' },
+  { type:'tagEnd' , tagName:'ul' }
+]
+
+let template_AST = [
+  {
+    type: "tag",
+    tag: "ul",
+    children: [
+      {
+        type: "tag",
+        tag: "li",
+        children: [
+          {
+            type: "text",
+            text: "Item_1"
+          }
+        ]
+      },
+      {
+        type: "tag",
+        tag: "li",
+        children: [
+          {
+            type: "text",
+            text: "Item_2"
+          }
+        ]
+      }
+    ]
+  }
+]
+
+// vnode = JS_AST  
+let JS_AST = [
+    h("ul", [
+      h("li", "Item_1"),
+      h("li", "Item_2")
+    ])
+]
+```
+
+---
 
 也就是說 , 在 htmlString -> innerHTML 中間有一個東東 , 讓我們可以比對 BEFORE 跟 AFTER 的資料差異 , 再根據差異的做變更
 
