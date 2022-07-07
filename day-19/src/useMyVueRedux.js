@@ -33,17 +33,15 @@ createApp({
     return {attrs: window.useReducer(store)}
   },
   methods: {
-    addTodo(text) {
+    add(text) {
       store.dispatch(window.addTodo(text))
     }
   },
   template: `
     <div>
     <h1>Vue SFC with Redux</h1>
-    <button @click="addTodo('more todos')">追加代辦事項</button>
-    <p v-for="(todo,idx) in attrs.todos">🇿🇼 {{ idx }} - {{ todo }}</p>
+    <button @click="add('more todos')">追加代辦事項</button>
+    <p v-for="(todo,idx) in attrs.todos">🇿🇼 第 {{ idx }} 個待辦事項 - {{ todo }} </p>
     </div>
   `
 }).mount('#root')
-
-console.log('mounting;')
