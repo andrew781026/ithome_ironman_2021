@@ -92,8 +92,7 @@ const tokenizer = (htmlString) => {
   return tagList;
 }
 
-
-const test01 = `<div id="ss">Hello World</div>`;
+const test01 = `<div>Hello World</div>`;
 console.log(tokenizer(test01))
 
 const test02 = `<div id="ss">Hello World</div>>`;
@@ -108,6 +107,14 @@ const test03 = `<<div id="ss">Hello World</div>`;
 
 try {
   console.log(tokenizer(test03))
+} catch (e) {
+  console.error(e.message)
+}
+
+const test04 = `<div id="ss">Hello World</div>>`;
+
+try {
+  console.log(tokenizer(test04))
 } catch (e) {
   console.error(e.message)
 }
