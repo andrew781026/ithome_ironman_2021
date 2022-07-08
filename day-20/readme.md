@@ -21,15 +21,23 @@ day-13 介紹 , 當資料改變時 , 我們可以利用 _render 來更新 dom
 
 ![](https://raw.githubusercontent.com/andrew781026/ithome_ironman_2021/master/day-20/imgs/virtual-dom.png)
 
-是的 , 這個東西很讚 , 但是我們有沒有辦法不引入 `前端框架` 來使用 Virtual DOM 呢 ?
+是的 , 這個東西很讚 , 但是我們有沒有辦法不引入 `前端框架_御三家` 來使用 Virtual DOM 呢 ?
+
+![御三家圖片]()
 
 A : 可以 , 那就是我們自行時做一個簡易的 Virtual DOM 的架構 , 在我們的 webcomponent 中 , 這樣就不需要引入前端框架了 
 
 接下來來說明一下 , 要如何將 Virtual DOM 的架構放到我們的 webcomponent 中？
 
+我們複習一下上面的圖片會發現
+
+htmlString -> (compiler) ->  Virtual DOM -> (renderer) ->  DOM
+
+如果更細的拆解 , 我們可以將 compiler 拆分出 tokenizer . parser & transform 三個步驟
+
 htmlString -> (tokenizer) -> tagList -> (parser) -> template_AST -> (transform) -> JS_AST < vnode > -> (render) -> DOM 
 
-說明一下 , 轉出來的中間產物大概長怎樣 , 才能了解 function 要如何實作
+說明一下 , 轉出來的中間產物大概長怎樣 , 我們更清楚要做出的 function 有的功能是什麼 ? 並將之分析出來
 
 ```javascript
 let htmlString = `
