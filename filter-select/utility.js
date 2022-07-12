@@ -1,4 +1,3 @@
-
 // 參考來源 =Summer。桑莫。夏天= : https://cythilya.github.io/2017/03/12/uuid/
 export function _uuid() {
   var d = Date.now();
@@ -70,7 +69,7 @@ const debounceMap = {}
 
 function debounce(func, delay) {
   var timer = null
-  return function() {
+  return function () {
     var context = this
     var args = arguments
     clearTimeout(timer)
@@ -86,7 +85,7 @@ function debounce(func, delay) {
  *    https://mropengate.blogspot.com/2017/12/dom-debounce-throttle.html
  *  </a>
  * <br>
- * 使用範例 : getDebounceFunc('name', waitSec)(fn);
+ * 使用範例 : getDebounceFunc('name-input', 500)( () => userName = inputEl.value)
  * @param debounceId
  * @param wait
  * @return {(function(): void)|*}
@@ -95,7 +94,8 @@ export const getDebounceFunc = (debounceId, wait = 1000) => {
 
   const tempFunc = debounceMap[`${debounceId}`]
 
-  if (tempFunc) return tempFunc
+  if (tempFunc && wait) throw new Error(`debounce(${debounceId}) is already exist`)
+  else if (tempFunc) return tempFunc
   else {
 
     const newTempFunc = debounce(func => func(), wait)
@@ -106,13 +106,13 @@ export const getDebounceFunc = (debounceId, wait = 1000) => {
 
 function throttle(func, threshhold = 250) {
   var last, timer
-  return function() {
+  return function () {
     var context = this
     var args = arguments
     var now = +new Date()
     if (last && now < last + threshhold) {
       clearTimeout(timer)
-      timer = setTimeout(function() {
+      timer = setTimeout(function () {
         last = now
         func.apply(context, args)
       }, threshhold)
@@ -143,7 +143,8 @@ export const getThrottleFunc = (throttleId, wait = 1000) => {
 
   const tempFunc = throttleMap[`${throttleId}`]
 
-  if (tempFunc) return tempFunc
+  if (tempFunc && wait) throw new Error(`throttle(${throttleId}) is already exist`)
+  else if (tempFunc) return tempFunc
   else {
 
     const newTempFunc = throttle(func => func(), wait)
