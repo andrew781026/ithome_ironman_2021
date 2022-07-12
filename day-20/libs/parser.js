@@ -4,7 +4,7 @@
  *
  *   [{ type: 'tagStart', tagName: 'div' }, ...]   =>   { type: 'tag', tag:'div', children: [...] }
  * @param tagList {array} - [{ type: 'tagStart', tagName: 'div' }, ...]
- * @returns {object} { type: 'tag', tag:'div', children: [...] }
+ * @returns {object} ast = { type: 'tag', tag:'div', children: [...] }
  */
 const parser = tagList => {
 
@@ -51,4 +51,21 @@ const tagList01 = [
   { type: 'tagEnd', tagName: 'div' }
 ]
 
-console.log(parser(tagList01));
+console.log(JSON.stringify(parser(tagList01), null, 2));
+/*
+    {
+      "type": "Root",
+      "children": [
+        {
+          "type": "tag",
+          "tag": "div",
+          "children": [
+            {
+              "type": "text",
+              "content": "Hello World"
+            }
+          ]
+        }
+      ]
+    }
+ */

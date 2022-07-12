@@ -9,8 +9,7 @@
 <div id="app"></div>
 
 <script>
-  // renderer 渲染器
-  const h = (tagName, children) => {
+  const createElement = (tagName, children) => {
 
     const element = document.createElement(tagName)
 
@@ -30,9 +29,9 @@
     document.querySelector(selector).appendChild(element)
   }
 
-  const App = h("ul", [
-    h("li", "Item_1"),
-    h("li", "Item_2")
+  const App = createElement("ul", [
+    createElement("li", "Item_1"),
+    createElement("li", "Item_2")
   ]);
 
   mountIt('#app', App);

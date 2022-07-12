@@ -11,12 +11,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use((req, res) => {
-
-  console.log(JSON.stringify(req.body));
-  res.send('Hello World!');
-})
-
 app.get('/payment', (req, res) => {
 
   const method = req.query.method;
@@ -43,10 +37,12 @@ app.get('/payment', (req, res) => {
     }
   };
 
-  return res.json({
-    method,
-    [method]: result[method]
-  });
+  return setTimeout(() => {
+    res.json({
+      method,
+      [method]: result[method]
+    })
+  }, 3000);
 })
 
 app.put('/payment', (req, res) => {
@@ -56,6 +52,12 @@ app.put('/payment', (req, res) => {
   return res.status(204).json();
 })
 
+app.use((req, res) => {
+  res.send('Hello World!');
+})
+
 const server = app.listen(port, () => {
   console.log(`access api at http://localhost:${server.address().port}`);
 });
+
+// 0800-021-818 - 櫻花淨水器客服專線

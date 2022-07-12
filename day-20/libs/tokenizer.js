@@ -111,7 +111,7 @@ try {
   console.error(e.message)
 }
 
-const test04 = `<div id="ss">Hello World</div>>`;
+const test04 = `<div id="ss">Hello> World</div>`;
 
 try {
   console.log(tokenizer(test04))
