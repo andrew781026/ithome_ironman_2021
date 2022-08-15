@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>驗證 Bitcoin</title>
+</head>
+<body>
+<!--
+<script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js" type="text/javascript"></script>
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+-->
+<!-- https://www.npmjs.com/package/multicoin-address-validator -->
+<!--<script src="./wallet-address-validator.min.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/multicoin-address-validator@0.5.10/dist/wallet-address-validator.min.js"></script>
+<script>
+  // const isErc20Address = address => ethers.utils.isAddress(address);
+
+  // ref : https://www.0xdev.co/how-to-check-that-a-solana-address-is-valid-in-javascript/
+  /*
+  const isSolAddress = async addressToVerify => {
+    const publicKey = new solanaWeb3.PublicKey(addressToVerify);
+    const isValidAddress = await solanaWeb3.PublicKey.isOnCurve(publicKey);
+    return isValidAddress;
+  }
+   */
+
+  const isErc20Address = address => WAValidator.validate(address,'eth');
+
+  const isTrc20Address = address => WAValidator.validate(address,'trx');
+
+  const isSolAddress = address => WAValidator.validate(address,'sol');
+
+  const isCoin = (address, type) => {
+
+    if (type === 'TRC20') return isTrc20Address(address);
+    else if (type === 'SOL') return isSolAddress(address);
+    else if (type === 'ERC-20') return isErc20Address(address);
+  }
+
+  // console.log(solanaWeb3);
+  let counter = 0;
+  const appendIt = (address, type) => {
+    const p = document.createElement('p')
+    p.innerText = `[${++counter}] times : ${isCoin(address, type)}`
+    document.body.append(p)
+  }
+
+  const mapper = {
+    'TRC20': 'TGrqysNe9YuYjHM1vadfwPFnLdue8teZdn',
+    'SOL': '2djjvLjbQJcTQXuMshUauMNGEKjEkGXwSZP4GEdHjTbX',  // the solana bitcoin
+    'ERC-20': '0xE01341e8aB36823a4c360d41e7b8BeD277D7CDd1', // the erc20 bitcoin
+  }
+
+  appendIt(mapper.TRC20, 'TRC20');
+  appendIt(mapper.SOL, 'SOL');
+  appendIt(mapper["ERC-20"], 'ERC-20');
+</script>
+</body>
+</html>

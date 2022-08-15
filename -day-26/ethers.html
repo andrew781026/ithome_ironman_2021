@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ethers test</title>
+  <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js" type="text/javascript">
+  </script>
+
+</head>
+<body>
+
+<script>
+  const isETHAddress = address => ethers.utils.isAddress(address);
+  let counter = 0;
+  const appendIt = address => {
+    const p = document.createElement('p')
+    p.innerText = `[${++counter}] times : ${isETHAddress(address)}`
+    document.body.append(p)
+  }
+
+  appendIt('0xb4Cd0De4a37a3EeDB7Aa3f9d76cFE9Cfff034818');
+  appendIt('0xb4Cd0De4a37a3EeDB7Aa3f9d76cFE9Cfff');
+  appendIt('De4a37a3EeDB7Aa3f9d76cFE9Cfff034818');
+  appendIt('0xb4Cd0De4a37a3f9d76cFE9Cfff034818');
+  appendIt('0xb4Cd0De4a37a3EeDB7Aa3f9d7fff034818');
+</script>
+</body>
+</html>
