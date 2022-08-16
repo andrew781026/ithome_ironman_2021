@@ -1,6 +1,6 @@
-# [Day20] - 串接 React Component 與 Web Component 的 DATA
+# [Day19] - 串接 React Component 與 Web Component 的 DATA
 
-使用 connect 來串起 React Component 與 Web Component 的 DATA
+利用 Redux 作用
 
 -----
 make a proxy as redux store ( no middleware )
